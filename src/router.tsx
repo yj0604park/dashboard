@@ -8,11 +8,11 @@ import BaseLayout from 'src/layouts/BaseLayout';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
 const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+(
+  <Suspense fallback={<SuspenseLoader />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 // Pages
 
@@ -21,6 +21,8 @@ const Overview = Loader(lazy(() => import('src/content/overview')));
 // Dashboards
 
 const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+
+const Finance = Loader(lazy(() => import('src/content/dashboards/Finance')));
 
 // Applications
 
@@ -126,11 +128,15 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="crypto" replace />
+        element: <Navigate to="finance" replace />
       },
       {
         path: 'crypto',
         element: <Crypto />
+      },
+      {
+        path: 'finance',
+        element: <Finance />
       },
       {
         path: 'messenger',
