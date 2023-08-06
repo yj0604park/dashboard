@@ -30,32 +30,27 @@ function BankItem({ bankName, balance, latestUpdated }) {
           d
         </Label>
       </Box>
-      <Box
-        mt={3}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
-        <Box
+      <Box mt={3} alignItems="center" justifyContent="space-between">
+        <Typography
+          variant="h4"
           sx={{
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'flex-start'
+            pr: 1
           }}
+          align="right"
+          noWrap
         >
-          <Typography
-            variant="h4"
-            sx={{
-              pr: 1
-            }}
-            align="right"
-            noWrap
-          >
-            {NumberHelper.FormatString(balance['KRW'], 'KRW')}
-            <br />
-            {NumberHelper.FormatString(balance['USD'], 'USD')}
-          </Typography>
-        </Box>
+          {NumberHelper.FormatString(balance['USD'], 'USD')}
+        </Typography>
+        <Typography
+          variant="h4"
+          sx={{
+            pr: 1
+          }}
+          align="right"
+          noWrap
+        >
+          {NumberHelper.FormatString(balance['KRW'], 'KRW')}
+        </Typography>
       </Box>
     </Box>
   );

@@ -8,11 +8,11 @@ import BaseLayout from 'src/layouts/BaseLayout';
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
 const Loader = (Component) => (props) =>
-(
-  <Suspense fallback={<SuspenseLoader />}>
-    <Component {...props} />
-  </Suspense>
-);
+  (
+    <Suspense fallback={<SuspenseLoader />}>
+      <Component {...props} />
+    </Suspense>
+  );
 
 // Pages
 
@@ -31,6 +31,9 @@ const Messenger = Loader(
 );
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
+);
+const Accounts = Loader(
+  lazy(() => import('src/content/applications/Accounts'))
 );
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
@@ -151,6 +154,10 @@ const routes: RouteObject[] = [
       {
         path: '',
         element: <Navigate to="transactions" replace />
+      },
+      {
+        path: 'accounts',
+        element: <Accounts />
       },
       {
         path: 'transactions',
