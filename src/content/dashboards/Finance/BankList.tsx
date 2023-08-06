@@ -1,27 +1,15 @@
 import { MouseEvent, useState } from 'react';
 import {
-  Button,
   Box,
   ToggleButton,
   ToggleButtonGroup,
-  Card,
-  Typography,
-  styled
+  Typography
 } from '@mui/material';
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import WatchListColumn from './WatchListColumn';
-import WatchListRow from './WatchListRow';
+import BankListRow from './BankListRow';
+import Loading from './Loading';
 
-const EmptyResultsWrapper = styled('img')(
-  ({ theme }) => `
-      max-width: 100%;
-      width: ${theme.spacing(66)};
-      height: ${theme.spacing(34)};
-`
-);
-
-function WatchList() {
+function BankList({ loading, bankList }) {
   const [tabs, setTab] = useState<string | null>('watch_list_columns');
 
   const handleViewOrientation = (
@@ -31,67 +19,35 @@ function WatchList() {
     setTab(newValue);
   };
 
-  return (
-    <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{
-          pb: 3
-        }}
-      >
-        <Typography variant="h3">Watch List</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
-          <ToggleButton disableRipple value="watch_list_columns">
-            <ViewWeekTwoToneIcon />
-          </ToggleButton>
-          <ToggleButton disableRipple value="watch_list_rows">
-            <TableRowsTwoToneIcon />
-          </ToggleButton>
-        </ToggleButtonGroup>
-      </Box>
-
-      <WatchListRow />
-
-      {!tabs && (
-        <Card
+  if (!loading) {
+    return (
+      <>
+        <Box
+          display="flex"
+          alignItems="center"
+          justifyContent="space-between"
           sx={{
-            textAlign: 'center',
-            p: 3
+            pb: 3
           }}
         >
-          <EmptyResultsWrapper src="/static/images/placeholders/illustrations/1.svg" />
+          <Typography variant="h3">Bank List</Typography>
+          <ToggleButtonGroup
+            value={tabs}
+            exclusive
+            onChange={handleViewOrientation}
+          >
+            <ToggleButton disableRipple value="watch_list_columns">
+              <ViewWeekTwoToneIcon />
+            </ToggleButton>
+          </ToggleButtonGroup>
+        </Box>
 
-          <Typography
-            align="center"
-            variant="h2"
-            fontWeight="normal"
-            color="text.secondary"
-            sx={{
-              mt: 3
-            }}
-            gutterBottom
-          >
-            Click something, anything!
-          </Typography>
-          <Button
-            variant="contained"
-            size="large"
-            sx={{
-              mt: 4
-            }}
-          >
-            Maybe, a button?
-          </Button>
-        </Card>
-      )}
-    </>
-  );
+        <BankListRow bankList={bankList} />
+      </>
+    );
+  } else {
+    return <Loading />;
+  }
 }
 
-export default WatchList;
+export default BankList;

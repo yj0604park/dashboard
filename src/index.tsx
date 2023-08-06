@@ -9,7 +9,7 @@ import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 
 const client = new ApolloClient({
-  uri: 'https://flyby-router-demo.herokuapp.com/',
+  uri: 'http://192.168.68.51:58000/money/graphql',
   cache: new InMemoryCache(),
 });
 

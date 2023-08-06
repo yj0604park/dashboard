@@ -5,22 +5,42 @@ import { Container, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import AccountBalance from './AccountBalance';
+import TotalBalance from './TotalBalance';
 import Wallets from './Wallets';
 import AccountSecurity from './AccountSecurity';
 import WatchList from './WatchList';
-import BankList from "./BankList";
+import BankList from './BankList';
 import { useQuery, gql } from '@apollo/client';
 
-const GET_BANKS = gql`
-query MyQuery {
-  banks {
-    id
-    name
-  }
-}`
+interface Bank {
+  id: number;
+  name: string;
+}
 
-function DashboardCrypto() {
-  const { loading, error, data } = useQuery(GET_BANKS);
+interface BankData {
+  banks: Bank[];
+}
+
+const GET_BANKS = gql`
+  query MyQuery {
+    banks {
+      balance
+      id
+      name
+      accountSet {
+        amount
+        currency
+        id
+        lastUpdate
+        name
+      }
+    }
+  }
+`;
+
+function FinanceDashboard() {
+  const { loading, error, data } = useQuery<BankData>(GET_BANKS);
+
   return (
     <>
       <Helmet>
@@ -30,9 +50,6 @@ function DashboardCrypto() {
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <Grid>
-         <BankList />
-        </Grid>
         <Grid
           container
           direction="row"
@@ -40,6 +57,12 @@ function DashboardCrypto() {
           alignItems="stretch"
           spacing={4}
         >
+          <Grid item xs={12}>
+            <TotalBalance loading={loading} bankList={data} />
+          </Grid>
+          <Grid item xs={12}>
+            <BankList loading={loading} bankList={data} />
+          </Grid>
           <Grid item xs={12}>
             <AccountBalance />
           </Grid>
@@ -59,4 +82,4 @@ function DashboardCrypto() {
   );
 }
 
-export default DashboardCrypto;
+export default FinanceDashboard;
