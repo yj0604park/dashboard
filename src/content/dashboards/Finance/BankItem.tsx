@@ -1,6 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import Label from 'src/components/Label';
-import NumberHelper from '../.../../../../functions/NumberHelper';
+import NumberHelper from 'src/functions/NumberHelper';
 
 function BankItem({ bankName, balance, latestUpdated }) {
   return (

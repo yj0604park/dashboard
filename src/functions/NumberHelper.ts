@@ -1,3 +1,5 @@
+import { Bank } from "src/models/bank";
+
 export default class Util {
   static FormatString(amount: number, currency: string) {
     let sign = '₩';
@@ -31,4 +33,15 @@ export default class Util {
       );
     }
   }
+  
+  static GetTotalNumber(bankList: Bank[], currency: string) {
+    let sum = 0.0;
+    bankList.forEach((element) => {
+      if (currency in element['balance']) {
+        sum += element['balance'][currency];
+      }
+    });
+    return sum;
+  }
+
 }

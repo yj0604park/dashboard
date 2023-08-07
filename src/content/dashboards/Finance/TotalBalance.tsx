@@ -14,7 +14,6 @@ import TrendingUp from '@mui/icons-material/TrendingUp';
 import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 import Loading from './Loading';
-import NumberUtils from '../../../functions/NumberHelper';
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -52,18 +51,7 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 `
 );
 
-function GetTotalNumber(bankList, currency) {
-  let sum = 0.0;
-  bankList.forEach((element) => {
-    if (currency in element['balance']) {
-      sum += element['balance'][currency];
-      console.log(element['name'], sum);
-    }
-  });
-  return sum;
-}
-
-function TotalBalance({ loading, bankList }) {
+function TotalBalance({ loading, usdTotal, krwTotal }) {
   const theme = useTheme();
 
   const chartOptions: ApexOptions = {
@@ -136,15 +124,6 @@ function TotalBalance({ loading, bankList }) {
   const chartSeries = [10, 20, 25, 45];
 
   if (!loading) {
-    const krwTotal = NumberUtils.FormatString(
-      GetTotalNumber(bankList['banks'], 'KRW'),
-      'KRW'
-    );
-    const usdTotal = NumberUtils.FormatString(
-      GetTotalNumber(bankList['banks'], 'USD'),
-      'USD'
-    );
-    console.log(usdTotal);
     return (
       <Card>
         <Grid spacing={0} container>

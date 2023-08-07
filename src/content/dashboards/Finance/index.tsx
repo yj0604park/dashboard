@@ -4,38 +4,30 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import TotalBalance from './TotalBalance';
+import { useQuery } from '@apollo/client';
+import NumberUtils from 'src/functions/NumberHelper';
+import { BankData } from 'src/models/bank';
+import { GetBanksQuery } from 'src/queries/BankQuery';
 import BankList from './BankList';
-import { useQuery, gql } from '@apollo/client';
-
-interface Bank {
-  id: number;
-  name: string;
-}
-
-interface BankData {
-  banks: Bank[];
-}
-
-const GET_BANKS = gql`
-  query MyQuery {
-    banks {
-      balance
-      id
-      name
-      accountSet {
-        amount
-        currency
-        id
-        lastUpdate
-        name
-      }
-    }
-  }
-`;
+import ChartList from './ChartList';
+import TotalBalance from './TotalBalance';
+import Loading from './Loading';
 
 function FinanceDashboard() {
-  const { loading, error, data } = useQuery<BankData>(GET_BANKS);
+  const { loading, error, data } = useQuery<BankData>(GetBanksQuery);
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  const krwTotal = NumberUtils.FormatString(
+    NumberUtils.GetTotalNumber(data['banks'], 'KRW'),
+    'KRW'
+  );
+  const usdTotal = NumberUtils.FormatString(
+    NumberUtils.GetTotalNumber(data['banks'], 'USD'),
+    'USD'
+  );
 
   return (
     <>
@@ -54,10 +46,17 @@ function FinanceDashboard() {
           spacing={4}
         >
           <Grid item xs={12}>
-            <TotalBalance loading={loading} bankList={data} />
+            <TotalBalance
+              loading={loading}
+              krwTotal={krwTotal}
+              usdTotal={usdTotal}
+            />
           </Grid>
           <Grid item xs={12}>
             <BankList loading={loading} bankList={data} />
+          </Grid>
+          <Grid item xs={12}>
+            <ChartList krwTotal={krwTotal} usdTotal={usdTotal} />
           </Grid>
         </Grid>
       </Container>

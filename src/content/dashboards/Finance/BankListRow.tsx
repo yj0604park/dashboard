@@ -1,6 +1,6 @@
-import { Card, Stack, Divider, useTheme } from '@mui/material';
+import { Card, Stack, Divider } from '@mui/material';
 import BankItem from './BankItem';
-import Util from '../../../functions/ArrayHelper';
+import Util from 'src/functions/ArrayHelper';
 
 function GetBankItem(bank: any) {
   let latestUpdated = new Date('2000-01-01');
