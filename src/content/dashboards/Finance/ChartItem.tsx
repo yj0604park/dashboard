@@ -30,7 +30,8 @@ function ChartItem({ currency, totalBalance, chartLabel, chartData }) {
       width: 2
     },
     yaxis: {
-      show: true
+      show: true,
+      decimalsInFloat: 2
     },
     colors: [theme.colors.primary.main],
     grid: {
@@ -54,7 +55,7 @@ function ChartItem({ currency, totalBalance, chartLabel, chartData }) {
       y: {
         title: {
           formatter: function () {
-            return 'Price: $';
+            return 'Amount: $';
           }
         }
       },

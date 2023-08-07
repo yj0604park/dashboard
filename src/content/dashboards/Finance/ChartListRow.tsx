@@ -1,10 +1,5 @@
-import { Card, Box, Typography, Stack, Divider, useTheme } from '@mui/material';
-import Text from 'src/components/Text';
-import Label from 'src/components/Label';
-import Chart from 'react-apexcharts';
+import { Card, Stack, Divider } from '@mui/material';
 import ChartItem from './ChartItem';
-import type { ApexOptions } from 'apexcharts';
-import TrendingDownTwoToneIcon from '@mui/icons-material/TrendingDownTwoTone';
 import { GetAmountSnapshotQuery } from '../../../queries/AmountSnapshotQuery';
 import { useQuery } from '@apollo/client';
 import Loading from './Loading';
@@ -39,7 +34,7 @@ function ChartListRow({ usdTotal, krwTotal }) {
   if (!loading) {
     const [usdChartLabel, usdChartData] = GetDateAndAmount(data.usdSnapshot);
     const [krwChartLabel, krwChartData] = GetDateAndAmount(data.krwSnapshot);
-
+    console.log(usdChartData.slice(0, 10));
     return (
       <Card>
         <Stack

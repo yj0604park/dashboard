@@ -5,8 +5,8 @@ import {
   ToggleButtonGroup,
   Typography
 } from '@mui/material';
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
+import TimelineIcon from '@mui/icons-material/Timeline';
+import TodayIcon from '@mui/icons-material/Today';
 import ChartListRow from './ChartListRow';
 
 function ChartList({ usdTotal, krwTotal }) {
@@ -36,10 +36,10 @@ function ChartList({ usdTotal, krwTotal }) {
           onChange={handleViewOrientation}
         >
           <ToggleButton disableRipple value="watch_list_columns">
-            <ViewWeekTwoToneIcon />
+            <TimelineIcon />
           </ToggleButton>
           <ToggleButton disableRipple value="watch_list_rows">
-            <TableRowsTwoToneIcon />
+            <TodayIcon />
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
