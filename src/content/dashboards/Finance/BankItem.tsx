@@ -1,8 +1,16 @@
 import { Box, Typography } from '@mui/material';
 import Label from 'src/components/Label';
 import NumberHelper from 'src/functions/NumberHelper';
+import { Link } from 'react-router-dom';
 
-function BankItem({ bankName, balance, latestUpdated }) {
+interface BankItemProps {
+  bankName: string;
+  bankId: number;
+  balance: any;
+  latestUpdated: Date;
+}
+
+function BankItem({ bankName, bankId, balance, latestUpdated }: BankItemProps) {
   return (
     <Box
       sx={{
@@ -18,7 +26,9 @@ function BankItem({ bankName, balance, latestUpdated }) {
         <Box display="flex" alignItems="center">
           <Box>
             <Typography variant="h3" noWrap>
-              {bankName}
+              <Link to="/management/accounts" state={{ some: bankId }}>
+                {bankName}
+              </Link>
             </Typography>
           </Box>
         </Box>
@@ -39,7 +49,7 @@ function BankItem({ bankName, balance, latestUpdated }) {
           align="right"
           noWrap
         >
-          {NumberHelper.FormatString(balance['USD'], 'USD')}
+          {NumberHelper.FormatString(balance.USD, 'USD')}
         </Typography>
         <Typography
           variant="h4"
@@ -49,7 +59,7 @@ function BankItem({ bankName, balance, latestUpdated }) {
           align="right"
           noWrap
         >
-          {NumberHelper.FormatString(balance['KRW'], 'KRW')}
+          {NumberHelper.FormatString(balance.KRW, 'KRW')}
         </Typography>
       </Box>
     </Box>

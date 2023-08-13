@@ -1,7 +1,8 @@
-import { Bank } from "src/models/bank";
+import { BankNode } from "src/models/bank";
 
 export default class Util {
   static FormatString(amount: number, currency: string) {
+    console.log(amount, currency);
     let sign = '₩';
     let digit = 0;
     if (currency == "KRW") {
@@ -34,11 +35,11 @@ export default class Util {
     }
   }
   
-  static GetTotalNumber(bankList: Bank[], currency: string) {
+  static GetTotalNumber(bankList: BankNode[], currency: string) {
     let sum = 0.0;
     bankList.forEach((element) => {
-      if (currency in element['balance']) {
-        sum += element['balance'][currency];
+      if (currency in element.node.balance) {
+        sum += element.node.balance[currency];
       }
     });
     return sum;

@@ -8,8 +8,14 @@ import {
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
 import BankListRow from './BankListRow';
 import Loading from './Loading';
+import { BankData } from 'src/models/bank';
 
-function BankList({ loading, bankList }) {
+interface BankListProps {
+  loading: boolean;
+  bankList: BankData;
+}
+
+function BankList({ loading, bankList }: BankListProps) {
   const [tabs, setTab] = useState<string | null>('watch_list_columns');
 
   const handleViewOrientation = (
@@ -42,7 +48,7 @@ function BankList({ loading, bankList }) {
           </ToggleButtonGroup>
         </Box>
 
-        <BankListRow bankList={bankList} />
+        <BankListRow bankList={bankList.bankRelay} />
       </>
     );
   } else {

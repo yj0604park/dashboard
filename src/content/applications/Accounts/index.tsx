@@ -4,9 +4,13 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import RecentOrders from './RecentOrders';
+import AccountOrders from './AccountOrders';
+import { useLocation } from 'react-router-dom';
 
 function ApplicationsTransactions() {
+  let { state } = useLocation();
+  console.log(state);
+
   return (
     <>
       <Helmet>
@@ -24,7 +28,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <RecentOrders />
+            <AccountOrders />
           </Grid>
         </Grid>
       </Container>

@@ -3,38 +3,31 @@ import ChartItem from './ChartItem';
 import { GetAmountSnapshotQuery } from '../../../queries/AmountSnapshotQuery';
 import { useQuery } from '@apollo/client';
 import Loading from './Loading';
+import { AmountSnapshotData, AmountSnapshotEdge } from 'src/models/bank';
 
-interface AmountSnpahost {
-  id: number;
-  currency: string;
-  amount: number;
-  summary: any;
-  date: Date;
-}
-
-interface AmountSnapshotData {
-  krwSnapshot: AmountSnpahost[];
-  usdSnapshot: AmountSnpahost[];
-}
-
-function GetDateAndAmount(data: AmountSnpahost[]) {
+function GetDateAndAmount(amountSnapshotList: AmountSnapshotEdge) {
   const date = [];
   const amount = [];
-  data.forEach((snapshot) => {
-    date.push(snapshot.date);
-    amount.push(snapshot.amount);
+
+  amountSnapshotList.edges.forEach((snapshot) => {
+    date.push(snapshot.node.date);
+    amount.push(snapshot.node.amount);
   });
   return [date, amount];
 }
 
 function ChartListRow({ usdTotal, krwTotal }) {
   const { loading, error, data } = useQuery<AmountSnapshotData>(
-    GetAmountSnapshotQuery
+    GetAmountSnapshotQuery,
+    {
+      variables: {
+        startDate: '2023-01-01'
+      }
+    }
   );
-  if (!loading) {
+  if (!loading && !error) {
     const [usdChartLabel, usdChartData] = GetDateAndAmount(data.usdSnapshot);
     const [krwChartLabel, krwChartData] = GetDateAndAmount(data.krwSnapshot);
-    console.log(usdChartData.slice(0, 10));
     return (
       <Card>
         <Stack

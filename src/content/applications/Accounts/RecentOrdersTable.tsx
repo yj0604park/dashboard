@@ -90,7 +90,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   );
   const selectedBulkActions = selectedCryptoOrders.length > 0;
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(25);
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
@@ -348,7 +348,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
           onRowsPerPageChange={handleLimitChange}
           page={page}
           rowsPerPage={limit}
-          rowsPerPageOptions={[5, 10, 25, 30]}
+          rowsPerPageOptions={[25, 30]}
         />
       </Box>
     </Card>

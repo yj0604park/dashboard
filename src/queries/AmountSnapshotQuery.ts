@@ -1,26 +1,36 @@
 import { gql } from '@apollo/client';
 
 export const GetAmountSnapshotQuery = gql`
-query MyQuery {
-  krwSnapshot: amountSnapshot(
+query MyQuery($startDate: Date) {
+  krwSnapshot: amountSnapshotRelay(
     order: {date: ASC}
-    filters: {date: {gte: "2023-01-01"}, currency: {exact: "KRW"}}
+    filters: {currency: {exact: KRW}, date: {gte: $startDate}}
+    last: 100
   ) {
-    id
-    currency
-    amount
-    summary
-    date
+    edges {
+      node {
+        id
+        amount
+        currency
+        date
+        summary
+      }
+    }
   }
-  usdSnapshot: amountSnapshot(
+  usdSnapshot: amountSnapshotRelay(
     order: {date: ASC}
-    filters: {date: {gte: "2023-01-01"}, currency: {exact: "USD"}}
+    filters: {currency: {exact: USD}, date: {gte: $startDate}}
+    last: 100
   ) {
-    id
-    currency
-    amount
-    summary
-    date
+    edges {
+      node {
+        id
+        amount
+        currency
+        date
+        summary
+      }
+    }
   }
 }
 `;

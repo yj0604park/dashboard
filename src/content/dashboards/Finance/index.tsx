@@ -7,25 +7,24 @@ import Footer from 'src/components/Footer';
 import { useQuery } from '@apollo/client';
 import NumberUtils from 'src/functions/NumberHelper';
 import { BankData } from 'src/models/bank';
-import { GetBanksQuery } from 'src/queries/BankQuery';
+import { GetBankNodeQuery } from 'src/queries/BankQuery';
 import BankList from './BankList';
 import ChartList from './ChartList';
 import TotalBalance from './TotalBalance';
 import Loading from './Loading';
 
 function FinanceDashboard() {
-  const { loading, error, data } = useQuery<BankData>(GetBanksQuery);
+  const { loading, error, data } = useQuery<BankData>(GetBankNodeQuery);
 
   if (loading) {
     return <Loading />;
   }
-
   const krwTotal = NumberUtils.FormatString(
-    NumberUtils.GetTotalNumber(data['banks'], 'KRW'),
+    NumberUtils.GetTotalNumber(data.bankRelay.edges, 'KRW'),
     'KRW'
   );
   const usdTotal = NumberUtils.FormatString(
-    NumberUtils.GetTotalNumber(data['banks'], 'USD'),
+    NumberUtils.GetTotalNumber(data.bankRelay.edges, 'USD'),
     'USD'
   );
 

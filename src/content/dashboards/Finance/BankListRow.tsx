@@ -1,25 +1,26 @@
 import { Card, Stack, Divider } from '@mui/material';
 import BankItem from './BankItem';
 import Util from 'src/functions/ArrayHelper';
+import { BankEdge, BankNode } from 'src/models/bank';
 
-function GetBankItem(bank: any) {
+function GetBankItem(bank: BankNode) {
   let latestUpdated = new Date('2000-01-01');
-  bank['accountSet'].forEach((account) => {
-    const accountDate = new Date(account['lastUpdate']);
+  bank.node.accountSet.edges.forEach((account) => {
+    const accountDate = new Date(account.node.lastUpdate);
     latestUpdated = latestUpdated < accountDate ? accountDate : latestUpdated;
   });
-
   return (
     <BankItem
-      bankName={bank['name']}
-      balance={bank['balance']}
+      bankName={bank.node.name}
+      bankId={bank.node.id}
+      balance={bank.node.balance}
       latestUpdated={latestUpdated}
-      key={bank['id']}
+      key={bank.node.id}
     />
   );
 }
 
-function GetBankStack(bankList: any[], idx: number) {
+function GetBankStack(bankList: BankNode[], idx: number) {
   return (
     <Stack
       direction="row"
@@ -34,8 +35,12 @@ function GetBankStack(bankList: any[], idx: number) {
   );
 }
 
-function BankListRow({ bankList }) {
-  const banks = bankList['banks'];
+interface BankListRowProps {
+  bankList: BankEdge;
+}
+
+function BankListRow({ bankList }: BankListRowProps) {
+  const banks = bankList.edges;
   const chunkedBanks = Util.chunk(banks, 4);
 
   return (
