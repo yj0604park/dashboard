@@ -21,7 +21,22 @@ query GetBanksQuery {
               isActive
             }
           }
+          totalCount
         }
+      }
+    }
+  }
+}
+`;
+
+// Simply get name and id of bank for list selection
+export const GetBankSimpleListQuery = gql`
+query GetBanksQuery {
+  bankRelay {
+    edges {
+      node {
+        id
+        name
       }
     }
   }
@@ -39,11 +54,11 @@ query {
 `;
 
 export const GetAccountNodeQuery = gql`
-query MyQuery($After: String!) {
+query MyQuery($After: String!, $BankId: IDFilterLookup) {
   accountRelay(
-    order: {bank: {name: ASC}}
-    filters: {isActive: true, bank: {}}
-    first: 10
+    order: {name: ASC}
+    filters: {isActive: true, bank: {id: $BankId, name: {}}}
+    first: 100
     after: $After
   ) {
     totalCount
@@ -59,6 +74,7 @@ query MyQuery($After: String!) {
         lastUpdate
         id
         isActive
+        type
       }
       cursor
     }

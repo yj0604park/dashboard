@@ -15,7 +15,7 @@ import * as serviceWorker from 'src/serviceWorker';
 import { UserProvider } from './contexts/UserContext';
 
 const client = new ApolloClient({
-  uri: 'http://192.168.68.51:58000/money/graphql',
+  uri: 'http://192.168.68.62:58000/money/graphql',
   cache: new InMemoryCache()
 });
 

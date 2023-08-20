@@ -20,13 +20,16 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  TablePagination,
+  Grid
 } from '@mui/material';
+import { Link } from 'react-router-dom';
 
 import Label from 'src/components/Label';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { AccountEdge } from 'src/models/bank';
+import { AccountEdge, AccountNode } from 'src/models/bank';
 import { useQuery } from '@apollo/client';
 import { GetAccountTypeQuery } from 'src/queries/BankQuery';
 
@@ -38,7 +41,7 @@ interface RecentOrdersTableProps {
 const getStatusLabel = (accountStatus: boolean): JSX.Element => {
   const map = {
     false: {
-      text: 'In active',
+      text: 'Inactive',
       color: 'error'
     },
     true: {
@@ -52,9 +55,19 @@ const getStatusLabel = (accountStatus: boolean): JSX.Element => {
   return <Label color={color}>{text}</Label>;
 };
 
+const applyPagination = (
+  accounts: AccountEdge,
+  page: number,
+  limit: number
+): AccountNode[] => {
+  return accounts.edges.slice(page * limit, page * limit + limit);
+};
+
 const AccountTable: FC<RecentOrdersTableProps> = ({
   accountList: accountList
 }) => {
+  const [page, setPage] = useState<number>(0);
+
   const [filters, setFilters] = useState({
     status: null
   });
@@ -74,9 +87,15 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
     }));
   };
 
+  const handlePageChange = (event: any, newPage: number): void => {};
+
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {};
+
   const theme = useTheme();
 
   if (loading) return <p>Loading...</p>;
+
+  // get status options from graphql
   const statusOptions = data['__type'].enumValues.map((enumValue) => {
     return {
       id: enumValue.name,
@@ -89,25 +108,38 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
     <Card>
       <CardHeader
         action={
-          <Box width={150}>
-            <FormControl fullWidth variant="outlined">
-              <InputLabel>Status</InputLabel>
-              <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
-                label="Account Type"
-                autoWidth
-              >
-                {statusOptions.map((statusOption) => (
-                  <MenuItem key={statusOption.id} value={statusOption.id}>
-                    {statusOption.name}
+          <Grid container direction={'row'} spacing={2} width={300}>
+            <Grid item xs={6}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Account Type</InputLabel>
+                <Select
+                  value={filters.status || 'all'}
+                  onChange={handleStatusChange}
+                  label="Account Type"
+                  autoWidth
+                >
+                  {statusOptions.map((statusOption) => (
+                    <MenuItem key={statusOption.id} value={statusOption.id}>
+                      {statusOption.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+            </Grid>
+
+            <Grid item xs={6}>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel>Bank</InputLabel>
+                <Select label="Bank" autoWidth>
+                  <MenuItem key={0} value={0}>
+                    TODO: BankList
                   </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Box>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
         }
-        title="Recent Orders"
+        title="Account List"
       />
       <Divider />
       <TableContainer>
@@ -117,9 +149,10 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
               <TableCell padding="checkbox">
                 <Checkbox color="primary" />
               </TableCell>
-              <TableCell>Account Name</TableCell>
+              <TableCell>Name</TableCell>
               <TableCell>Last Updated</TableCell>
               <TableCell>Bank</TableCell>
+              <TableCell>Type</TableCell>
               <TableCell>Currency</TableCell>
               <TableCell align="right">Amount</TableCell>
               <TableCell align="right">Status</TableCell>
@@ -142,7 +175,12 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {account.name}
+                      <Link
+                        to="/management/transactions"
+                        state={{ accountId: account.id }}
+                      >
+                        {account.name}
+                      </Link>
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
                       {account.id}
@@ -168,6 +206,17 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
                       noWrap
                     >
                       {account.bank.name}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {account.type}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -242,6 +291,16 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
           </TableBody>
         </Table>
       </TableContainer>
+      <Box p={2}>
+        <TablePagination
+          component="div"
+          count={accountList.edges.length}
+          page={page}
+          rowsPerPage={25}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleLimitChange}
+        />
+      </Box>
     </Card>
   );
 };

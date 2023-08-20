@@ -8,9 +8,16 @@ interface BankItemProps {
   bankId: number;
   balance: any;
   latestUpdated: Date;
+  accountCount: number;
 }
 
-function BankItem({ bankName, bankId, balance, latestUpdated }: BankItemProps) {
+function BankItem({
+  bankName,
+  bankId,
+  balance,
+  latestUpdated,
+  accountCount
+}: BankItemProps) {
   return (
     <Box
       sx={{
@@ -26,7 +33,10 @@ function BankItem({ bankName, bankId, balance, latestUpdated }: BankItemProps) {
         <Box display="flex" alignItems="center">
           <Box>
             <Typography variant="h3" noWrap>
-              <Link to="/management/accounts" state={{ some: bankId }}>
+              <Link
+                to="/management/accounts"
+                state={{ bankId: bankId, bankName: bankName }}
+              >
                 {bankName}
               </Link>
             </Typography>
@@ -41,6 +51,16 @@ function BankItem({ bankName, bankId, balance, latestUpdated }: BankItemProps) {
         </Label>
       </Box>
       <Box mt={3} alignItems="center" justifyContent="space-between">
+        <Typography
+          variant="h4"
+          sx={{
+            pr: 1
+          }}
+          align="right"
+          noWrap
+        >
+          계좌수: {accountCount}
+        </Typography>
         <Typography
           variant="h4"
           sx={{

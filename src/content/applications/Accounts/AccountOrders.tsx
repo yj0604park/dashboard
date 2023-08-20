@@ -4,10 +4,13 @@ import { useQuery } from '@apollo/client';
 import { AccountData } from 'src/models/bank';
 import AccountTable from './AccountTable';
 
-function AccountList() {
+function AccountList({ bankFilterId }) {
   const { loading, error, data } = useQuery<AccountData>(GetAccountNodeQuery, {
     variables: {
-      After: ''
+      After: '',
+      BankId: {
+        exact: bankFilterId
+      }
     }
   });
 

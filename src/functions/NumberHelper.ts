@@ -2,7 +2,6 @@ import { BankNode } from "src/models/bank";
 
 export default class Util {
   static FormatString(amount: number, currency: string) {
-    console.log(amount, currency);
     let sign = '₩';
     let digit = 0;
     if (currency == "KRW") {

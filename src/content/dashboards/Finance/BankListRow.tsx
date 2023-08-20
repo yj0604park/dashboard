@@ -16,6 +16,7 @@ function GetBankItem(bank: BankNode) {
       balance={bank.node.balance}
       latestUpdated={latestUpdated}
       key={bank.node.id}
+      accountCount={bank.node.accountSet.totalCount}
     />
   );
 }

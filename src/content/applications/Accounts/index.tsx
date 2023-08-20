@@ -7,9 +7,14 @@ import Footer from 'src/components/Footer';
 import AccountOrders from './AccountOrders';
 import { useLocation } from 'react-router-dom';
 
+interface LocationState {
+  bankId?: number;
+  bankName?: string;
+}
+
 function ApplicationsTransactions() {
   let { state } = useLocation();
-  console.log(state);
+  const { bankId, bankName } = (state as LocationState) || {};
 
   return (
     <>
@@ -17,7 +22,7 @@ function ApplicationsTransactions() {
         <title>Accounts</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader />
+        <PageHeader bankName={bankName} />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -28,7 +33,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <AccountOrders />
+            <AccountOrders bankFilterId={bankId} />
           </Grid>
         </Grid>
       </Container>

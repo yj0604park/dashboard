@@ -25,6 +25,7 @@ export interface Account {
   lastUpdate: Date;
   bank: Bank;
   isActive: boolean;
+  type: string;
 }
 
 export interface AccountNode {
@@ -33,6 +34,7 @@ export interface AccountNode {
 
 export interface AccountEdge {
   edges: AccountNode[];
+  totalCount?: number;
 }
 
 export interface AccountData {
