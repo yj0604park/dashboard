@@ -4,25 +4,33 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Grid, Container } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import AccountLists from './AccountLists';
+import TransactionList from './TransactionList';
 import { useLocation } from 'react-router-dom';
-
-interface LocationState {
-  bankId?: number;
-  bankName?: string;
-}
+import { useState } from 'react';
+import { AccountState } from 'src/models/internal';
 
 function ApplicationsTransactions() {
   let { state } = useLocation();
-  const { bankId, bankName } = (state as LocationState) || {};
+  const [accountState, setAccountState] = useState<AccountState>();
+
+  if (state) {
+    if (!accountState) {
+      setAccountState(state);
+    }
+  }
+
+  console.log(accountState);
 
   return (
     <>
       <Helmet>
-        <title>Accounts</title>
+        <title>Transactions - Applications</title>
       </Helmet>
       <PageTitleWrapper>
-        <PageHeader bankName={bankName} />
+        <PageHeader
+          setAccountState={setAccountState}
+          accountState={accountState}
+        />
       </PageTitleWrapper>
       <Container maxWidth="lg">
         <Grid
@@ -33,7 +41,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <AccountLists bankFilterId={bankId} />
+            <TransactionList {...accountState} />
           </Grid>
         </Grid>
       </Container>

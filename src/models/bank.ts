@@ -23,6 +23,8 @@ export interface Account {
   currency: string;
   amount: number;
   lastUpdate: Date;
+  firstTransaction?: Date;
+  lastTransaction?: Date;
   bank: Bank;
   isActive: boolean;
   type: string;
@@ -39,6 +41,38 @@ export interface AccountEdge {
 
 export interface AccountData {
   accountRelay: AccountEdge;
+}
+
+export interface Retailer {
+  id: number;
+  name: string;
+}
+
+export interface Transaction{
+  id: number;
+  amount: number;
+  balance: number;
+  date: Date;
+  isInternal: boolean;
+  requiresDetail: boolean;
+  reviewed: boolean;
+  note: string;
+  type: string;
+  relatedTransaction?: TransactionNode;
+  retailer?: Retailer;
+}
+
+export interface TransactionNode {
+  node: Transaction;
+}
+
+export interface TransactionEdge {
+  edges: TransactionNode[];
+}
+
+export interface TransactionData {
+  transactionRelay: TransactionEdge;
+  totalCount?: number;
 }
 
 export interface AmountSnpahost {

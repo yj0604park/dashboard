@@ -33,6 +33,7 @@ import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -264,6 +265,17 @@ function SidebarMenu() {
                   startIcon={<AccountBalanceWalletIcon />}
                 >
                   Accounts List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/accountDetails"
+                  startIcon={<ReceiptLongIcon />}
+                >
+                  Account Details
                 </Button>
               </ListItem>
               <ListItem component="div">

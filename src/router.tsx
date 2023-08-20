@@ -35,6 +35,9 @@ const Transactions = Loader(
 const Accounts = Loader(
   lazy(() => import('src/content/applications/Accounts'))
 );
+const AccountDetails = Loader(
+  lazy(() => import('src/content/applications/AccountDetails'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -158,6 +161,10 @@ const routes: RouteObject[] = [
       {
         path: 'accounts',
         element: <Accounts />
+      },
+      {
+        path: 'accountDetails',
+        element: <AccountDetails />
       },
       {
         path: 'transactions',

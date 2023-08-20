@@ -63,9 +63,7 @@ const applyPagination = (
   return accounts.edges.slice(page * limit, page * limit + limit);
 };
 
-const AccountTable: FC<RecentOrdersTableProps> = ({
-  accountList: accountList
-}) => {
+const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
   const [page, setPage] = useState<number>(0);
 
   const [filters, setFilters] = useState({
@@ -153,8 +151,9 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
               <TableCell>Last Updated</TableCell>
               <TableCell>Bank</TableCell>
               <TableCell>Type</TableCell>
-              <TableCell>Currency</TableCell>
-              <TableCell align="right">Amount</TableCell>
+              <TableCell>First Transaction</TableCell>
+              <TableCell>Last Transaction</TableCell>
+              <TableCell align="right">Balance</TableCell>
               <TableCell align="right">Status</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
@@ -176,8 +175,13 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
                       noWrap
                     >
                       <Link
-                        to="/management/transactions"
-                        state={{ accountId: account.id }}
+                        to="/management/accountDetails"
+                        state={{
+                          accountId: account.id,
+                          accountName: account.name,
+                          bankId: account.bank.id,
+                          bankName: account.bank.name
+                        }}
                       >
                         {account.name}
                       </Link>
@@ -227,7 +231,18 @@ const AccountTable: FC<RecentOrdersTableProps> = ({
                       gutterBottom
                       noWrap
                     >
-                      {account.currency}
+                      {account.firstTransaction}
+                    </Typography>
+                  </TableCell>
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {account.lastTransaction}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
