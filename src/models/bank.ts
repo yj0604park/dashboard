@@ -46,6 +46,19 @@ export interface AccountData {
 export interface Retailer {
   id: number;
   name: string;
+  category?: string;
+}
+
+export interface RetailerNode {
+  node: Retailer;
+}
+
+export interface RetailerEdge {
+  edges: RetailerNode[];
+}
+
+export interface RetailerData {
+  retailerRelay: RetailerEdge;
 }
 
 export interface Transaction{

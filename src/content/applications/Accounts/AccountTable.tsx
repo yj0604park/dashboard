@@ -148,7 +148,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                 <Checkbox color="primary" />
               </TableCell>
               <TableCell>Name</TableCell>
-              <TableCell>Last Updated</TableCell>
+              <TableCell>ID</TableCell>
               <TableCell>Bank</TableCell>
               <TableCell>Type</TableCell>
               <TableCell>First Transaction</TableCell>
@@ -187,7 +187,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                       </Link>
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
-                      {account.id}
+                      {format(new Date(account.lastUpdate), 'yyyy-MM-dd HH:mm')}
                     </Typography>
                   </TableCell>
                   <TableCell>
@@ -198,7 +198,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                       gutterBottom
                       noWrap
                     >
-                      {format(new Date(account.lastUpdate), 'yyyy-MM-dd HH:mm')}
+                      {account.id}
                     </Typography>
                   </TableCell>
                   <TableCell>

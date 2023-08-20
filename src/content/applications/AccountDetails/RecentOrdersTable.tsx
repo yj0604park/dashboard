@@ -1,11 +1,9 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import PropTypes from 'prop-types';
 import {
   Tooltip,
   Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
   Checkbox,
   IconButton,
@@ -16,14 +14,11 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  Select,
-  MenuItem,
   Typography,
   useTheme,
   CardHeader
 } from '@mui/material';
 
-import { CryptoOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
@@ -32,13 +27,14 @@ import {
   TransactionEdge,
   TransactionNode
 } from 'src/models/bank';
+import { TransactionFilter } from 'src/models/internal';
 
 interface RecentOrdersTableProps {
   transactionData: TransactionData;
 }
 
 interface Filters {
-  status?: CryptoOrderStatus;
+  status?: TransactionFilter;
 }
 
 const applyFilters = (
@@ -47,6 +43,10 @@ const applyFilters = (
 ): TransactionNode[] => {
   return transactions.edges.filter((transaction) => {
     let matches = true;
+
+    if (filters.status === 'all') {
+      return true;
+    }
 
     if (filters.status && transaction.node.type !== filters.status) {
       matches = false;
@@ -70,42 +70,10 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
   );
   const selectedBulkActions = selectedTransactions.length > 0;
   const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
+  const [limit, setLimit] = useState<number>(25);
   const [filters, setFilters] = useState<Filters>({
-    status: null
+    status: 'all'
   });
-
-  const statusOptions = [
-    {
-      id: 'all',
-      name: 'All'
-    },
-    {
-      id: 'completed',
-      name: 'Completed'
-    },
-    {
-      id: 'pending',
-      name: 'Pending'
-    },
-    {
-      id: 'failed',
-      name: 'Failed'
-    }
-  ];
-
-  const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    let value = null;
-
-    if (e.target.value !== 'all') {
-      value = e.target.value;
-    }
-
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      status: value
-    }));
-  };
 
   const handleSelectAllCryptoOrders = (
     event: ChangeEvent<HTMLInputElement>
@@ -171,7 +139,7 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
         <CardHeader
           action={
             <Box width={150}>
-              <FormControl fullWidth variant="outlined">
+              {/* <FormControl fullWidth variant="outlined">
                 <InputLabel>Status</InputLabel>
                 <Select
                   value={filters.status || 'all'}
@@ -185,10 +153,10 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
                     </MenuItem>
                   ))}
                 </Select>
-              </FormControl>
+              </FormControl> */}
             </Box>
           }
-          title="Recent Orders"
+          title="Transactions"
         />
       )}
       <Divider />

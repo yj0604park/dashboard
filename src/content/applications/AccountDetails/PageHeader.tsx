@@ -11,10 +11,11 @@ import {
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { AccountState } from 'src/models/internal';
 import { UserContext } from 'src/contexts/UserContext';
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { AccountData } from 'src/models/bank';
 import { GetSimpleAccountListQuery } from 'src/queries/BankQuery';
+import CreateTransactionDialog from './CreateTransactionDialog';
 
 interface HeaderProps {
   accountState: AccountState;
@@ -22,7 +23,16 @@ interface HeaderProps {
 }
 
 function PageHeader({ accountState, setAccountState }: HeaderProps) {
+  const [open, setOpen] = useState(false);
   const { userName } = useContext(UserContext);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
   const { loading, error, data } = useQuery<AccountData>(
     GetSimpleAccountListQuery,
@@ -32,8 +42,6 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
       }
     }
   );
-
-  console.log(data);
 
   return (
     <Grid container>
@@ -52,9 +60,18 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
             sx={{ mt: { xs: 2, md: 0 } }}
             variant="contained"
             startIcon={<AddTwoToneIcon fontSize="small" />}
+            onClick={handleClickOpen}
           >
             Create transaction
           </Button>
+          <CreateTransactionDialog
+            open={open}
+            onModalClose={handleClose}
+            bankId={accountState?.bankId}
+            bankName={accountState?.bankName}
+            accountId={accountState?.accountId}
+            accountName={accountState?.accountName}
+          />
         </Grid>
       </Grid>
       <Grid container>

@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { UserContext } from 'src/contexts/UserContext';
-import CreateAccountDialog from './CreateAccount';
+import CreateAccountDialog from './CreateAccountDialog';
 
 function PageHeader({ bankName }) {
   const [open, setOpen] = useState(false);

@@ -158,3 +158,18 @@ query MyQuery($AccountID: ID) {
   }
 }
 `
+
+export const GetRetailerListQuery = gql`
+query MyQuery {
+  retailerRelay {
+    edges {
+      node {
+        id
+        name
+        category
+      }
+    }
+    totalCount
+  }
+}
+`;

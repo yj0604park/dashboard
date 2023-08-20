@@ -5,3 +5,5 @@ export interface AccountState {
   bankId?: number;
   bankName?: string;
 }
+
+export type TransactionFilter = "all" | "internal" | "external";
