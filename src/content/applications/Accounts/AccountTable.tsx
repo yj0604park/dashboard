@@ -128,7 +128,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
             <Grid item xs={6}>
               <FormControl fullWidth variant="outlined">
                 <InputLabel>Bank</InputLabel>
-                <Select label="Bank" autoWidth>
+                <Select label="Bank" value={0} autoWidth>
                   <MenuItem key={0} value={0}>
                     TODO: BankList
                   </MenuItem>

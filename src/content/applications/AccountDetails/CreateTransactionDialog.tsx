@@ -1,6 +1,5 @@
 import {
   Autocomplete,
-  Avatar,
   Box,
   Button,
   Card,
@@ -11,21 +10,55 @@ import {
   Divider,
   Grid,
   MenuItem,
-  Select,
-  TextField,
-  Typography
+  TextField
 } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { gql, useQuery } from '@apollo/client';
-import { Retailer, RetailerData } from 'src/models/bank';
-import { GetRetailerListQuery } from 'src/queries/BankQuery';
+import { useMutation, useQuery } from '@apollo/client';
+import { RetailerData } from 'src/models/bank';
+import {
+  CreateTransactionMutation,
+  GetRetailerListQuery
+} from 'src/queries/BankQuery';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
+import { set } from 'date-fns';
 
 interface TabPanelProps {
   children?: React.ReactNode;
   index: number;
   value: number;
+}
+
+interface CreateAccountDialogProps {
+  open: boolean;
+  onModalClose: () => void;
+  bankName: string;
+  bankId: number;
+  accountName: string;
+  accountId: number;
+}
+
+interface TransactionCreationData {
+  amount: number | string;
+  date: string;
+  accountId: number;
+  isInternal: boolean;
+  category: string;
+  note: string;
+  retailerId?: number;
+}
+
+interface Retailer {
+  id: number;
+  label: string;
+  category: string;
+}
+
+interface RetailerList {
+  firstAdded: boolean;
+  loadMore: boolean;
+  nextPage: string;
+  totalRetailers: Retailer[];
 }
 
 function TabPanel(props: TabPanelProps) {
@@ -39,30 +72,15 @@ function TabPanel(props: TabPanelProps) {
       aria-labelledby={`simple-tab-${index}`}
       {...other}
     >
-      {value === index && { children }}
+      {value === index && children}
     </div>
   );
 }
-interface CreateAccountDialogProps {
-  open: boolean;
-  onModalClose: () => void;
-  bankName: string;
-  bankId: number;
-  accountName: string;
-  accountId: number;
-}
-
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
     'aria-controls': `simple-tabpanel-${index}`
   };
-}
-
-// Callback function for retailer change.
-// Sets the retailer type.
-function onRetailerChange(e: ChangeEvent<HTMLInputElement>) {
-  console.log(e.target);
 }
 
 function CreateAccountDialog({
@@ -73,30 +91,144 @@ function CreateAccountDialog({
   accountName,
   accountId
 }: CreateAccountDialogProps) {
-  const [value, setValue] = useState(0);
-  const { loading, error, data } = useQuery<RetailerData>(GetRetailerListQuery);
+  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [retailerInfo, setRetailerInfo] = useState<RetailerList>({
+    firstAdded: false,
+    loadMore: false,
+    nextPage: '',
+    totalRetailers: []
+  });
+  // form information
 
-  const handleClose = () => {
+  const DefaultTransactionCreationData: TransactionCreationData = {
+    amount: '',
+    date: '',
+    accountId: accountId,
+    isInternal: false,
+    category: 'ETC',
+    note: ''
+  };
+  const [transactionCreationData, setTransactionCreationData] =
+    useState<TransactionCreationData>(DefaultTransactionCreationData);
+
+  // graphql connection
+  const { loading, error, data, fetchMore } =
+    useQuery<RetailerData>(GetRetailerListQuery);
+  const [
+    useCreateTransaction,
+    { data: mutataionData, loading: mutationLoading, error: mudataionError }
+  ] = useMutation(CreateTransactionMutation);
+
+  const handleModalClose = () => {
     onModalClose();
   };
 
-  const submitRequest = (value) => {
-    onModalClose();
-  };
-
-  const handleChange = (event: SyntheticEvent, newValue: number) => {
-    setValue(newValue);
-  };
-
-  let retailer_list: Retailer[] = [];
   if (!loading && !error) {
-    retailer_list = data.retailerRelay.edges.map((item) => {
-      return item.node;
+    if (!retailerInfo.firstAdded) {
+      setRetailerInfo({
+        firstAdded: true,
+        loadMore: data.retailerRelay.pageInfo.hasNextPage,
+        nextPage: data.retailerRelay.pageInfo.endCursor,
+        totalRetailers: data.retailerRelay.edges.map((item) => {
+          return {
+            id: item.node.id,
+            label: item.node.name,
+            category: item.node.category
+          };
+        })
+      });
+    }
+    if (retailerInfo.loadMore) {
+      fetchMore({
+        variables: {
+          After: retailerInfo.nextPage
+        }
+      }).then((result) => {
+        setRetailerInfo({
+          ...retailerInfo,
+          loadMore: result.data.retailerRelay.pageInfo.hasNextPage,
+          nextPage: result.data.retailerRelay.pageInfo.endCursor,
+          totalRetailers: [
+            ...retailerInfo.totalRetailers,
+            ...result.data.retailerRelay.edges.map((item) => {
+              return {
+                id: item.node.id,
+                label: item.node.name,
+                category: item.node.category
+              };
+            })
+          ]
+        });
+      });
+    } else {
+      if (transactionCreationData.date === '') {
+        setTransactionCreationData({
+          ...transactionCreationData,
+          date: data.transactionRelay.edges[0].node.date.toString()
+        });
+      }
+    }
+  }
+
+  const handleTabChange = (event: SyntheticEvent, newValue: number) => {
+    setSelectedTabIndex(newValue);
+
+    if (newValue === 1) {
+      setTransactionCreationData({
+        ...transactionCreationData,
+        category: 'TRANSFER',
+        retailerId: undefined,
+        isInternal: true
+      });
+    } else {
+      setTransactionCreationData({
+        ...transactionCreationData,
+        isInternal: false
+      });
+    }
+  };
+
+  // reset fields
+  function resetFields() {
+    setTransactionCreationData({
+      ...transactionCreationData,
+      amount: '',
+      note: ''
     });
   }
 
+  // Callback function for retailer change.
+  // Sets the retailer type.
+  function onRetailerChange(e: ChangeEvent<HTMLInputElement>, value: any) {
+    if (!value) {
+      setTransactionCreationData({
+        ...transactionCreationData,
+        category: 'ETC',
+        retailerId: undefined
+      });
+    } else {
+      setTransactionCreationData({
+        ...transactionCreationData,
+        category: value.category,
+        retailerId: value.id
+      });
+    }
+  }
+
+  const submitRequest = (value) => {
+    console.log(value);
+    // submit mutation request with graphql
+    useCreateTransaction({
+      variables: transactionCreationData
+    });
+    resetFields();
+  };
+
+  if (retailerInfo.loadMore) {
+    return <h1>Loading</h1>;
+  }
   return (
-    <Dialog onClose={handleClose} open={open}>
+    <Dialog onClose={handleModalClose} open={open}>
       <Grid
         container
         direction="row"
@@ -140,6 +272,60 @@ function CreateAccountDialog({
                     {accountName}
                   </MenuItem>
                 </TextField>
+
+                <TextField
+                  required
+                  id="category"
+                  label="Category"
+                  value={transactionCreationData.category}
+                />
+
+                <TextField
+                  id="note"
+                  label="Note"
+                  value={transactionCreationData.note}
+                  onChange={(e) => {
+                    setTransactionCreationData({
+                      ...transactionCreationData,
+                      note: e.target.value
+                    });
+                  }}
+                />
+
+                <TextField
+                  id="date"
+                  label="Date"
+                  type="date"
+                  value={transactionCreationData.date}
+                  onChange={(e) => {
+                    setTransactionCreationData({
+                      ...transactionCreationData,
+                      date: e.target.value
+                    });
+                  }}
+                  sx={{ width: 220 }}
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                />
+                <TextField
+                  id="amount"
+                  label="Amount"
+                  type="number"
+                  InputLabelProps={{
+                    shrink: true
+                  }}
+                  InputProps={{
+                    inputProps: { step: '0.01' }
+                  }}
+                  value={transactionCreationData.amount}
+                  onChange={(e) => {
+                    setTransactionCreationData({
+                      ...transactionCreationData,
+                      amount: Number(e.target.value)
+                    });
+                  }}
+                />
               </Box>
 
               <Box
@@ -148,73 +334,48 @@ function CreateAccountDialog({
                   '& .MuiTextField-root': { m: 1, width: '25ch' }
                 }}
                 noValidate
-                autoComplete="off"
               >
                 <Tabs
                   variant="scrollable"
                   scrollButtons="auto"
                   textColor="primary"
                   indicatorColor="primary"
-                  value={value}
-                  onChange={handleChange}
+                  value={selectedTabIndex}
+                  onChange={handleTabChange}
                   aria-label="Form Tabs"
                 >
                   <Tab label="External" {...a11yProps(0)} />
                   <Tab label="Internal" {...a11yProps(1)} />
                 </Tabs>
-                <TabPanel value={value} index={0}>
+                <TabPanel value={selectedTabIndex} index={0}>
                   <div>
-                    {/* <Autocomplete
+                    <Autocomplete
                       id="retailer"
                       loading={loading}
-                      options={retailer_list}
-                      renderInput={(params) => {
-                        console.log(params);
-                        return <TextField {...params} label="Retailer" />;
-                      }}
+                      options={retailerInfo.totalRetailers}
+                      renderInput={(params) => (
+                        <TextField {...params} label="Retailer" />
+                      )}
+                      isOptionEqualToValue={(option, value) =>
+                        option.id === value.id
+                      }
                       onChange={onRetailerChange}
-                    /> */}
-                    <TextField required id="type" label="Type" />
-                    <TextField required id="name" label="Name" />
-                    <TextField
-                      id="outlined-read-only-input"
-                      label="Currency"
-                      defaultValue="USD"
                     />
                   </div>
                 </TabPanel>
-                <TabPanel value={value} index={1}>
+                <TabPanel value={selectedTabIndex} index={1}>
                   <div>
-                    {/* <Autocomplete
-                      id="bank"
-                      loading={loading}
-                      options={retailer_list}
-                      renderInput={(params) => (
-                        <TextField {...params} label="Bank" />
-                      )}
-                    /> */}
                     <TextField required id="account" label="Account" />
-                    <TextField required id="name" label="Name" />
-                    <TextField
-                      required
-                      id="type"
-                      label="Type"
-                      value="Transfer"
-                      disabled
-                    />
-                    <TextField
-                      id="outlined-read-only-input"
-                      label="Currency"
-                      defaultValue="USD"
-                    />
                   </div>
                 </TabPanel>
               </Box>
             </CardContent>
             <CardActions>
-              <Button size="small">Share</Button>
+              <Button size="small" onClick={submitRequest}>
+                Submit
+              </Button>
               <Button size="small" onClick={onModalClose}>
-                Learn More
+                Close
               </Button>
             </CardActions>
           </Card>

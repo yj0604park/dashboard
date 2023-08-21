@@ -11,7 +11,6 @@ function TransactionList({ accountId }: AccountState) {
     { variables: { AccountID: accountId } }
   );
 
-  console.log(data);
   return (
     <Card>
       {!loading && !error && data && (

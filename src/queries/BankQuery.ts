@@ -160,8 +160,8 @@ query MyQuery($AccountID: ID) {
 `
 
 export const GetRetailerListQuery = gql`
-query MyQuery {
-  retailerRelay {
+query MyQuery($After: String) {
+  retailerRelay(after: $After) {
     edges {
       node {
         id
@@ -170,6 +170,28 @@ query MyQuery {
       }
     }
     totalCount
+    pageInfo {
+      hasNextPage
+      endCursor
+    }
+  }
+  transactionRelay(first: 1, order: {id: DESC})
+  {
+    edges {
+      node {
+        date
+      }
+    }
+  }
+}
+`;
+
+export const CreateTransactionMutation = gql`
+mutation CreateTransactionMutation($amount: Float!, $date: Date!, $accountId: ID, $isInternal: Boolean, $category: TransactionCategory, $note: String, $retailerId: ID) {
+  createTransaction(
+    data: {amount: $amount, date: $date, account: {set: $accountId}, isInternal: $isInternal, type: $category, note: $note, retailer: {set: $retailerId}}
+  ) {
+    id
   }
 }
 `;

@@ -1,3 +1,9 @@
+export interface PageInfo {
+  hasNextPage: boolean;
+  startCursor?: string;
+  endCursor?: string;
+}
+
 export interface Bank {
   id: number;
   name: string;
@@ -55,10 +61,12 @@ export interface RetailerNode {
 
 export interface RetailerEdge {
   edges: RetailerNode[];
+  pageInfo?: PageInfo;
 }
 
 export interface RetailerData {
   retailerRelay: RetailerEdge;
+  transactionRelay?: TransactionEdge;
 }
 
 export interface Transaction{

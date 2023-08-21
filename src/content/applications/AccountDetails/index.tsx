@@ -19,8 +19,6 @@ function ApplicationsTransactions() {
     }
   }
 
-  console.log(accountState);
-
   return (
     <>
       <Helmet>

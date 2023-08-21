@@ -22,6 +22,10 @@ interface HeaderProps {
   setAccountState: (accountState: AccountState) => void;
 }
 
+function handleAccountChange(event: any) {
+  console.log(event.target.value);
+}
+
 function PageHeader({ accountState, setAccountState }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const { userName } = useContext(UserContext);
@@ -80,20 +84,22 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
             Select Account
           </Typography>
           <FormControl fullWidth variant="outlined">
-            <InputLabel>Account Type</InputLabel>
-            {!loading && !error && !accountState && (
+            <InputLabel>Account</InputLabel>
+            {!loading && !error && (
               <Select
-                // value={filters.status || 'all'}
-                // onChange={handleStatusChange}
+                value={data?.accountRelay.edges[0].node.id}
+                onChange={handleAccountChange}
                 defaultValue={accountState?.accountId}
-                label="Account Type"
+                label="Account"
                 autoWidth
               >
-                {data.accountRelay.edges.map((account) => (
-                  <MenuItem key={account.node.id} value={account.node.id}>
-                    {account.node.name}
-                  </MenuItem>
-                ))}
+                {data.accountRelay.edges.map((account) => {
+                  return (
+                    <MenuItem key={account.node.id} value={account.node.id}>
+                      {account.node.name}
+                    </MenuItem>
+                  );
+                })}
               </Select>
             )}
           </FormControl>
