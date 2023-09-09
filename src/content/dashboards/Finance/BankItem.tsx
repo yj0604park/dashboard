@@ -18,6 +18,7 @@ function BankItem({
   latestUpdated,
   accountCount
 }: BankItemProps) {
+  let dateDiff = new Date().getTime() - latestUpdated.getTime();
   return (
     <Box
       sx={{
@@ -42,12 +43,10 @@ function BankItem({
             </Typography>
           </Box>
         </Box>
-        <Label color="secondary">
-          {Math.floor(
-            (new Date().getTime() - latestUpdated.getTime()) /
-              (1000 * 3600 * 24)
-          )}
-          d
+        <Label
+          color={dateDiff > 1000 * 60 * 60 * 24 * 15 ? 'secondary' : 'success'}
+        >
+          {Math.floor(dateDiff / (1000 * 3600 * 24))}d
         </Label>
       </Box>
       <Box mt={3} alignItems="center" justifyContent="space-between">

@@ -16,19 +16,33 @@ import { useQuery } from '@apollo/client';
 import { AccountData } from 'src/models/bank';
 import { GetSimpleAccountListQuery } from 'src/queries/BankQuery';
 import CreateTransactionDialog from './CreateTransactionDialog';
-
+import UpdateIcon from '@mui/icons-material/Update';
+import { ServerContext } from 'src/contexts/ServerContext';
+import { set } from 'date-fns';
 interface HeaderProps {
   accountState: AccountState;
   setAccountState: (accountState: AccountState) => void;
 }
 
-function handleAccountChange(event: any) {
-  console.log(event.target.value);
-}
-
 function PageHeader({ accountState, setAccountState }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const { userName } = useContext(UserContext);
+  const { serverUrl } = useContext(ServerContext);
+
+  function handleAccountChange(event: any) {
+    console.log(event.target.value);
+    console.log(event.target);
+    let [accountId, accountName] = event.target.value.split(',');
+    let newAccountState = {
+      accountId: accountId,
+      accountName: accountName,
+      bankId: accountState.bankId,
+      bankName: accountState.bankName
+    };
+    console.log(newAccountState);
+    setAccountState(newAccountState);
+  }
+  console.log(accountState);
 
   const handleClose = () => {
     setOpen(false);
@@ -46,6 +60,20 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
       }
     }
   );
+
+  function updateAccountInfo(event: any) {
+    let endpoint = serverUrl + 'update_balance/' + accountState.accountId;
+    console.log(endpoint);
+    fetch(endpoint, {
+      method: 'GET'
+    })
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
 
   return (
     <Grid container>
@@ -79,30 +107,50 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
         </Grid>
       </Grid>
       <Grid container>
-        <Grid item>
-          <Typography variant="h3" component="h3" gutterBottom>
-            Select Account
-          </Typography>
-          <FormControl fullWidth variant="outlined">
-            <InputLabel>Account</InputLabel>
-            {!loading && !error && (
-              <Select
-                value={data?.accountRelay.edges[0].node.id}
-                onChange={handleAccountChange}
-                defaultValue={accountState?.accountId}
-                label="Account"
-                autoWidth
-              >
-                {data.accountRelay.edges.map((account) => {
-                  return (
-                    <MenuItem key={account.node.id} value={account.node.id}>
-                      {account.node.name}
-                    </MenuItem>
-                  );
-                })}
-              </Select>
-            )}
-          </FormControl>
+        <Grid container justifyContent="space-between" alignItems="center">
+          <Grid item>
+            <Typography variant="h3" component="h3" gutterBottom>
+              Select Account
+            </Typography>
+            <FormControl fullWidth variant="outlined">
+              <InputLabel>Account</InputLabel>
+              {!loading && !error && (
+                <Select
+                  value={
+                    accountState?.accountId + ',' + accountState?.accountName
+                  }
+                  onChange={handleAccountChange}
+                  defaultValue={
+                    accountState?.accountId + ',' + accountState?.accountName
+                  }
+                  label="Account"
+                  autoWidth
+                >
+                  {data.accountRelay.edges.map((account) => {
+                    return (
+                      <MenuItem
+                        key={account.node.id}
+                        value={account.node.id + ',' + account.node.name}
+                      >
+                        {account.node.name}
+                      </MenuItem>
+                    );
+                  })}
+                </Select>
+              )}
+            </FormControl>
+          </Grid>
+
+          <Grid item>
+            <Button
+              sx={{ mt: { xs: 2, md: 0 } }}
+              variant="contained"
+              startIcon={<UpdateIcon fontSize="small" />}
+              onClick={updateAccountInfo}
+            >
+              Update
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </Grid>

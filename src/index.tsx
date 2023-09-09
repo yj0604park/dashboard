@@ -13,6 +13,7 @@ import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
 import { UserProvider } from './contexts/UserContext';
+import { ServerUrlProvider } from './contexts/ServerContext';
 
 const client = new ApolloClient({
   uri: 'http://192.168.68.62:58000/money/graphql',
@@ -41,11 +42,13 @@ ReactDOM.render(
   <HelmetProvider>
     <SidebarProvider>
       <UserProvider>
-        <BrowserRouter>
-          <ApolloProvider client={client}>
-            <App />
-          </ApolloProvider>
-        </BrowserRouter>
+        <ServerUrlProvider>
+          <BrowserRouter>
+            <ApolloProvider client={client}>
+              <App />
+            </ApolloProvider>
+          </BrowserRouter>
+        </ServerUrlProvider>
       </UserProvider>
     </SidebarProvider>
   </HelmetProvider>,

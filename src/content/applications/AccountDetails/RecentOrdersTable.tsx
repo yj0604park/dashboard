@@ -28,6 +28,7 @@ import {
   TransactionNode
 } from 'src/models/bank';
 import { TransactionFilter } from 'src/models/internal';
+import Util from 'src/functions/NumberHelper';
 
 interface RecentOrdersTableProps {
   transactionData: TransactionData;
@@ -255,7 +256,10 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
                       gutterBottom
                       noWrap
                     >
-                      {transactionNode.node.amount}
+                      {Util.FormatString(
+                        transactionNode.node.amount,
+                        transactionData.accountRelay.edges[0].node.currency
+                      )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
@@ -266,7 +270,10 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
                       gutterBottom
                       noWrap
                     >
-                      {transactionNode.node.balance}
+                      {Util.FormatString(
+                        transactionNode.node.balance,
+                        transactionData.accountRelay.edges[0].node.currency
+                      )}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">

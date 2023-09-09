@@ -94,6 +94,7 @@ export interface TransactionEdge {
 export interface TransactionData {
   transactionRelay: TransactionEdge;
   totalCount?: number;
+  accountRelay?: AccountEdge;
 }
 
 export interface AmountSnpahost {

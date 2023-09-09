@@ -18,10 +18,10 @@ import { useMutation, useQuery } from '@apollo/client';
 import { RetailerData } from 'src/models/bank';
 import {
   CreateTransactionMutation,
+  CreateTransactionWithoutRetailerMutation,
   GetRetailerListQuery
 } from 'src/queries/BankQuery';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
-import { set } from 'date-fns';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -118,6 +118,14 @@ function CreateAccountDialog({
     useCreateTransaction,
     { data: mutataionData, loading: mutationLoading, error: mudataionError }
   ] = useMutation(CreateTransactionMutation);
+  const [
+    useCreateTransactionWithoutRetailer,
+    {
+      data: mutataionWithoutRetailerData,
+      loading: mutationWithoutRetailerLoading,
+      error: mudataionWithoutRetailerError
+    }
+  ] = useMutation(CreateTransactionWithoutRetailerMutation);
 
   const handleModalClose = () => {
     onModalClose();
@@ -216,11 +224,16 @@ function CreateAccountDialog({
   }
 
   const submitRequest = (value) => {
-    console.log(value);
     // submit mutation request with graphql
-    useCreateTransaction({
-      variables: transactionCreationData
-    });
+    if (transactionCreationData.retailerId === undefined) {
+      useCreateTransactionWithoutRetailer({
+        variables: transactionCreationData
+      });
+    } else {
+      useCreateTransaction({
+        variables: transactionCreationData
+      });
+    }
     resetFields();
   };
 

@@ -156,6 +156,13 @@ query MyQuery($AccountID: ID) {
     }
     totalCount
   }
+  accountRelay(filters: {bank: {}, id: {exact: $AccountID}}) {
+    edges {
+      node {
+        currency
+      }
+    }
+  }
 }
 `
 
@@ -190,6 +197,16 @@ export const CreateTransactionMutation = gql`
 mutation CreateTransactionMutation($amount: Float!, $date: Date!, $accountId: ID, $isInternal: Boolean, $category: TransactionCategory, $note: String, $retailerId: ID) {
   createTransaction(
     data: {amount: $amount, date: $date, account: {set: $accountId}, isInternal: $isInternal, type: $category, note: $note, retailer: {set: $retailerId}}
+  ) {
+    id
+  }
+}
+`;
+
+export const CreateTransactionWithoutRetailerMutation = gql`
+mutation CreateTransactionMutation($amount: Float!, $date: Date!, $accountId: ID, $isInternal: Boolean, $category: TransactionCategory, $note: String) {
+  createTransaction(
+    data: {amount: $amount, date: $date, account: {set: $accountId}, isInternal: $isInternal, type: $category, note: $note}
   ) {
     id
   }
