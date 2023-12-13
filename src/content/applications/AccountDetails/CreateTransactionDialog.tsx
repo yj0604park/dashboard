@@ -1,4 +1,5 @@
 import {
+  Alert,
   Autocomplete,
   Box,
   Button,
@@ -10,6 +11,7 @@ import {
   Divider,
   Grid,
   MenuItem,
+  Snackbar,
   TextField
 } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
@@ -22,6 +24,7 @@ import {
   GetRetailerListQuery
 } from 'src/queries/BankQuery';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
+import { RetailerList } from 'src/models/internal';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -48,19 +51,6 @@ interface TransactionCreationData {
   retailerId?: number;
 }
 
-interface Retailer {
-  id: number;
-  label: string;
-  category: string;
-}
-
-interface RetailerList {
-  firstAdded: boolean;
-  loadMore: boolean;
-  nextPage: string;
-  totalRetailers: Retailer[];
-}
-
 function TabPanel(props: TabPanelProps) {
   const { children, value, index, ...other } = props;
 
@@ -76,6 +66,7 @@ function TabPanel(props: TabPanelProps) {
     </div>
   );
 }
+
 function a11yProps(index: number) {
   return {
     id: `simple-tab-${index}`,
@@ -99,7 +90,6 @@ function CreateAccountDialog({
     totalRetailers: []
   });
   // form information
-
   const DefaultTransactionCreationData: TransactionCreationData = {
     amount: '',
     date: '',
@@ -108,8 +98,16 @@ function CreateAccountDialog({
     category: 'ETC',
     note: ''
   };
+
   const [transactionCreationData, setTransactionCreationData] =
     useState<TransactionCreationData>(DefaultTransactionCreationData);
+
+  if (transactionCreationData.accountId !== accountId) {
+    setTransactionCreationData({
+      ...transactionCreationData,
+      accountId: accountId
+    });
+  }
 
   // graphql connection
   const { loading, error, data, fetchMore } =

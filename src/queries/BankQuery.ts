@@ -90,30 +90,6 @@ query MyQuery($After: String!, $BankId: IDFilterLookup) {
 }
 `;
 
-export const GetTransactionNodeQuery = gql`
-query MyQuery {
-  transactionRelay {
-    edges {
-      node {
-        amount
-        id
-        date
-        isInternal
-        type
-        note
-        relatedTransaction {
-          id
-        }
-        retailer {
-          id
-          name
-        }
-      }
-    }
-  }
-}
-`;
-
 export const GetSimpleAccountListQuery = gql`
 query MyQuery($BankId: ID) {
   accountRelay(filters: {bank: {id: {exact: $BankId}}}, order: {name: ASC}) {
@@ -131,7 +107,7 @@ export const GetTransactionListQuery = gql`
 query MyQuery($AccountID: ID) {
   transactionRelay(
     filters: {account: {bank: {}, id: {exact: $AccountID}}}
-    order: {date: DESC}
+    order: {date: DESC, amount: ASC}
   ) {
     edges {
       cursor

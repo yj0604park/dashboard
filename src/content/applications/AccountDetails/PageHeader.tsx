@@ -5,7 +5,8 @@ import {
   FormControl,
   InputLabel,
   MenuItem,
-  Select
+  Select,
+  Stack
 } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
@@ -18,7 +19,8 @@ import { GetSimpleAccountListQuery } from 'src/queries/BankQuery';
 import CreateTransactionDialog from './CreateTransactionDialog';
 import UpdateIcon from '@mui/icons-material/Update';
 import { ServerContext } from 'src/contexts/ServerContext';
-import { set } from 'date-fns';
+import CreateMultipleTransactionDialog from './CreateMultipleTransactionDialog';
+
 interface HeaderProps {
   accountState: AccountState;
   setAccountState: (accountState: AccountState) => void;
@@ -26,12 +28,13 @@ interface HeaderProps {
 
 function PageHeader({ accountState, setAccountState }: HeaderProps) {
   const [open, setOpen] = useState(false);
+  const [openMultiple, setOpenMultiple] = useState(false);
   const { userName } = useContext(UserContext);
   const { serverUrl } = useContext(ServerContext);
 
+  console.log('Account type:' + accountState.accountType);
+
   function handleAccountChange(event: any) {
-    console.log(event.target.value);
-    console.log(event.target);
     let [accountId, accountName] = event.target.value.split(',');
     let newAccountState = {
       accountId: accountId,
@@ -39,17 +42,22 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
       bankId: accountState.bankId,
       bankName: accountState.bankName
     };
-    console.log(newAccountState);
     setAccountState(newAccountState);
   }
-  console.log(accountState);
-
   const handleClose = () => {
     setOpen(false);
   };
 
+  const handleCloseMultiple = () => {
+    setOpenMultiple(false);
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
+  };
+
+  const handleClickOpenMultiple = () => {
+    setOpenMultiple(true);
   };
 
   const { loading, error, data } = useQuery<AccountData>(
@@ -88,14 +96,22 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
           </Typography>
         </Grid>
         <Grid item>
-          <Button
-            sx={{ mt: { xs: 2, md: 0 } }}
-            variant="contained"
-            startIcon={<AddTwoToneIcon fontSize="small" />}
-            onClick={handleClickOpen}
-          >
-            Create transaction
-          </Button>
+          <Stack direction="row" spacing={1}>
+            <Button
+              variant="contained"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+              onClick={handleClickOpen}
+            >
+              Create transaction
+            </Button>
+            <Button
+              variant="contained"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+              onClick={handleClickOpenMultiple}
+            >
+              Create multiple transactions
+            </Button>
+          </Stack>
           <CreateTransactionDialog
             open={open}
             onModalClose={handleClose}
@@ -104,7 +120,35 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
             accountId={accountState?.accountId}
             accountName={accountState?.accountName}
           />
+          <CreateMultipleTransactionDialog
+            open={openMultiple}
+            onModalClose={handleCloseMultiple}
+            bankId={accountState?.bankId}
+            bankName={accountState?.bankName}
+            accountId={accountState?.accountId}
+            accountName={accountState?.accountName}
+          />
         </Grid>
+        {accountState?.accountType === 'STOCK' && (
+          <Grid item>
+            <Button
+              sx={{ mt: { xs: 2, md: 0 } }}
+              variant="contained"
+              startIcon={<AddTwoToneIcon fontSize="small" />}
+              onClick={handleClickOpen}
+            >
+              Create transaction
+            </Button>
+            <CreateTransactionDialog
+              open={open}
+              onModalClose={handleClose}
+              bankId={accountState?.bankId}
+              bankName={accountState?.bankName}
+              accountId={accountState?.accountId}
+              accountName={accountState?.accountName}
+            />
+          </Grid>
+        )}
       </Grid>
       <Grid container>
         <Grid container justifyContent="space-between" alignItems="center">

@@ -39,7 +39,7 @@ interface RecentOrdersTableProps {
 }
 
 const getStatusLabel = (accountStatus: boolean): JSX.Element => {
-  const map = {
+  const status_map = {
     false: {
       text: 'Inactive',
       color: 'error'
@@ -50,7 +50,7 @@ const getStatusLabel = (accountStatus: boolean): JSX.Element => {
     }
   };
 
-  const { text, color }: any = map[accountStatus.toString()];
+  const { text, color }: any = status_map[accountStatus.toString()];
 
   return <Label color={color}>{text}</Label>;
 };
@@ -179,6 +179,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                         state={{
                           accountId: account.id,
                           accountName: account.name,
+                          accountType: account.type,
                           bankId: account.bank.id,
                           bankName: account.bank.name
                         }}

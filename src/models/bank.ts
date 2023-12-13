@@ -117,3 +117,31 @@ export interface AmountSnapshotData {
   krwSnapshot: AmountSnapshotEdge;
   usdSnapshot: AmountSnapshotEdge;
 }
+
+export interface Salary {
+  id: number;
+  grossPay: number;
+  date: Date;
+  netPay: number;
+  totalDeduction: number;
+  totalAdjustment: number;
+  totalWithheld: number;
+  transaction: TransactionNode;
+  payDetail: JSON;
+  taxDetail: JSON;
+  deductionDetail: JSON;
+  adjustmentDetail: JSON;
+}
+
+export interface SalaryNode {
+  node: Salary;
+}
+
+export interface SalaryEdge {
+  edges: SalaryNode[];
+  totalCount?: number;
+}
+
+export interface SalaryData {
+  salaryRelay: SalaryEdge;
+}

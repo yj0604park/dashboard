@@ -29,6 +29,7 @@ import {
 } from 'src/models/bank';
 import { TransactionFilter } from 'src/models/internal';
 import Util from 'src/functions/NumberHelper';
+import Label from 'src/components/Label';
 
 interface RecentOrdersTableProps {
   transactionData: TransactionData;
@@ -37,6 +38,39 @@ interface RecentOrdersTableProps {
 interface Filters {
   status?: TransactionFilter;
 }
+
+const getReviewLabel = (reviewed: boolean): JSX.Element => {
+  const status_map = {
+    true: {
+      text: 'Reviewed',
+      color: 'secondary'
+    },
+    false: {
+      text: 'Required',
+      color: 'error'
+    }
+  };
+
+  const { text, color }: any = status_map[reviewed.toString()];
+
+  return <Label color={color}>{text}</Label>;
+};
+const getInternalLabel = (isInternal: boolean): JSX.Element => {
+  const status_map = {
+    false: {
+      text: 'External',
+      color: 'secondary'
+    },
+    true: {
+      text: 'Internal',
+      color: 'success'
+    }
+  };
+
+  const { text, color }: any = status_map[isInternal.toString()];
+
+  return <Label color={color}>{text}</Label>;
+};
 
 const applyFilters = (
   transactions: TransactionEdge,
@@ -179,8 +213,7 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
               <TableCell align="right">Amount</TableCell>
               <TableCell align="right">Balance</TableCell>
               <TableCell align="right">Note</TableCell>
-              <TableCell align="right">IsInternal</TableCell>
-              <TableCell align="right">Details</TableCell>
+              <TableCell align="right">Internal</TableCell>
               <TableCell align="right">Reviewed</TableCell>
               <TableCell align="right">Actions</TableCell>
             </TableRow>
@@ -288,13 +321,10 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
-                    {transactionNode.node.isInternal ? 'true' : 'false'}
+                    {getInternalLabel(transactionNode.node.isInternal)}
                   </TableCell>
                   <TableCell align="right">
-                    {transactionNode.node.requiresDetail ? 'true' : 'false'}
-                  </TableCell>
-                  <TableCell align="right">
-                    {transactionNode.node.reviewed ? 'true' : 'false'}
+                    {getReviewLabel(transactionNode.node.reviewed)}
                   </TableCell>
                   <TableCell align="right">
                     <Tooltip title="Edit Order" arrow>

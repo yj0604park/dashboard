@@ -10,32 +10,26 @@ import { BankData } from 'src/models/bank';
 import { GetBankNodeQuery } from 'src/queries/BankQuery';
 import BankList from './BankList';
 import ChartList from './ChartList';
+import SalaryChart from './SalaryChart';
 import TotalBalance from './TotalBalance';
 import Loading from './Loading';
 
 function FinanceDashboard() {
   const { loading, error, data } = useQuery<BankData>(GetBankNodeQuery);
 
-  if (loading) {
-    return <Loading />;
-  }
-  const krwTotal = NumberUtils.FormatString(
-    NumberUtils.GetTotalNumber(data.bankRelay.edges, 'KRW'),
-    'KRW'
-  );
-  const usdTotal = NumberUtils.FormatString(
-    NumberUtils.GetTotalNumber(data.bankRelay.edges, 'USD'),
-    'USD'
-  );
+  let bankStatistics = <Loading />;
 
-  return (
-    <>
-      <Helmet>
-        <title>Finance Dashboard</title>
-      </Helmet>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
+  if (!loading) {
+    const krwTotal = NumberUtils.FormatString(
+      NumberUtils.GetTotalNumber(data.bankRelay.edges, 'KRW'),
+      'KRW'
+    );
+    const usdTotal = NumberUtils.FormatString(
+      NumberUtils.GetTotalNumber(data.bankRelay.edges, 'USD'),
+      'USD'
+    );
+
+    bankStatistics = (
       <Container maxWidth="lg">
         <Grid
           container
@@ -57,8 +51,23 @@ function FinanceDashboard() {
           <Grid item xs={12}>
             <ChartList krwTotal={krwTotal} usdTotal={usdTotal} />
           </Grid>
+          <Grid item xs={12}>
+            <SalaryChart />
+          </Grid>
         </Grid>
       </Container>
+    );
+  }
+
+  return (
+    <>
+      <Helmet>
+        <title>Finance Dashboard</title>
+      </Helmet>
+      <PageTitleWrapper>
+        <PageHeader />
+      </PageTitleWrapper>
+      {bankStatistics}
       <Footer />
     </>
   );
