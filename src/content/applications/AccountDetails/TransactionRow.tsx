@@ -1,4 +1,12 @@
-import { TableCell, TextField, Autocomplete, TableRow } from '@mui/material';
+import { CheckBox } from '@mui/icons-material';
+import {
+  TableCell,
+  TextField,
+  Autocomplete,
+  TableRow,
+  FormControlLabel,
+  Checkbox
+} from '@mui/material';
 import { ChangeEvent } from 'react';
 import { Retailer } from 'src/models/bank';
 import {
@@ -17,6 +25,7 @@ interface TransactionRowProps {
     e: ChangeEvent<HTMLInputElement>,
     value: RetailerSelectionProps
   ) => void;
+  onIsInternalChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
 function TransactionRow({
@@ -25,7 +34,8 @@ function TransactionRow({
   setTransactionCreationData,
   loading,
   retailerInfo,
-  onRetailerChange
+  onRetailerChange,
+  onIsInternalChange
 }: TransactionRowProps) {
   return (
     <TableRow
@@ -35,14 +45,14 @@ function TransactionRow({
       <TableCell>
         <TextField
           required
-          id="category"
+          id={'category_' + id}
           label="Category"
           value={transactionCreationData.category}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="note"
+          id={'note_' + id}
           label="Note"
           value={transactionCreationData.note}
           onChange={(e) => {
@@ -55,7 +65,7 @@ function TransactionRow({
       </TableCell>
       <TableCell align="right">
         <TextField
-          id="date"
+          id={'date_' + id}
           label="Date"
           type="date"
           value={transactionCreationData.date}
@@ -73,7 +83,7 @@ function TransactionRow({
       </TableCell>
       <TableCell align="right">
         <TextField
-          id="amount"
+          id={'amount_' + id}
           label="Amount"
           type="number"
           InputLabelProps={{
@@ -93,12 +103,19 @@ function TransactionRow({
       </TableCell>
       <TableCell align="right">
         <Autocomplete
-          id="retailer"
+          id={'retailer_' + id}
           loading={loading}
           options={retailerInfo.totalRetailers}
           renderInput={(params) => <TextField {...params} label="Retailer" />}
           isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={onRetailerChange}
+        />
+      </TableCell>
+      <TableCell align="right">
+        <Checkbox
+          id={'isInternal_' + id}
+          value={transactionCreationData.isInternal}
+          onChange={onIsInternalChange}
         />
       </TableCell>
     </TableRow>

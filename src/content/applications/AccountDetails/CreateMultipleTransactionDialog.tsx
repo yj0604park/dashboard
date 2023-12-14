@@ -21,9 +21,12 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TransactionRow from './TransactionRow';
-import createTransaction from 'src/hook/createTransaction';
 import retailerList from 'src/hook/reatilerLIst';
 import { useState } from 'react';
+import createTransaction from 'src/hook/createTransaction';
+import { useQuery } from '@apollo/client';
+import { TransactionData } from 'src/models/bank';
+import { GetLastTransactionDate } from 'src/queries/BankQuery';
 
 interface CreateAccountDialogProps {
   open: boolean;
@@ -32,6 +35,7 @@ interface CreateAccountDialogProps {
   bankId: number;
   accountName: string;
   accountId: number;
+  refresh: (event: any) => void;
 }
 
 function CreateAccountDialog({
@@ -40,44 +44,72 @@ function CreateAccountDialog({
   bankName,
   bankId,
   accountName,
-  accountId
+  accountId,
+  refresh
 }: CreateAccountDialogProps) {
   const [openSnack, setOpenSnack] = useState(false);
 
-  const handleSnackbar = () => {
-    setOpenSnack(true);
-  };
-
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    setOpenSnack(false);
-  };
+  // graphql connection
+  const {
+    loading: transactionLoading,
+    error: transactionError,
+    data: transactionData,
+    refetch: refetchTransaction
+  } = useQuery<TransactionData>(GetLastTransactionDate);
 
   const {
+    updateDefaultTransaction,
     transactionCreationDataList,
-    setTransactionCreationDataList,
+    resetTransactionCreationDataList,
     addNewRow,
     setTransactionCreationData,
     onRetailerChange,
-    submitRequest
+    onIsInternalChange,
+    submitRequest,
+    mutationLoading,
+    mutationError
   } = createTransaction({ accountId });
 
   const { retailerInfo, setRetailerInfo, retailerLoading, retailerError } =
     retailerList();
 
+  if (transactionLoading || transactionError) {
+    return <div>loading...</div>;
+  }
+
+  const handleSnackbarClose = (
+    event?: React.SyntheticEvent | Event,
+    reason?: string
+  ) => {
+    setOpenSnack(false);
+  };
+
+  updateDefaultTransaction(
+    accountId,
+    transactionData.transactionRelay.edges[0].node.date.toString()
+  );
+
+  const handleSnackbar = () => {
+    setOpenSnack(true);
+  };
+
   const handleSubmit = () => {
     submitRequest();
-    handleSnackbar();
+    if (!mutationLoading && !mutationError) {
+      handleSnackbar();
+    }
+    resetTransactionCreationDataList();
+    refresh(null);
+    refetchTransaction();
+  };
+
+  const handleModalClose = () => {
+    resetTransactionCreationDataList();
+    onModalClose();
   };
 
   return (
-    <Dialog fullScreen onClose={onModalClose} open={open}>
+    <Dialog fullScreen onClose={handleModalClose} open={open}>
       <Grid
         container
         direction="row"
@@ -133,6 +165,7 @@ function CreateAccountDialog({
                     <TableCell>Date</TableCell>
                     <TableCell>Amount</TableCell>
                     <TableCell>Retailer</TableCell>
+                    <TableCell>IsInternal</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -147,6 +180,7 @@ function CreateAccountDialog({
                       loading={retailerLoading}
                       retailerInfo={retailerInfo}
                       onRetailerChange={onRetailerChange(row.id)}
+                      onIsInternalChange={onIsInternalChange(row.id)}
                     />
                   ))}
                 </TableBody>
@@ -157,7 +191,7 @@ function CreateAccountDialog({
               <Button size="small" onClick={handleSubmit}>
                 Submit
               </Button>
-              <Button size="small" onClick={onModalClose}>
+              <Button size="small" onClick={handleModalClose}>
                 Close
               </Button>
             </CardActions>
@@ -166,7 +200,7 @@ function CreateAccountDialog({
       </Grid>
 
       <Snackbar
-        open={open}
+        open={openSnack}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
       >

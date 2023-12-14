@@ -24,15 +24,14 @@ import CreateMultipleTransactionDialog from './CreateMultipleTransactionDialog';
 interface HeaderProps {
   accountState: AccountState;
   setAccountState: (accountState: AccountState) => void;
+  refetch: any;
 }
 
-function PageHeader({ accountState, setAccountState }: HeaderProps) {
+function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
   const [open, setOpen] = useState(false);
   const [openMultiple, setOpenMultiple] = useState(false);
   const { userName } = useContext(UserContext);
   const { serverUrl } = useContext(ServerContext);
-
-  console.log('Account type:' + accountState.accountType);
 
   function handleAccountChange(event: any) {
     let [accountId, accountName] = event.target.value.split(',');
@@ -43,6 +42,7 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
       bankName: accountState.bankName
     };
     setAccountState(newAccountState);
+    refetch({ AccountID: accountId });
   }
   const handleClose = () => {
     setOpen(false);
@@ -69,18 +69,15 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
     }
   );
 
-  function updateAccountInfo(event: any) {
-    let endpoint = serverUrl + 'update_balance/' + accountState.accountId;
-    console.log(endpoint);
-    fetch(endpoint, {
-      method: 'GET'
-    })
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
+  function updateAccountInfo(accountId: number) {
+    return (event: any) => {
+      let endpoint = serverUrl + 'update_balance/' + accountId;
+      fetch(endpoint, {
+        method: 'GET'
+      }).then(() => {
+        refetch({ AccountID: accountId });
       });
+    };
   }
 
   return (
@@ -127,6 +124,7 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
             bankName={accountState?.bankName}
             accountId={accountState?.accountId}
             accountName={accountState?.accountName}
+            refresh={updateAccountInfo(accountState.accountId)}
           />
         </Grid>
         {accountState?.accountType === 'STOCK' && (
@@ -190,7 +188,7 @@ function PageHeader({ accountState, setAccountState }: HeaderProps) {
               sx={{ mt: { xs: 2, md: 0 } }}
               variant="contained"
               startIcon={<UpdateIcon fontSize="small" />}
-              onClick={updateAccountInfo}
+              onClick={updateAccountInfo(accountState.accountId)}
             >
               Update
             </Button>

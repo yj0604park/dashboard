@@ -35,6 +35,7 @@ const retailerList = () => {
         })
       });
     }
+
     if (retailerInfo.loadMore) {
       fetchMore({
         variables: {

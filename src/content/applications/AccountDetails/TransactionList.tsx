@@ -1,16 +1,15 @@
 import { Card } from '@mui/material';
 import RecentOrdersTable from './RecentOrdersTable';
-import { useQuery } from '@apollo/client';
 import { TransactionData } from 'src/models/bank';
-import { GetTransactionListQuery } from 'src/queries/BankQuery';
-import { AccountState } from 'src/models/internal';
+import { ApolloError } from '@apollo/client';
 
-function TransactionList({ accountId }: AccountState) {
-  const { loading, error, data } = useQuery<TransactionData>(
-    GetTransactionListQuery,
-    { variables: { AccountID: accountId } }
-  );
+interface TransactionListProps {
+  loading: boolean;
+  error: ApolloError;
+  data: TransactionData;
+}
 
+function TransactionList({ loading, error, data }: TransactionListProps) {
   return (
     <Card>
       {!loading && !error && data && (

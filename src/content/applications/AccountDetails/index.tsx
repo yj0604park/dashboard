@@ -8,9 +8,12 @@ import TransactionList from './TransactionList';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { AccountState } from 'src/models/internal';
+import { useQuery } from '@apollo/client';
+import { TransactionData } from 'src/models/bank';
+import { GetTransactionListQuery } from 'src/queries/BankQuery';
 
 function ApplicationsTransactions() {
-  let { state } = useLocation();
+  let { state } = useLocation() as { state: AccountState };
   const [accountState, setAccountState] = useState<AccountState>();
 
   if (state) {
@@ -18,6 +21,11 @@ function ApplicationsTransactions() {
       setAccountState(state);
     }
   }
+
+  const { loading, error, data, refetch } = useQuery<TransactionData>(
+    GetTransactionListQuery,
+    { variables: { AccountID: state.accountId } }
+  );
 
   return (
     <>
@@ -28,6 +36,7 @@ function ApplicationsTransactions() {
         <PageHeader
           setAccountState={setAccountState}
           accountState={accountState}
+          refetch={refetch}
         />
       </PageTitleWrapper>
       <Container maxWidth="lg">
@@ -39,7 +48,7 @@ function ApplicationsTransactions() {
           spacing={3}
         >
           <Grid item xs={12}>
-            <TransactionList {...accountState} />
+            <TransactionList loading={loading} error={error} data={data} />
           </Grid>
         </Grid>
       </Container>
