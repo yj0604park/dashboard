@@ -1,15 +1,12 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { set } from 'date-fns';
+import { useMutation } from '@apollo/client';
 import { ChangeEvent, useState } from 'react';
-import { TransactionData } from 'src/models/bank';
 import {
   RetailerSelectionProps,
   TransactionCreationData
 } from 'src/models/internal';
 import {
   CreateTransactionMutation,
-  CreateTransactionWithoutRetailerMutation,
-  GetLastTransactionDate
+  CreateTransactionWithoutRetailerMutation
 } from 'src/queries/BankQuery';
 
 interface CreateTransactionProps {
@@ -167,7 +164,6 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
   };
 
   const updateDefaultTransaction = (accountId: number, date: string) => {
-    console.log('Updating default transaction ' + date);
     if (
       accountId === defaultTransactionCreationData.accountId &&
       date === defaultTransactionCreationData.date

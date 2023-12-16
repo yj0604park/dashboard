@@ -232,7 +232,6 @@ function CreateAccountDialog({
     }
     resetFields();
   };
-
   if (retailerInfo.loadMore) {
     return <h1>Loading</h1>;
   }

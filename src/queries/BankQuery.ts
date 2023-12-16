@@ -170,6 +170,42 @@ export const GetRetailerListQuery = gql`
   }
 `;
 
+export const GetRetailerTypeQuery = gql`
+  query {
+    __type(name: "RetailerType") {
+      name
+      enumValues {
+        name
+      }
+    }
+  }
+`;
+
+export const GetTransactionCategoryQuery = gql`
+  query {
+    __type(name: "TransactionCategory") {
+      name
+      enumValues {
+        name
+      }
+    }
+  }
+`;
+
+export const CreateRetailerMutation = gql`
+  mutation CreateRetailerMutation(
+    $name: String!
+    $type: RetailerType!
+    $category: TransactionCategory!
+  ) {
+    createRetailer(data: { name: $name, type: $type, category: $category }) {
+      id
+      name
+      category
+    }
+  }
+`;
+
 export const GetLastTransactionDate = gql`
   query MyQuery {
     transactionRelay(first: 1, order: { id: DESC }) {

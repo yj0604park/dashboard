@@ -1,5 +1,6 @@
 import {
   Alert,
+  Autocomplete,
   Box,
   Button,
   Card,
@@ -12,6 +13,7 @@ import {
   Grid,
   MenuItem,
   Snackbar,
+  Stack,
   Table,
   TableBody,
   TableCell,
@@ -27,6 +29,7 @@ import createTransaction from 'src/hook/createTransaction';
 import { useQuery } from '@apollo/client';
 import { TransactionData } from 'src/models/bank';
 import { GetLastTransactionDate } from 'src/queries/BankQuery';
+import createRetailer from 'src/hook/createRetailer';
 
 interface CreateAccountDialogProps {
   open: boolean;
@@ -36,6 +39,12 @@ interface CreateAccountDialogProps {
   accountName: string;
   accountId: number;
   refresh: (event: any) => void;
+}
+
+interface CreateRetailerInfo {
+  name: string;
+  type: string;
+  category: string;
 }
 
 function CreateAccountDialog({
@@ -48,6 +57,8 @@ function CreateAccountDialog({
   refresh
 }: CreateAccountDialogProps) {
   const [openSnack, setOpenSnack] = useState(false);
+  const [createRetailerInfo, setCreateRetailerInfo] =
+    useState<CreateRetailerInfo>({ name: '', type: '', category: '' });
 
   // graphql connection
   const {
@@ -72,6 +83,16 @@ function CreateAccountDialog({
 
   const { retailerInfo, setRetailerInfo, retailerLoading, retailerError } =
     retailerList();
+
+  const {
+    createRetailerMutation,
+    retailerData,
+    transactionCategoryData,
+    transactionCategoryLoading,
+    retailerTypeData,
+    retailerTypeLoading,
+    convertEnumToArray
+  } = createRetailer();
 
   if (transactionLoading || transactionError) {
     return <div>loading...</div>;
@@ -153,9 +174,6 @@ function CreateAccountDialog({
                     {accountName}
                   </MenuItem>
                 </TextField>
-                <Fab color="primary" aria-label="add" onClick={addNewRow}>
-                  <AddIcon />
-                </Fab>
               </Box>
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
@@ -185,6 +203,99 @@ function CreateAccountDialog({
                   ))}
                 </TableBody>
               </Table>
+
+              <Fab color="primary" aria-label="add" onClick={addNewRow}>
+                <AddIcon />
+              </Fab>
+
+              <Divider />
+              <Box
+                component="form"
+                sx={{
+                  '& .MuiTextField-root': { m: 1, width: '25ch' }
+                }}
+                noValidate
+                autoComplete="off"
+              >
+                <Stack direction="row" spacing={1}>
+                  <TextField
+                    id="retailerName"
+                    label="Retailer"
+                    value={createRetailerInfo.name}
+                    onChange={(event) => {
+                      setCreateRetailerInfo({
+                        ...createRetailerInfo,
+                        name: event.target.value
+                      });
+                    }}
+                  />
+                  <Autocomplete
+                    id="retailerType"
+                    loading={retailerTypeLoading}
+                    options={convertEnumToArray(retailerTypeData)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Type" />
+                    )}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
+                    onChange={(event, value: any) => {
+                      console.log(value);
+                      setCreateRetailerInfo({
+                        ...createRetailerInfo,
+                        type: value?.label
+                      });
+                    }}
+                  />
+                  <Autocomplete
+                    id="transactionCategory"
+                    loading={transactionCategoryLoading}
+                    options={convertEnumToArray(transactionCategoryData)}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Category" />
+                    )}
+                    isOptionEqualToValue={(option, value) =>
+                      option.id === value.id
+                    }
+                    onChange={(event, value: any) => {
+                      console.log(value);
+                      setCreateRetailerInfo({
+                        ...createRetailerInfo,
+                        category: value?.label
+                      });
+                    }}
+                  />
+                  <Button
+                    variant="text"
+                    size="medium"
+                    onClick={() => {
+                      createRetailerMutation({
+                        variables: createRetailerInfo
+                      }).then((response) => {
+                        let newRetailer = {
+                          id: response.data?.createRetailer.id,
+                          label: response.data?.createRetailer.name,
+                          category: response.data?.createRetailer.category
+                        };
+                        setRetailerInfo({
+                          ...retailerInfo,
+                          totalRetailers: [
+                            ...retailerInfo.totalRetailers,
+                            newRetailer
+                          ]
+                        });
+                        setCreateRetailerInfo({
+                          name: '',
+                          type: '',
+                          category: ''
+                        });
+                      });
+                    }}
+                  >
+                    Create Retailer
+                  </Button>
+                </Stack>
+              </Box>
             </CardContent>
 
             <CardActions>
