@@ -164,3 +164,12 @@ export interface StockEdge {
 export interface StockData {
   stockRelay: StockEdge;
 }
+
+export interface StockTransaction {
+  id?: number;
+  date?: Date;
+  stock?: Stock;
+  price?: number;
+  quantity?: number;
+  transaction?: TransactionNode;
+}

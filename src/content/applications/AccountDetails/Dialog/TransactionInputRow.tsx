@@ -25,7 +25,7 @@ interface TransactionRowProps {
   onIsInternalChange: (e: ChangeEvent<HTMLInputElement>) => void;
 }
 
-function TransactionRow({
+function TransactionInputRow({
   id,
   transactionCreationData,
   setTransactionCreationData,
@@ -119,4 +119,4 @@ function TransactionRow({
   );
 }
 
-export default TransactionRow;
+export default TransactionInputRow;

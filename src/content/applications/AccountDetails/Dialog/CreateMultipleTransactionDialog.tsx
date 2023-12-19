@@ -22,7 +22,7 @@ import {
   TextField
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import TransactionRow from './TransactionRow';
+import TransactionInputRow from './TransactionInputRow';
 import retailerList from 'src/hook/retailerList';
 import { useState } from 'react';
 import createTransaction from 'src/hook/createTransaction';
@@ -188,7 +188,7 @@ function CreateAccountDialog({
                 </TableHead>
                 <TableBody>
                   {transactionCreationDataList.map((row) => (
-                    <TransactionRow
+                    <TransactionInputRow
                       key={row.id}
                       id={row.id}
                       transactionCreationData={row}

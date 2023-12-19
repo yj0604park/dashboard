@@ -26,6 +26,7 @@ import createStockTransaction from 'src/hook/createStockTransaction';
 import { useState } from 'react';
 import createStock from 'src/hook/createStock';
 import { Stock } from 'src/models/bank';
+import StockTransactionInputRow from './StockTransactionInputRow';
 
 interface CreateMultipleStockTransactionDialogProps {
   open: boolean;
@@ -143,30 +144,30 @@ const CreateMultipleStockTransactionDialog = ({
               <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Category</TableCell>
-                    <TableCell>Note</TableCell>
                     <TableCell>Date</TableCell>
+                    <TableCell>Stock</TableCell>
+                    <TableCell>Price</TableCell>
                     <TableCell>Amount</TableCell>
-                    <TableCell>Retailer</TableCell>
-                    <TableCell>IsInternal</TableCell>
+                    <TableCell>Total</TableCell>
                   </TableRow>
                 </TableHead>
-                {/* <TableBody>
+                <TableBody>
                   {stockTransactionDataList.map((row) => (
-                    <TransactionRow
-                      key={row.id}
-                      id={row.id}
-                      transactionCreationData={row}
-                      setTransactionCreationData={setTransactionCreationData(
-                        row.id
-                      )}
-                      loading={retailerLoading}
-                      retailerInfo={retailerInfo}
-                      onRetailerChange={onRetailerChange(row.id)}
-                      onIsInternalChange={onIsInternalChange(row.id)}
-                    />
+                    <StockTransactionInputRow key={row.id} row={row} />
+                    // <TransactionRow
+                    //   key={row.id}
+                    //   id={row.id}
+                    //   transactionCreationData={row}
+                    //   setTransactionCreationData={setTransactionCreationData(
+                    //     row.id
+                    //   )}
+                    //   loading={retailerLoading}
+                    //   retailerInfo={retailerInfo}
+                    //   onRetailerChange={onRetailerChange(row.id)}
+                    //   onIsInternalChange={onIsInternalChange(row.id)}
+                    // />
                   ))}
-                </TableBody> */}
+                </TableBody>
               </Table>
 
               <Fab color="primary" aria-label="add" onClick={addNewRow}>

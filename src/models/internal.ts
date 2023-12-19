@@ -1,3 +1,5 @@
+import { Stock } from './bank';
+
 export interface AccountState {
   accountId?: number;
   accountName?: string;
@@ -36,4 +38,14 @@ export interface TransactionCreationData {
 export interface RetailerSelectionProps {
   id: number;
   category: string;
+}
+
+export interface StockTransactionData {
+  id?: number;
+  date: string;
+  stock: Stock;
+  quantity: number;
+  price: number;
+  total: number;
+  note: string;
 }
