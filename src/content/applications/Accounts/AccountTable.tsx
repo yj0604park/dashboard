@@ -181,7 +181,8 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                           accountName: account.name,
                           accountType: account.type,
                           bankId: account.bank.id,
-                          bankName: account.bank.name
+                          bankName: account.bank.name,
+                          accountCurrecny: account.currency
                         }}
                       >
                         {account.name}

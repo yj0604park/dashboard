@@ -14,12 +14,16 @@ import { AccountState } from 'src/models/internal';
 import { UserContext } from 'src/contexts/UserContext';
 import { useContext, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { AccountData } from 'src/models/bank';
-import { GetSimpleAccountListQuery } from 'src/queries/BankQuery';
-import CreateTransactionDialog from './CreateTransactionDialog';
+import { AccountData, AccountEdge } from 'src/models/bank';
+import {
+  GetAccountDetailQuery,
+  GetSimpleAccountListQuery
+} from 'src/queries/BankQuery';
+import CreateTransactionDialog from './Dialog/CreateTransactionDialog';
 import UpdateIcon from '@mui/icons-material/Update';
 import { ServerContext } from 'src/contexts/ServerContext';
-import CreateMultipleTransactionDialog from './CreateMultipleTransactionDialog';
+import CreateMultipleTransactionDialog from './Dialog/CreateMultipleTransactionDialog';
+import CreateMultipleStockTransactionDialog from './Dialog/CreateMultipleStockTransactionDialog';
 
 interface HeaderProps {
   accountState: AccountState;
@@ -32,17 +36,28 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
   const [openMultiple, setOpenMultiple] = useState(false);
   const { userName } = useContext(UserContext);
   const { serverUrl } = useContext(ServerContext);
+  const {
+    loading: loadingAccount,
+    error: errorAccount,
+    data: dataAccount,
+    refetch: refetchAccount
+  } = useQuery<AccountData>(GetAccountDetailQuery);
 
   function handleAccountChange(event: any) {
     let [accountId, accountName] = event.target.value.split(',');
-    let newAccountState = {
-      accountId: accountId,
-      accountName: accountName,
-      bankId: accountState.bankId,
-      bankName: accountState.bankName
-    };
-    setAccountState(newAccountState);
-    refetch({ AccountID: accountId });
+    refetchAccount({ AccountID: accountId }).then(({ data }) => {
+      let accountDetail = data.accountRelay.edges[0].node;
+      let newAccountState = {
+        accountId: accountId,
+        accountName: accountName,
+        bankId: accountState.bankId,
+        bankName: accountState.bankName,
+        accountType: accountDetail.type,
+        accountCurrency: accountDetail.currency
+      };
+      setAccountState(newAccountState);
+      refetch({ AccountID: accountId });
+    });
   }
   const handleClose = () => {
     setOpen(false);
@@ -69,8 +84,10 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
     }
   );
 
+  if (loading) return <p>Loading...</p>;
+
   function updateAccountInfo(accountId: number) {
-    return (event: any) => {
+    return () => {
       let endpoint = serverUrl + 'update_balance/' + accountId;
       fetch(endpoint, {
         method: 'GET'
@@ -79,6 +96,7 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
       });
     };
   }
+  console.log('accountState', accountState);
 
   return (
     <Grid container>
@@ -92,15 +110,30 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
             {userName}, these are your recent transactions
           </Typography>
         </Grid>
-        <Grid item>
-          <Stack direction="row" spacing={1}>
+        {accountState?.accountType === 'STOCK' && (
+          <Grid item>
             <Button
+              sx={{ mt: { xs: 2, md: 0 } }}
               variant="contained"
               startIcon={<AddTwoToneIcon fontSize="small" />}
               onClick={handleClickOpen}
             >
-              Create transaction
+              Create stock transaction
             </Button>
+            <CreateMultipleStockTransactionDialog
+              open={open}
+              onModalClose={handleCloseMultiple}
+              bankId={accountState?.bankId}
+              bankName={accountState?.bankName}
+              accountId={accountState?.accountId}
+              accountName={accountState?.accountName}
+              accountCurrency={accountState?.accountCurrency}
+              refresh={(event: any) => {}}
+            />
+          </Grid>
+        )}
+        <Grid item>
+          <Stack direction="row" spacing={1}>
             <Button
               variant="contained"
               startIcon={<AddTwoToneIcon fontSize="small" />}
@@ -109,14 +142,6 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
               Create multiple transactions
             </Button>
           </Stack>
-          <CreateTransactionDialog
-            open={open}
-            onModalClose={handleClose}
-            bankId={accountState?.bankId}
-            bankName={accountState?.bankName}
-            accountId={accountState?.accountId}
-            accountName={accountState?.accountName}
-          />
           <CreateMultipleTransactionDialog
             open={openMultiple}
             onModalClose={handleCloseMultiple}
@@ -127,26 +152,6 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
             refresh={updateAccountInfo(accountState.accountId)}
           />
         </Grid>
-        {accountState?.accountType === 'STOCK' && (
-          <Grid item>
-            <Button
-              sx={{ mt: { xs: 2, md: 0 } }}
-              variant="contained"
-              startIcon={<AddTwoToneIcon fontSize="small" />}
-              onClick={handleClickOpen}
-            >
-              Create transaction
-            </Button>
-            <CreateTransactionDialog
-              open={open}
-              onModalClose={handleClose}
-              bankId={accountState?.bankId}
-              bankName={accountState?.bankName}
-              accountId={accountState?.accountId}
-              accountName={accountState?.accountName}
-            />
-          </Grid>
-        )}
       </Grid>
       <Grid container>
         <Grid container justifyContent="space-between" alignItems="center">

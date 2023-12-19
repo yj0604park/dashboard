@@ -1,14 +1,11 @@
-import { CheckBox } from '@mui/icons-material';
 import {
   TableCell,
   TextField,
   Autocomplete,
   TableRow,
-  FormControlLabel,
   Checkbox
 } from '@mui/material';
 import { ChangeEvent } from 'react';
-import { Retailer } from 'src/models/bank';
 import {
   RetailerList,
   RetailerSelectionProps,

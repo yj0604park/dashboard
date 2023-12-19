@@ -4,6 +4,7 @@ export interface AccountState {
   accountType?: string;
   bankId?: number;
   bankName?: string;
+  accountCurrency: string;
 }
 
 export type TransactionFilter = 'all' | 'internal' | 'external';

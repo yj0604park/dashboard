@@ -2,7 +2,7 @@ import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { RetailerData } from 'src/models/bank';
 import { RetailerList } from 'src/models/internal';
-import { GetRetailerListQuery } from 'src/queries/BankQuery';
+import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
 
 const retailerList = () => {
   const [retailerInfo, setRetailerInfo] = useState<RetailerList>({

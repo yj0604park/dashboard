@@ -1,10 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { string } from 'prop-types';
+import { GetTransactionCategoryQuery } from 'src/queries/BankQuery';
 import {
   CreateRetailerMutation,
-  GetRetailerTypeQuery,
-  GetTransactionCategoryQuery
-} from 'src/queries/BankQuery';
+  GetRetailerTypeQuery
+} from 'src/queries/RetailerQuery';
 
 interface EnumInputType {
   __type: {

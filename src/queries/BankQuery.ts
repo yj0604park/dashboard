@@ -1,5 +1,6 @@
 import { gql } from '@apollo/client';
 
+// Get all banks and their accounts
 export const GetBankNodeQuery = gql`
   query GetBanksQuery {
     bankRelay {
@@ -42,6 +43,7 @@ export const GetBankSimpleListQuery = gql`
   }
 `;
 
+// Get all account types
 export const GetAccountTypeQuery = gql`
   query {
     __type(name: "AccountType") {
@@ -52,6 +54,7 @@ export const GetAccountTypeQuery = gql`
   }
 `;
 
+// Get all account of given bank
 export const GetAccountNodeQuery = gql`
   query MyQuery($After: String!, $BankId: IDFilterLookup) {
     accountRelay(
@@ -89,6 +92,7 @@ export const GetAccountNodeQuery = gql`
   }
 `;
 
+// Given an bank id, get all ids and names of its accounts
 export const GetSimpleAccountListQuery = gql`
   query MyQuery($BankId: ID) {
     accountRelay(
@@ -105,6 +109,7 @@ export const GetSimpleAccountListQuery = gql`
   }
 `;
 
+// Given an account id, get all transactions of that account
 export const GetTransactionListQuery = gql`
   query MyQuery($AccountID: ID) {
     transactionRelay(
@@ -144,43 +149,32 @@ export const GetTransactionListQuery = gql`
   }
 `;
 
-export const GetRetailerListQuery = gql`
-  query MyQuery($After: String) {
-    retailerRelay(after: $After) {
+// Given an account id, get details of that account
+export const GetAccountDetailQuery = gql`
+  query MyQuery($AccountID: ID) {
+    accountRelay(filters: { bank: {}, id: { exact: $AccountID } }) {
       edges {
         node {
-          id
+          amount
           name
-          category
-        }
-      }
-      totalCount
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-    }
-    transactionRelay(first: 1, order: { id: DESC }) {
-      edges {
-        node {
-          date
+          currency
+          bank {
+            id
+            name
+          }
+          lastUpdate
+          id
+          isActive
+          type
+          firstTransaction
+          lastTransaction
         }
       }
     }
   }
 `;
 
-export const GetRetailerTypeQuery = gql`
-  query {
-    __type(name: "RetailerType") {
-      name
-      enumValues {
-        name
-      }
-    }
-  }
-`;
-
+// Get all transaction categories
 export const GetTransactionCategoryQuery = gql`
   query {
     __type(name: "TransactionCategory") {
@@ -188,20 +182,6 @@ export const GetTransactionCategoryQuery = gql`
       enumValues {
         name
       }
-    }
-  }
-`;
-
-export const CreateRetailerMutation = gql`
-  mutation CreateRetailerMutation(
-    $name: String!
-    $type: RetailerType!
-    $category: TransactionCategory!
-  ) {
-    createRetailer(data: { name: $name, type: $type, category: $category }) {
-      id
-      name
-      category
     }
   }
 `;

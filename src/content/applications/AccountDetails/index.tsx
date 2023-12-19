@@ -22,6 +22,10 @@ function ApplicationsTransactions() {
     }
   }
 
+  if (!state) {
+    return <div>Account not selected</div>;
+  }
+
   const { loading, error, data, refetch } = useQuery<TransactionData>(
     GetTransactionListQuery,
     { variables: { AccountID: state.accountId } }

@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TransactionRow from './TransactionRow';
-import retailerList from 'src/hook/reatilerLIst';
+import retailerList from 'src/hook/retailerList';
 import { useState } from 'react';
 import createTransaction from 'src/hook/createTransaction';
 import { useQuery } from '@apollo/client';

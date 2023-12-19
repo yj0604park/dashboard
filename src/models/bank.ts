@@ -69,7 +69,7 @@ export interface RetailerData {
   transactionRelay?: TransactionEdge;
 }
 
-export interface Transaction{
+export interface Transaction {
   id: number;
   amount: number;
   balance: number;
@@ -144,4 +144,23 @@ export interface SalaryEdge {
 
 export interface SalaryData {
   salaryRelay: SalaryEdge;
+}
+
+export interface Stock {
+  id?: number;
+  name: string;
+  ticker: string;
+  currency?: string;
+}
+
+export interface StockNode {
+  node: Stock;
+}
+
+export interface StockEdge {
+  edges: StockNode[];
+}
+
+export interface StockData {
+  stockRelay: StockEdge;
 }

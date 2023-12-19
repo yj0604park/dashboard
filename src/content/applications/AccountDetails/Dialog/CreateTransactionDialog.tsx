@@ -18,9 +18,9 @@ import { useMutation, useQuery } from '@apollo/client';
 import { RetailerData } from 'src/models/bank';
 import {
   CreateTransactionMutation,
-  CreateTransactionWithoutRetailerMutation,
-  GetRetailerListQuery
+  CreateTransactionWithoutRetailerMutation
 } from 'src/queries/BankQuery';
+import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
 import { RetailerList } from 'src/models/internal';
 
