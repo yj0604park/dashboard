@@ -32,7 +32,7 @@ interface HeaderProps {
 }
 
 function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
-  const [open, setOpen] = useState(false);
+  const [openStock, setStockOpen] = useState(false);
   const [openMultiple, setOpenMultiple] = useState(false);
   const { userName } = useContext(UserContext);
   const { serverUrl } = useContext(ServerContext);
@@ -59,8 +59,8 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
       refetch({ AccountID: accountId });
     });
   }
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseStock = () => {
+    setStockOpen(false);
   };
 
   const handleCloseMultiple = () => {
@@ -68,7 +68,7 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
   };
 
   const handleClickOpen = () => {
-    setOpen(true);
+    setStockOpen(true);
   };
 
   const handleClickOpenMultiple = () => {
@@ -121,8 +121,8 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
               Create stock transaction
             </Button>
             <CreateMultipleStockTransactionDialog
-              open={open}
-              onModalClose={handleCloseMultiple}
+              open={openStock}
+              onModalClose={handleCloseStock}
               bankId={accountState?.bankId}
               bankName={accountState?.bankName}
               accountId={accountState?.accountId}

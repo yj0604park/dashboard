@@ -16,7 +16,7 @@ import { UserProvider } from './contexts/UserContext';
 import { ServerUrlProvider } from './contexts/ServerContext';
 
 const client = new ApolloClient({
-  uri: 'http://192.168.68.57:58000/money/graphql',
+  uri: 'http://192.168.50.13:58000/money/graphql',
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

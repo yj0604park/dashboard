@@ -22,6 +22,11 @@ export const GetStockListQuery = gql`
           currency
         }
       }
+      totalCount
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
     }
   }
 `;

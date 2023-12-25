@@ -23,7 +23,7 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TransactionInputRow from './TransactionInputRow';
-import retailerList from 'src/hook/retailerList';
+import getRetailerListInfo from 'src/hook/getRetailerListInfo';
 import { useState } from 'react';
 import createTransaction from 'src/hook/createTransaction';
 import { useQuery } from '@apollo/client';
@@ -81,12 +81,11 @@ function CreateAccountDialog({
     mutationError
   } = createTransaction({ accountId });
 
-  const { retailerInfo, setRetailerInfo, retailerLoading, retailerError } =
-    retailerList();
+  const { retailerInfo, setRetailerInfo, retailerLoading } =
+    getRetailerListInfo();
 
   const {
     createRetailerMutation,
-    retailerData,
     transactionCategoryData,
     transactionCategoryLoading,
     retailerTypeData,
@@ -98,10 +97,7 @@ function CreateAccountDialog({
     return <div>loading...</div>;
   }
 
-  const handleSnackbarClose = (
-    event?: React.SyntheticEvent | Event,
-    reason?: string
-  ) => {
+  const handleSnackbarClose = () => {
     setOpenSnack(false);
   };
 

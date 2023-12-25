@@ -247,3 +247,35 @@ export const CreateTransactionWithoutRetailerMutation = gql`
     }
   }
 `;
+
+export const CreateStockTransactionMutation = gql`
+  mutation MyMutation(
+    $date: Date!
+    $stockId: ID!
+    $amount: Float!
+    $note: String
+    $price: Float!
+    $shares: Float!
+    $accountId: ID!
+    $transactionId: ID!
+  ) {
+    createStockTransaction(
+      data: {
+        date: $date
+        stock: { set: $stockId }
+        amount: $amount
+        note: $note
+        price: $price
+        shares: $shares
+        account: { set: $accountId }
+        relatedTransaction: { set: $transactionId }
+      }
+    ) {
+      stock {
+        id
+        name
+        ticker
+      }
+    }
+  }
+`;

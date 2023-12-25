@@ -4,7 +4,7 @@ import { RetailerData } from 'src/models/bank';
 import { RetailerList } from 'src/models/internal';
 import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
 
-const retailerList = () => {
+const getRetailerListInfo = () => {
   const [retailerInfo, setRetailerInfo] = useState<RetailerList>({
     firstAdded: false,
     loadMore: false,
@@ -63,4 +63,4 @@ const retailerList = () => {
   return { retailerInfo, setRetailerInfo, retailerLoading, retailerError };
 };
 
-export default retailerList;
+export default getRetailerListInfo;

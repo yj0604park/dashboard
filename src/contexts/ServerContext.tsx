@@ -9,7 +9,7 @@ export const ServerContext = createContext<ServerContext>({} as ServerContext);
 
 export const ServerUrlProvider: FC = ({ children }) => {
   const [serverUrl, setServerUrl] = useState(
-    'http://192.168.68.57:58000/money/'
+    'http://192.168.50.13:58000/money/'
   );
 
   return (

@@ -192,8 +192,8 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
   return {
     transactionCreationDataList,
     resetTransactionCreationDataList,
-    addNewRow,
     setTransactionCreationData,
+    addNewRow,
     onRetailerChange,
     onIsInternalChange,
     submitRequest,

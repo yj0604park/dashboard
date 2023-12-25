@@ -27,6 +27,7 @@ import { useState } from 'react';
 import createStock from 'src/hook/createStock';
 import { Stock } from 'src/models/bank';
 import StockTransactionInputRow from './StockTransactionInputRow';
+import getStockListInfo from 'src/hook/getStockListInfo';
 
 interface CreateMultipleStockTransactionDialogProps {
   open: boolean;
@@ -58,6 +59,10 @@ const CreateMultipleStockTransactionDialog = ({
   // Stock list
   const [stockList, setStockList] = useState<Stock[]>([]);
 
+  const { stockListInfo, setStockListInfo, stockLoading } = getStockListInfo();
+
+  console.log(stockListInfo);
+
   const resetTransactionCreationDataList = () => {
     setStockTransactionDataList([]);
   };
@@ -67,8 +72,12 @@ const CreateMultipleStockTransactionDialog = ({
     onModalClose();
   };
 
-  const { stockTransactionDataList, setStockTransactionDataList, addNewRow } =
-    createStockTransaction({ accountId });
+  const {
+    stockTransactionDataList,
+    setStockTransactionDataList,
+    setStockTransactionData,
+    addNewRow
+  } = createStockTransaction({ accountId });
 
   const { createStockMutation, stockData, getStockLoading } = createStock();
 
@@ -153,7 +162,13 @@ const CreateMultipleStockTransactionDialog = ({
                 </TableHead>
                 <TableBody>
                   {stockTransactionDataList.map((row) => (
-                    <StockTransactionInputRow key={row.id} row={row} />
+                    <StockTransactionInputRow
+                      key={row.id}
+                      stockTransactionCreationData={row}
+                      setStockTransactionCreationData={setStockTransactionData(
+                        row.id
+                      )}
+                    />
                     // <TransactionRow
                     //   key={row.id}
                     //   id={row.id}

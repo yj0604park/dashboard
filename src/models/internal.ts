@@ -44,8 +44,15 @@ export interface StockTransactionData {
   id?: number;
   date: string;
   stock: Stock;
-  quantity: number;
+  share: number;
   price: number;
   total: number;
   note: string;
+}
+
+export interface StockListInfo {
+  firstAdded: boolean;
+  loadMore: boolean;
+  nextPage: string;
+  totalStocks: Stock[];
 }

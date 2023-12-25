@@ -159,6 +159,7 @@ export interface StockNode {
 
 export interface StockEdge {
   edges: StockNode[];
+  pageInfo?: PageInfo;
 }
 
 export interface StockData {
