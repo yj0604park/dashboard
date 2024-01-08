@@ -236,7 +236,6 @@ function CreateAccountDialog({
                       option.id === value.id
                     }
                     onChange={(event, value: any) => {
-                      console.log(value);
                       setCreateRetailerInfo({
                         ...createRetailerInfo,
                         type: value?.label
@@ -254,7 +253,6 @@ function CreateAccountDialog({
                       option.id === value.id
                     }
                     onChange={(event, value: any) => {
-                      console.log(value);
                       setCreateRetailerInfo({
                         ...createRetailerInfo,
                         category: value?.label

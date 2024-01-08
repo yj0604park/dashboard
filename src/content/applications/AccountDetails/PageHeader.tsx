@@ -14,12 +14,11 @@ import { AccountState } from 'src/models/internal';
 import { UserContext } from 'src/contexts/UserContext';
 import { useContext, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { AccountData, AccountEdge } from 'src/models/bank';
+import { AccountData } from 'src/models/bank';
 import {
   GetAccountDetailQuery,
   GetSimpleAccountListQuery
 } from 'src/queries/BankQuery';
-import CreateTransactionDialog from './Dialog/CreateTransactionDialog';
 import UpdateIcon from '@mui/icons-material/Update';
 import { ServerContext } from 'src/contexts/ServerContext';
 import CreateMultipleTransactionDialog from './Dialog/CreateMultipleTransactionDialog';
@@ -96,7 +95,6 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
       });
     };
   }
-  console.log('accountState', accountState);
 
   return (
     <Grid container>

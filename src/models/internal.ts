@@ -56,3 +56,8 @@ export interface StockListInfo {
   nextPage: string;
   totalStocks: Stock[];
 }
+
+export interface StockAutocompleteItem {
+  id: number;
+  label: string;
+}

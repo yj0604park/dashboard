@@ -52,11 +52,57 @@ const createStockTransaction = ({ accountId }) => {
     setStockTransactionDataList(nextDataList);
   };
 
+  const submitRequest = () => {
+    stockTransactionDataList.forEach((item) => {
+      console.log(item);
+    });
+  };
+
+  //   if (item.amount === '' || item.date === '') {
+  //     return;
+  //   }
+  //   let error = false;
+  //   if (item.isInternal) {
+  //     useCreateTransactionWithoutRetailer({
+  //       variables: {
+  //         accountId: item.accountId,
+  //         amount: Number(item.amount),
+  //         date: item.date,
+  //         isInternal: item.isInternal,
+  //         category: item.category,
+  //         note: item.note
+  //       }
+  //     });
+  //     if (mutationWithoutRetailerError) {
+  //       error = true;
+  //     }
+  //   } else {
+  //     useCreateTransaction({
+  //       variables: {
+  //         accountId: item.accountId,
+  //         amount: Number(item.amount),
+  //         date: item.date,
+  //         isInternal: item.isInternal,
+  //         category: item.category,
+  //         note: item.note,
+  //         retailerId: item.retailerId
+  //       }
+  //     }).catch((e) => {
+  //       error = true;
+  //     });
+  //   }
+  //   if (error) {
+  //     console.log(mutationError);
+  //     console.log(mutationWithoutRetailerError);
+  //   }
+  // });
+
   return {
     stockTransactionDataList,
     setStockTransactionDataList,
     setStockTransactionData,
-    addNewRow
+    addNewRow,
+    submitRequest
   };
 };
 

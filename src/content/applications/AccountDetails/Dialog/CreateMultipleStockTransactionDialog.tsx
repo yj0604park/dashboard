@@ -28,6 +28,7 @@ import createStock from 'src/hook/createStock';
 import { Stock } from 'src/models/bank';
 import StockTransactionInputRow from './StockTransactionInputRow';
 import getStockListInfo from 'src/hook/getStockListInfo';
+import { StockAutocompleteItem, StockListInfo } from 'src/models/internal';
 
 interface CreateMultipleStockTransactionDialogProps {
   open: boolean;
@@ -50,6 +51,7 @@ const CreateMultipleStockTransactionDialog = ({
   accountCurrency,
   refresh
 }: CreateMultipleStockTransactionDialogProps) => {
+  const [openSnack, setOpenSnack] = useState(false);
   const [CreateStockInput, setCreateStockInput] = useState<Stock>({
     name: '',
     ticker: '',
@@ -57,11 +59,9 @@ const CreateMultipleStockTransactionDialog = ({
   });
 
   // Stock list
-  const [stockList, setStockList] = useState<Stock[]>([]);
+  const [stockList, setStockList] = useState<StockAutocompleteItem[]>([]);
 
   const { stockListInfo, setStockListInfo, stockLoading } = getStockListInfo();
-
-  console.log(stockListInfo);
 
   const resetTransactionCreationDataList = () => {
     setStockTransactionDataList([]);
@@ -71,12 +71,16 @@ const CreateMultipleStockTransactionDialog = ({
     resetTransactionCreationDataList();
     onModalClose();
   };
+  const handleSnackbarClose = () => {
+    setOpenSnack(false);
+  };
 
   const {
     stockTransactionDataList,
     setStockTransactionDataList,
     setStockTransactionData,
-    addNewRow
+    addNewRow,
+    submitRequest
   } = createStockTransaction({ accountId });
 
   const { createStockMutation, stockData, getStockLoading } = createStock();
@@ -86,20 +90,19 @@ const CreateMultipleStockTransactionDialog = ({
   }
 
   if (stockList.length === 0 && stockData) {
-    let newStockList: Stock[] = [];
+    let newStockList: StockAutocompleteItem[] = [];
     for (let i = 0; i < stockData?.stockRelay.edges.length; i++) {
       let newStock: Stock = stockData?.stockRelay.edges[i].node;
-      newStockList.push(newStock);
+      newStockList.push({
+        id: newStock.id,
+        label: newStock.ticker + '-' + newStock.name
+      });
     }
     setStockList(newStockList);
   }
 
   const handleSubmit = () => {
-    // submitRequest();
-    // if (!mutationLoading && !mutationError) {
-    //   handleSnackbar();
-    // }
-    // resetTransactionCreationDataList();
+    submitRequest();
     // refresh(null);
     // refetchTransaction();
   };
@@ -168,6 +171,8 @@ const CreateMultipleStockTransactionDialog = ({
                       setStockTransactionCreationData={setStockTransactionData(
                         row.id
                       )}
+                      loading={stockLoading}
+                      stockListInfo={stockList}
                     />
                     // <TransactionRow
                     //   key={row.id}
@@ -230,13 +235,21 @@ const CreateMultipleStockTransactionDialog = ({
                           input: CreateStockInput
                         }
                       }).then((response) => {
-                        let newStock: Stock = {
+                        let newStock: StockAutocompleteItem = {
                           id: response.data?.createStock.id,
-                          name: response.data?.createStock.name,
-                          ticker: response.data?.createStock.ticker
+                          label:
+                            response.data?.createStock.ticker +
+                            '-' +
+                            response.data?.createStock.name
                         };
 
                         setStockList([...stockList, newStock]);
+                        setCreateStockInput({
+                          name: '',
+                          ticker: '',
+                          currency: accountCurrency
+                        });
+                        setOpenSnack(true);
                       });
                     }}
                   >
@@ -258,7 +271,7 @@ const CreateMultipleStockTransactionDialog = ({
         </Grid>
       </Grid>
 
-      {/* <Snackbar
+      <Snackbar
         open={openSnack}
         autoHideDuration={6000}
         onClose={handleSnackbarClose}
@@ -268,9 +281,9 @@ const CreateMultipleStockTransactionDialog = ({
           severity="success"
           sx={{ width: '100%' }}
         >
-          This is a success message!
+          Stock added!
         </Alert>
-      </Snackbar> */}
+      </Snackbar>
     </Dialog>
   );
 };

@@ -1,18 +1,25 @@
 import { Autocomplete, TextField } from '@mui/material';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
-import { StockTransactionData } from 'src/models/internal';
+import {
+  StockAutocompleteItem,
+  StockTransactionData
+} from 'src/models/internal';
 
 interface StockTransactionInputRowProps {
   stockTransactionCreationData: StockTransactionData;
   setStockTransactionCreationData: (value: StockTransactionData) => void;
+  loading: boolean;
+  stockListInfo: StockAutocompleteItem[];
 }
 
 function StockTransactionInputRow({
-  stockTransactionCreationData: stockTransactionCreationData,
-  setStockTransactionCreationData: setStockTransactionCreationData
+  stockTransactionCreationData,
+  setStockTransactionCreationData,
+  loading,
+  stockListInfo
 }: StockTransactionInputRowProps) {
-  console.log(stockTransactionCreationData);
+  console.log(stockListInfo);
 
   const getTotal = (share: number, price: number) => {
     if (share && price) {
@@ -44,18 +51,14 @@ function StockTransactionInputRow({
       <TableCell>
         <Autocomplete
           id={'stock_' + stockTransactionCreationData.id}
-          options={['AAPL', 'GOOG', 'TSLA']}
+          loading={loading}
+          options={stockListInfo}
           sx={{ width: 220 }}
-          value={stockTransactionCreationData.stock.ticker}
+          renderInput={(params) => <TextField {...params} label="Stock" />}
+          isOptionEqualToValue={(option, value) => option.id === value.id}
           onChange={(e, newValue) => {
-            setStockTransactionCreationData({
-              ...stockTransactionCreationData,
-              stock: { name: 'test', ticker: newValue }
-            });
+            console.log(newValue);
           }}
-          renderInput={(params) => (
-            <TextField {...params} label="Stock" required />
-          )}
         />
       </TableCell>
 
