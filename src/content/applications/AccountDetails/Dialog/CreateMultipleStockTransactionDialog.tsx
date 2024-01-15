@@ -174,18 +174,6 @@ const CreateMultipleStockTransactionDialog = ({
                       loading={stockLoading}
                       stockListInfo={stockList}
                     />
-                    // <TransactionRow
-                    //   key={row.id}
-                    //   id={row.id}
-                    //   transactionCreationData={row}
-                    //   setTransactionCreationData={setTransactionCreationData(
-                    //     row.id
-                    //   )}
-                    //   loading={retailerLoading}
-                    //   retailerInfo={retailerInfo}
-                    //   onRetailerChange={onRetailerChange(row.id)}
-                    //   onIsInternalChange={onIsInternalChange(row.id)}
-                    // />
                   ))}
                 </TableBody>
               </Table>
@@ -230,6 +218,7 @@ const CreateMultipleStockTransactionDialog = ({
                     variant="text"
                     size="medium"
                     onClick={() => {
+                      // create stock and add it to the list
                       createStockMutation({
                         variables: {
                           input: CreateStockInput

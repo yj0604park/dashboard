@@ -148,8 +148,8 @@ export interface SalaryData {
 
 export interface Stock {
   id?: number;
-  name: string;
-  ticker: string;
+  name?: string;
+  ticker?: string;
   currency?: string;
 }
 

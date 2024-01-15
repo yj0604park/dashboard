@@ -19,8 +19,6 @@ function StockTransactionInputRow({
   loading,
   stockListInfo
 }: StockTransactionInputRowProps) {
-  console.log(stockListInfo);
-
   const getTotal = (share: number, price: number) => {
     if (share && price) {
       return share * price;
@@ -56,8 +54,14 @@ function StockTransactionInputRow({
           sx={{ width: 220 }}
           renderInput={(params) => <TextField {...params} label="Stock" />}
           isOptionEqualToValue={(option, value) => option.id === value.id}
-          onChange={(e, newValue) => {
+          onChange={(e, newValue: StockAutocompleteItem) => {
+            console.log(e.target);
             console.log(newValue);
+            const [ticker, name] = newValue.label.split('-');
+            setStockTransactionCreationData({
+              ...stockTransactionCreationData,
+              stock: { id: newValue.id, ticker: ticker, name: name }
+            });
           }}
         />
       </TableCell>
@@ -75,7 +79,7 @@ function StockTransactionInputRow({
             setStockTransactionCreationData({
               ...stockTransactionCreationData,
               price: new_price,
-              total: getTotal(new_price, stockTransactionCreationData.share)
+              total: getTotal(new_price, stockTransactionCreationData.shares)
             });
           }}
         />
@@ -88,12 +92,12 @@ function StockTransactionInputRow({
           type="number"
           InputLabelProps={{ shrink: true }}
           InputProps={{ inputProps: { step: '0.001' } }}
-          value={stockTransactionCreationData.share}
+          value={stockTransactionCreationData.shares}
           onChange={(e) => {
             let new_share = Number(e.target.value);
             setStockTransactionCreationData({
               ...stockTransactionCreationData,
-              share: new_share,
+              shares: new_share,
               total: getTotal(stockTransactionCreationData.price, new_share)
             });
           }}

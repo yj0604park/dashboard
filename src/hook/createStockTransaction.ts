@@ -1,29 +1,40 @@
+import { useMutation } from '@apollo/client';
 import { set } from 'date-fns';
 import { useState } from 'react';
 import { Stock, StockTransaction } from 'src/models/bank';
 import { StockTransactionData } from 'src/models/internal';
+import {
+  CreateStockTransactionMutation,
+  CreateTransactionMutation,
+  CreateTransactionWithoutRetailerMutation
+} from 'src/queries/BankQuery';
 
 const createStockTransaction = ({ accountId }) => {
+  const defaultValue = {
+    id: 1,
+    date: '',
+    stock: { id: 0, name: '', ticker: '' },
+    shares: 0,
+    price: 0,
+    total: 0,
+    note: ''
+  };
   // 생성할 데이터를 저장할 list
   const [stockTransactionDataList, setStockTransactionDataList] = useState<
     StockTransactionData[]
-  >([
-    {
-      id: 1,
-      date: '',
-      stock: { id: 0, name: '', ticker: '' },
-      share: 0,
-      price: 0,
-      total: 0,
-      note: ''
-    }
-  ]);
+  >([defaultValue]);
+
+  // 생성 mutation
+  const [useStockCreate] = useMutation(CreateStockTransactionMutation);
+  const [useTransactionCreate] = useMutation(
+    CreateTransactionWithoutRetailerMutation
+  );
 
   const setStockTransactionData = (id: number) => {
     return (data: StockTransactionData) => {
       setStockTransactionDataList(
         stockTransactionDataList.map((item) => {
-          if (data.id === id) {
+          if (item.id === id) {
             return data;
           }
           return item;
@@ -40,13 +51,9 @@ const createStockTransaction = ({ accountId }) => {
     let nextDataList = [
       ...stockTransactionDataList,
       {
+        ...defaultValue,
         id: stockTransactionDataList.length + 1,
-        date: newDate,
-        stock: { id: 0, name: '', ticker: '' },
-        share: 0,
-        price: 0,
-        total: 0,
-        note: ''
+        date: newDate
       }
     ];
     setStockTransactionDataList(nextDataList);
@@ -54,7 +61,35 @@ const createStockTransaction = ({ accountId }) => {
 
   const submitRequest = () => {
     stockTransactionDataList.forEach((item) => {
-      console.log(item);
+      useTransactionCreate({
+        variables: {
+          accountId: accountId,
+          amount: -item.total,
+          date: item.date,
+          isInternal: false,
+          category: 'STOCK',
+          note:
+            item.stock.ticker +
+            ' price: ' +
+            item.price +
+            ' shares: ' +
+            item.shares
+        }
+      }).then((result) => {
+        // item.id = result.data.createTransaction.id;
+        useStockCreate({
+          variables: {
+            accountId: accountId,
+            date: item.date,
+            stockId: item.stock.id,
+            shares: item.shares,
+            price: item.price,
+            amount: item.total,
+            note: item.note,
+            transactionId: result.data.createTransaction.id
+          }
+        });
+      });
     });
   };
 

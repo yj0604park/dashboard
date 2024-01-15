@@ -34,7 +34,6 @@ function TransactionInputRow({
   onRetailerChange,
   onIsInternalChange
 }: TransactionRowProps) {
-  console.log(retailerInfo);
   return (
     <TableRow
       key={id}

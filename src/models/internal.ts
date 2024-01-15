@@ -44,7 +44,7 @@ export interface StockTransactionData {
   id?: number;
   date: string;
   stock: Stock;
-  share: number;
+  shares: number;
   price: number;
   total: number;
   note: string;
