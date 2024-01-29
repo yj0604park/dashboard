@@ -114,7 +114,7 @@ export const GetTransactionListQuery = gql`
   query MyQuery($AccountID: ID) {
     transactionRelay(
       filters: { account: { bank: {}, id: { exact: $AccountID } } }
-      order: { date: DESC, amount: ASC }
+      order: { date: DESC, amount: ASC, balance: ASC }
     ) {
       edges {
         cursor

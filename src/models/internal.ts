@@ -25,7 +25,7 @@ export interface RetailerList {
 }
 
 export interface TransactionCreationData {
-  amount: number | string;
+  amount?: number;
   date: string;
   accountId: number;
   isInternal: boolean;
@@ -44,7 +44,7 @@ export interface StockTransactionData {
   id?: number;
   date: string;
   stock: Stock;
-  shares: number;
+  shares?: number;
   price: number;
   total: number;
   note: string;

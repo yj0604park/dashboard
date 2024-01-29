@@ -16,7 +16,7 @@ interface CreateTransactionProps {
 const createTransaction = ({ accountId }: CreateTransactionProps) => {
   const [defaultTransactionCreationData, setDefaultTransactionCreationData] =
     useState<TransactionCreationData>({
-      amount: '',
+      amount: null,
       date: '',
       accountId: accountId,
       isInternal: false,
@@ -117,7 +117,7 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
 
   const submitRequest = () => {
     transactionCreationDataList.forEach((item) => {
-      if (item.amount === '' || item.date === '') {
+      if (item.amount === null || item.date === '') {
         return;
       }
       let error = false;

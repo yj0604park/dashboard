@@ -14,7 +14,7 @@ const createStockTransaction = ({ accountId }) => {
     id: 1,
     date: '',
     stock: { id: 0, name: '', ticker: '' },
-    shares: 0,
+    shares: null,
     price: 0,
     total: 0,
     note: ''
