@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 // Get all banks and their accounts
 export const GetBankNodeQuery = gql`
-  query GetBanksQuery {
+  query GetBankNodeQuery {
     bankRelay {
       edges {
         node {
@@ -31,7 +31,7 @@ export const GetBankNodeQuery = gql`
 
 // Simply get name and id of bank for list selection
 export const GetBankSimpleListQuery = gql`
-  query GetBanksQuery {
+  query GetBankSimpleListQuery {
     bankRelay {
       edges {
         node {
@@ -45,7 +45,7 @@ export const GetBankSimpleListQuery = gql`
 
 // Get all account types
 export const GetAccountTypeQuery = gql`
-  query {
+  query GetAccountTypeQuery {
     __type(name: "AccountType") {
       enumValues {
         name
@@ -56,7 +56,7 @@ export const GetAccountTypeQuery = gql`
 
 // Get all account of given bank
 export const GetAccountNodeQuery = gql`
-  query MyQuery($After: String!, $BankId: IDFilterLookup) {
+  query GetAccountNodeQuery($After: String!, $BankId: IDFilterLookup) {
     accountRelay(
       order: { name: ASC }
       filters: { isActive: true, bank: { id: $BankId, name: {} } }
@@ -94,7 +94,7 @@ export const GetAccountNodeQuery = gql`
 
 // Given an bank id, get all ids and names of its accounts
 export const GetSimpleAccountListQuery = gql`
-  query MyQuery($BankId: ID) {
+  query GetSimpleAccountListQuery($BankId: ID) {
     accountRelay(
       filters: { bank: { id: { exact: $BankId } } }
       order: { name: ASC }
@@ -111,7 +111,7 @@ export const GetSimpleAccountListQuery = gql`
 
 // Given an account id, get all transactions of that account
 export const GetTransactionListQuery = gql`
-  query MyQuery($AccountID: ID) {
+  query GetTransactionListQuery($AccountID: ID) {
     transactionRelay(
       filters: { account: { bank: {}, id: { exact: $AccountID } } }
       order: { date: DESC, amount: ASC, balance: ASC }
@@ -151,7 +151,7 @@ export const GetTransactionListQuery = gql`
 
 // Given an account id, get details of that account
 export const GetAccountDetailQuery = gql`
-  query MyQuery($AccountID: ID) {
+  query GetAccountDetailQuery($AccountID: ID) {
     accountRelay(filters: { bank: {}, id: { exact: $AccountID } }) {
       edges {
         node {
@@ -176,7 +176,7 @@ export const GetAccountDetailQuery = gql`
 
 // Get all transaction categories
 export const GetTransactionCategoryQuery = gql`
-  query {
+  query GetTransactionCategoryQuery {
     __type(name: "TransactionCategory") {
       name
       enumValues {
@@ -187,7 +187,7 @@ export const GetTransactionCategoryQuery = gql`
 `;
 
 export const GetLastTransactionDate = gql`
-  query MyQuery {
+  query GetLastTransactionDate {
     transactionRelay(first: 1, order: { id: DESC }) {
       edges {
         node {
@@ -225,7 +225,7 @@ export const CreateTransactionMutation = gql`
 `;
 
 export const CreateTransactionWithoutRetailerMutation = gql`
-  mutation CreateTransactionMutation(
+  mutation CreateTransactionWithoutRetailerMutation(
     $amount: Float!
     $date: Date!
     $accountId: ID
@@ -249,7 +249,7 @@ export const CreateTransactionWithoutRetailerMutation = gql`
 `;
 
 export const CreateStockTransactionMutation = gql`
-  mutation MyMutation(
+  mutation CreateStockTransactionMutation(
     $date: Date!
     $stockId: ID!
     $amount: Float!

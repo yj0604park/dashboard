@@ -44,6 +44,9 @@ const UserProfile = Loader(
 const UserSettings = Loader(
   lazy(() => import('src/content/applications/Users/settings'))
 );
+const AmazonOrders = Loader(
+  lazy(() => import('src/content/applications/AmazonOrders'))
+);
 
 // Components
 
@@ -169,6 +172,10 @@ const routes: RouteObject[] = [
       {
         path: 'transactions',
         element: <Transactions />
+      },
+      {
+        path: 'amazonOrders',
+        element: <AmazonOrders />
       },
       {
         path: 'profile',

@@ -34,6 +34,7 @@ import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTo
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -287,6 +288,17 @@ function SidebarMenu() {
                   startIcon={<TableChartTwoToneIcon />}
                 >
                   Transactions List
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/amazonOrders"
+                  startIcon={<ShoppingCartIcon />}
+                >
+                  Amazon Orders
                 </Button>
               </ListItem>
             </List>

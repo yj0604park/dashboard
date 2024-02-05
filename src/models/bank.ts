@@ -174,3 +174,24 @@ export interface StockTransaction {
   quantity?: number;
   transaction?: TransactionNode;
 }
+
+export interface AmazonOrder {
+  id: number;
+  date: Date;
+  item: string;
+  isReturned: boolean;
+  transaction?: Transaction;
+}
+
+export interface AmazonOrderNode {
+  node: AmazonOrder;
+}
+
+export interface AmazonOrderEdge {
+  edges: AmazonOrderNode[];
+  pageInfo?: PageInfo;
+}
+
+export interface AmazonOrderData {
+  amazonOrderRelay: AmazonOrderEdge;
+}

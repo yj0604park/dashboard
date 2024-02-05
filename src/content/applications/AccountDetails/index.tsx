@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import PageHeader from './PageHeader';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
-import { Grid, Container } from '@mui/material';
+import { Grid, Container, Typography } from '@mui/material';
 import Footer from 'src/components/Footer';
 
 import TransactionList from './TransactionList';
@@ -23,7 +23,18 @@ function ApplicationsTransactions() {
   }
 
   if (!state) {
-    return <div>Account not selected</div>;
+    return (
+      <>
+        <Helmet>
+          <title>Transactions - Applications</title>
+        </Helmet>
+        <PageTitleWrapper>
+          <Typography variant="h3" component="h3" gutterBottom>
+            Account not selected
+          </Typography>
+        </PageTitleWrapper>
+      </>
+    );
   }
 
   const { loading, error, data, refetch } = useQuery<TransactionData>(
