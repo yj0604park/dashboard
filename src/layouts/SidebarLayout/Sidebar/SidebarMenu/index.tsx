@@ -221,6 +221,15 @@ function SidebarMenu() {
                 >
                   Finance
                 </Button>
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/finance"
+                  startIcon={<AccountBalanceIcon />}
+                >
+                  Finance(new)
+                </Button>
               </ListItem>
               <ListItem component="div">
                 <Button
