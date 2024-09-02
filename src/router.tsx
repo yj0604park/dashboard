@@ -7,12 +7,11 @@ import BaseLayout from 'src/layouts/BaseLayout';
 
 import SuspenseLoader from 'src/components/SuspenseLoader';
 
-const Loader = (Component) => (props) =>
-  (
-    <Suspense fallback={<SuspenseLoader />}>
-      <Component {...props} />
-    </Suspense>
-  );
+const Loader = (Component) => (props) => (
+  <Suspense fallback={<SuspenseLoader />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 // Pages
 
@@ -23,6 +22,8 @@ const Overview = Loader(lazy(() => import('src/content/overview')));
 const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 
 const Finance = Loader(lazy(() => import('src/content/dashboards/Finance')));
+
+const Main = Loader(lazy(() => import('src/pages/Main')));
 
 // Applications
 
@@ -46,6 +47,10 @@ const UserSettings = Loader(
 );
 const AmazonOrders = Loader(
   lazy(() => import('src/content/applications/AmazonOrders'))
+);
+const Income = Loader(lazy(() => import('src/content/applications/Income')));
+const YearDetails = Loader(
+  lazy(() => import('src/content/applications/Income/YearDetails'))
 );
 
 // Components
@@ -140,6 +145,10 @@ const routes: RouteObject[] = [
         element: <Navigate to="finance" replace />
       },
       {
+        path: 'main',
+        element: <Main />
+      },
+      {
         path: 'crypto',
         element: <Crypto />
       },
@@ -176,6 +185,14 @@ const routes: RouteObject[] = [
       {
         path: 'amazonOrders',
         element: <AmazonOrders />
+      },
+      {
+        path: 'income',
+        element: <Income />
+      },
+      {
+        path: 'income/yearDetails/:year',
+        element: <YearDetails />
       },
       {
         path: 'profile',

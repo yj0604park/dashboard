@@ -10,4 +10,4 @@ COPY .eslintrc.json .
 COPY .eslintignore .
 COPY .prettierrc .
 
-CMD ['npm', 'start']
+CMD [ "npm", "start" ]

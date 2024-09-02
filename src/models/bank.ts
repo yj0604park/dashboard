@@ -195,3 +195,7 @@ export interface AmazonOrderEdge {
 export interface AmazonOrderData {
   amazonOrderRelay: AmazonOrderEdge;
 }
+
+export interface SalaryYearsData {
+  salaryYears: number[];
+}

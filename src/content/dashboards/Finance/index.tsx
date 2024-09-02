@@ -10,7 +10,7 @@ import { BankData } from 'src/models/bank';
 import { GetBankNodeQuery } from 'src/queries/BankQuery';
 import BankList from './BankList';
 import ChartList from './ChartList';
-import SalaryChart from './SalaryChart';
+import SalaryChart from '../../applications/Income/SalaryChart';
 import TotalBalance from './TotalBalance';
 import Loading from './Loading';
 
@@ -50,9 +50,6 @@ function FinanceDashboard() {
           </Grid>
           <Grid item xs={12}>
             <ChartList krwTotal={krwTotal} usdTotal={usdTotal} />
-          </Grid>
-          <Grid item xs={12}>
-            <SalaryChart />
           </Grid>
         </Grid>
       </Container>

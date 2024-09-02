@@ -33,8 +33,10 @@ import CameraFrontTwoToneIcon from '@mui/icons-material/CameraFrontTwoTone';
 import DisplaySettingsTwoToneIcon from '@mui/icons-material/DisplaySettingsTwoTone';
 import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 import AccountBalanceWalletIcon from '@mui/icons-material/AccountBalanceWallet';
+import HomeIcon from '@mui/icons-material/Home';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import PaymentsIcon from '@mui/icons-material/Payments';
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -216,41 +218,21 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
+                  to="/dashboards/main"
+                  startIcon={<HomeIcon />}
+                >
+                  Main
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
                   to="/dashboards/finance"
                   startIcon={<AccountBalanceIcon />}
                 >
                   Finance
-                </Button>
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/finance"
-                  startIcon={<AccountBalanceIcon />}
-                >
-                  Finance(new)
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/crypto"
-                  startIcon={<BrightnessLowTwoToneIcon />}
-                >
-                  Cryptocurrency
-                </Button>
-              </ListItem>
-              <ListItem component="div">
-                <Button
-                  disableRipple
-                  component={RouterLink}
-                  onClick={closeSidebar}
-                  to="/dashboards/messenger"
-                  startIcon={<MmsTwoToneIcon />}
-                >
-                  Messenger
                 </Button>
               </ListItem>
             </List>
@@ -260,7 +242,7 @@ function SidebarMenu() {
           component="div"
           subheader={
             <ListSubheader component="div" disableSticky>
-              Management
+              Finance
             </ListSubheader>
           }
         >
@@ -293,10 +275,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/transactions"
-                  startIcon={<TableChartTwoToneIcon />}
+                  to="/management/amazonOrders"
+                  startIcon={<ShoppingCartIcon />}
                 >
-                  Transactions List
+                  Amazon Orders
                 </Button>
               </ListItem>
               <ListItem component="div">
@@ -304,10 +286,10 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/amazonOrders"
-                  startIcon={<ShoppingCartIcon />}
+                  to="/management/Income"
+                  startIcon={<PaymentsIcon />}
                 >
-                  Amazon Orders
+                  Income
                 </Button>
               </ListItem>
             </List>
@@ -323,6 +305,39 @@ function SidebarMenu() {
         >
           <SubMenuWrapper>
             <List component="div">
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/crypto"
+                  startIcon={<BrightnessLowTwoToneIcon />}
+                >
+                  Cryptocurrency
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/dashboards/messenger"
+                  startIcon={<MmsTwoToneIcon />}
+                >
+                  Messenger
+                </Button>
+              </ListItem>
+              <ListItem component="div">
+                <Button
+                  disableRipple
+                  component={RouterLink}
+                  onClick={closeSidebar}
+                  to="/management/transactions"
+                  startIcon={<TableChartTwoToneIcon />}
+                >
+                  Transactions List
+                </Button>
+              </ListItem>
               <ListItem component="div">
                 <Button
                   disableRipple
