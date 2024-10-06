@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
 import SalaryDetailTable from './SalaryDetailTable';
 import SalarySummaryTable from './SalarySummaryTable';
+import SalarySummaryDetailTable from './SalarySummaryDetailTable';
 
 const YearDetails = () => {
   const navigate = useNavigate();
@@ -38,6 +39,12 @@ const YearDetails = () => {
     );
   var summary =
     loading || error ? <p>Loading...</p> : <SalarySummaryTable data={data} />;
+  var summaryDetail =
+    loading || error ? (
+      <p>Loading...</p>
+    ) : (
+      <SalarySummaryDetailTable data={data} />
+    );
   return (
     <>
       <Helmet>
@@ -68,10 +75,7 @@ const YearDetails = () => {
           <Grid item xs={12} md={12}>
             <Box display="flex">
               <Tooltip arrow placement="top" title="Go back">
-                <IconButton
-                  color="primary"
-                  onClick={() => navigate('../income')}
-                >
+                <IconButton color="primary" onClick={() => navigate('../')}>
                   <ArrowBackTwoToneIcon />
                 </IconButton>
               </Tooltip>
@@ -84,6 +88,9 @@ const YearDetails = () => {
           </Grid>
           <Grid item xs={12}>
             {summary}
+          </Grid>
+          <Grid item xs={12}>
+            {summaryDetail}
           </Grid>
           <Grid item xs={12}>
             {chart}

@@ -11,6 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
+import NumberHelper from 'src/functions/NumberHelper';
 import { SalaryData } from 'src/models/bank';
 
 interface SalarySummaryTableProps {
@@ -69,7 +70,7 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                   gutterBottom
                   noWrap
                 >
-                  {new_summary.grossPay}
+                  {NumberHelper.FormatString(new_summary.grossPay, 'USD')}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -80,7 +81,10 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                   gutterBottom
                   noWrap
                 >
-                  {new_summary.totalAdjustment}
+                  {NumberHelper.FormatString(
+                    new_summary.totalAdjustment,
+                    'USD'
+                  )}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -91,7 +95,7 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                   gutterBottom
                   noWrap
                 >
-                  {new_summary.totalWithheld}
+                  {NumberHelper.FormatString(new_summary.totalWithheld, 'USD')}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -102,7 +106,7 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                   gutterBottom
                   noWrap
                 >
-                  {new_summary.totalDeduction}
+                  {NumberHelper.FormatString(new_summary.totalDeduction, 'USD')}
                 </Typography>
               </TableCell>
               <TableCell>
@@ -113,7 +117,7 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                   gutterBottom
                   noWrap
                 >
-                  {new_summary.netPay}
+                  {NumberHelper.FormatString(new_summary.netPay, 'USD')}
                 </Typography>
               </TableCell>
             </TableRow>

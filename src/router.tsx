@@ -188,11 +188,16 @@ const routes: RouteObject[] = [
       },
       {
         path: 'income',
-        element: <Income />
-      },
-      {
-        path: 'income/yearDetails/:year',
-        element: <YearDetails />
+        children: [
+          {
+            path: '',
+            element: <Income />
+          },
+          {
+            path: 'yearDetails/:year',
+            element: <YearDetails />
+          }
+        ]
       },
       {
         path: 'profile',

@@ -10,6 +10,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
+import NumberHelper from 'src/functions/NumberHelper';
 import { SalaryData } from 'src/models/bank';
 
 function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
@@ -54,7 +55,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                         gutterBottom
                         noWrap
                       >
-                        {account.grossPay}
+                        {NumberHelper.FormatString(account.grossPay, 'USD')}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -65,7 +66,10 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                         gutterBottom
                         noWrap
                       >
-                        {account.totalAdjustment}
+                        {NumberHelper.FormatString(
+                          account.totalAdjustment,
+                          'USD'
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -76,7 +80,10 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                         gutterBottom
                         noWrap
                       >
-                        {account.totalWithheld}
+                        {NumberHelper.FormatString(
+                          account.totalWithheld,
+                          'USD'
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -87,7 +94,10 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                         gutterBottom
                         noWrap
                       >
-                        {account.totalDeduction}
+                        {NumberHelper.FormatString(
+                          account.totalDeduction,
+                          'USD'
+                        )}
                       </Typography>
                     </TableCell>
                     <TableCell>
@@ -98,7 +108,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                         gutterBottom
                         noWrap
                       >
-                        {account.netPay}
+                        {NumberHelper.FormatString(account.netPay, 'USD')}
                       </Typography>
                     </TableCell>
                   </TableRow>
