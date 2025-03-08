@@ -1,3 +1,5 @@
+import { useQuery } from '@apollo/client';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,
   Autocomplete,
@@ -21,31 +23,15 @@ import {
   TableRow,
   TextField
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import TransactionInputRow from './TransactionInputRow';
-import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
 import { useState } from 'react';
+import createRetailer from 'src/hooks/createRetailer';
 import createTransaction from 'src/hooks/createTransaction';
-import { useQuery } from '@apollo/client';
+import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
 import { TransactionData } from 'src/models/bank';
 import { GetLastTransactionDate } from 'src/queries/BankQuery';
-import createRetailer from 'src/hooks/createRetailer';
+import TransactionInputRow from './TransactionInputRow';
 
-interface CreateAccountDialogProps {
-  open: boolean;
-  onModalClose: () => void;
-  bankName: string;
-  bankId: number;
-  accountName: string;
-  accountId: number;
-  refresh: (event: any) => void;
-}
-
-interface CreateRetailerInfo {
-  name: string;
-  type: string;
-  category: string;
-}
+import { CreateAccountDialogProps, CreateRetailerInfo } from 'src/types/transaction';
 
 function CreateAccountDialog({
   onModalClose,

@@ -1,3 +1,4 @@
+import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,
   Autocomplete,
@@ -21,25 +22,14 @@ import {
   TableRow,
   TextField
 } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
-import createStockTransaction from 'src/hooks/createStockTransaction';
 import { useState } from 'react';
 import createStock from 'src/hooks/createStock';
-import { Stock } from 'src/models/bank';
-import StockTransactionInputRow from './StockTransactionInputRow';
+import createStockTransaction from 'src/hooks/createStockTransaction';
 import getStockListInfo from 'src/hooks/getStockListInfo';
+import { Stock } from 'src/models/bank';
 import { StockAutocompleteItem, StockListInfo } from 'src/models/internal';
-
-interface CreateMultipleStockTransactionDialogProps {
-  open: boolean;
-  onModalClose: () => void;
-  bankName: string;
-  bankId: number;
-  accountName: string;
-  accountId: number;
-  accountCurrency: string;
-  refresh: (event: any) => void;
-}
+import { CreateMultipleStockTransactionDialogProps } from 'src/types/transaction';
+import StockTransactionInputRow from './StockTransactionInputRow';
 
 const CreateMultipleStockTransactionDialog = ({
   open,
