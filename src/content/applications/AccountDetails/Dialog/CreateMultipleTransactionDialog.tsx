@@ -23,13 +23,13 @@ import {
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import TransactionInputRow from './TransactionInputRow';
-import getRetailerListInfo from 'src/hook/getRetailerListInfo';
+import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
 import { useState } from 'react';
-import createTransaction from 'src/hook/createTransaction';
+import createTransaction from 'src/hooks/createTransaction';
 import { useQuery } from '@apollo/client';
 import { TransactionData } from 'src/models/bank';
 import { GetLastTransactionDate } from 'src/queries/BankQuery';
-import createRetailer from 'src/hook/createRetailer';
+import createRetailer from 'src/hooks/createRetailer';
 
 interface CreateAccountDialogProps {
   open: boolean;

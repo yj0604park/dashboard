@@ -22,12 +22,12 @@ import {
   TextField
 } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
-import createStockTransaction from 'src/hook/createStockTransaction';
+import createStockTransaction from 'src/hooks/createStockTransaction';
 import { useState } from 'react';
-import createStock from 'src/hook/createStock';
+import createStock from 'src/hooks/createStock';
 import { Stock } from 'src/models/bank';
 import StockTransactionInputRow from './StockTransactionInputRow';
-import getStockListInfo from 'src/hook/getStockListInfo';
+import getStockListInfo from 'src/hooks/getStockListInfo';
 import { StockAutocompleteItem, StockListInfo } from 'src/models/internal';
 
 interface CreateMultipleStockTransactionDialogProps {
