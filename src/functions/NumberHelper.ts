@@ -1,4 +1,4 @@
-import { BankNode } from "src/models/bank";
+import { BankNode } from "src/types/bank";
 
 export default class Util {
   static FormatString(amount: number, currency: string) {

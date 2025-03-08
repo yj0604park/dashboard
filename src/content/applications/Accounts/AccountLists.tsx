@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
 import { GetAccountNodeQuery } from 'src/queries/BankQuery';
 import { useQuery } from '@apollo/client';
-import { AccountData } from 'src/models/bank';
+import { AccountData } from 'src/types/bank';
 import AccountTable from './AccountTable';
 
 function AccountList({ bankFilterId }) {

@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 
 function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
   return (

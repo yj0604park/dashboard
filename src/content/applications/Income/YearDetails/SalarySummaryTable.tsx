@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import React from 'react';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 
 interface SalarySummaryTableProps {
   data: SalaryData;

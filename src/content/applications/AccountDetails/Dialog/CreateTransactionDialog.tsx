@@ -15,14 +15,14 @@ import {
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { useMutation, useQuery } from '@apollo/client';
-import { RetailerData } from 'src/models/bank';
+import { RetailerData } from 'src/types/bank';
 import {
   CreateTransactionMutation,
   CreateTransactionWithoutRetailerMutation
 } from 'src/queries/BankQuery';
 import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
-import { RetailerList } from 'src/models/internal';
+import { RetailerList } from 'src/types/internal';
 
 interface TabPanelProps {
   children?: React.ReactNode;

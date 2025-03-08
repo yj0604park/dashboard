@@ -3,7 +3,7 @@ import ChartItem from './ChartItem';
 import { GetAmountSnapshotQuery } from '../../../queries/AmountSnapshotQuery';
 import { useQuery } from '@apollo/client';
 import Loading from './Loading';
-import { AmountSnapshotData, AmountSnapshotEdge } from 'src/models/bank';
+import { AmountSnapshotData, AmountSnapshotEdge } from 'src/types/bank';
 
 function GetDateAndAmount(amountSnapshotList: AmountSnapshotEdge) {
   const date = [];

@@ -26,9 +26,9 @@ import { useState } from 'react';
 import createStock from 'src/hooks/createStock';
 import createStockTransaction from 'src/hooks/createStockTransaction';
 import getStockListInfo from 'src/hooks/getStockListInfo';
-import { Stock } from 'src/models/bank';
-import { StockAutocompleteItem, StockListInfo } from 'src/models/internal';
+import { Stock } from 'src/types/bank';
 import { CreateMultipleStockTransactionDialogProps } from 'src/types/transaction';
+import {StockAutocompleteItem} from 'src/types/internal';
 import StockTransactionInputRow from './StockTransactionInputRow';
 
 const CreateMultipleStockTransactionDialog = ({

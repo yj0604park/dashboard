@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { StockData } from 'src/models/bank';
+import { StockData } from 'src/types/bank';
 import { CreateStockMutation, GetStockListQuery } from 'src/queries/StockQuery';
 
 const createStock = () => {

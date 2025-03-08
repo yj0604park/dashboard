@@ -13,7 +13,7 @@ import {
 import { number } from 'prop-types';
 import React from 'react';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 
 interface SalarySummaryDetailTableProps {
   data: SalaryData;

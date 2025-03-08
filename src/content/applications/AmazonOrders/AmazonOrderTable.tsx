@@ -15,7 +15,7 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { AmazonOrderData } from 'src/models/bank';
+import { AmazonOrderData } from 'src/types/bank';
 import { GetAmazonOrderQuery } from 'src/queries/AmazonQuery';
 
 function AmazonOrderTable() {

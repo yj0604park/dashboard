@@ -13,7 +13,7 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import SalaryChart from '../SalaryChart';
 import { GetSalaryFilterQuery } from 'src/queries/SalaryQuery';
 import { useQuery } from '@apollo/client';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 import { useNavigate } from 'react-router-dom';
 
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';

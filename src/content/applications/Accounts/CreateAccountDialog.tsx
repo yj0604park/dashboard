@@ -13,7 +13,7 @@ import {
   TextField
 } from '@mui/material';
 import { gql, useQuery } from '@apollo/client';
-import { BankData } from 'src/models/bank';
+import { BankData } from 'src/types/bank';
 import { GetBankSimpleListQuery } from 'src/queries/BankQuery';
 
 const UPDATE_TODO = gql`

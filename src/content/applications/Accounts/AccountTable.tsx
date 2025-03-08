@@ -29,7 +29,7 @@ import { Link } from 'react-router-dom';
 import Label from 'src/components/Label';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { AccountEdge, AccountNode } from 'src/models/bank';
+import { AccountEdge, AccountNode } from 'src/types/bank';
 import { useQuery } from '@apollo/client';
 import { GetAccountTypeQuery } from 'src/queries/BankQuery';
 

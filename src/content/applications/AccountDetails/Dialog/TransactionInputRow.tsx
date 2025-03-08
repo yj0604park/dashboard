@@ -10,7 +10,7 @@ import {
   RetailerList,
   RetailerSelectionProps,
   TransactionCreationData
-} from 'src/models/internal';
+} from 'src/types/internal';
 
 interface TransactionRowProps {
   id: number;

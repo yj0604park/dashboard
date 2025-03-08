@@ -4,7 +4,7 @@ import TableRow from '@mui/material/TableRow';
 import {
   StockAutocompleteItem,
   StockTransactionData
-} from 'src/models/internal';
+} from 'src/types/internal';
 
 interface StockTransactionInputRowProps {
   stockTransactionCreationData: StockTransactionData;

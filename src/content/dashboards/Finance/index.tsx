@@ -6,7 +6,7 @@ import Footer from 'src/components/Footer';
 
 import { useQuery } from '@apollo/client';
 import NumberUtils from 'src/functions/NumberHelper';
-import { BankData } from 'src/models/bank';
+import { BankData } from 'src/types/bank';
 import { GetBankNodeQuery } from 'src/queries/BankQuery';
 import BankList from './BankList';
 import ChartList from './ChartList';

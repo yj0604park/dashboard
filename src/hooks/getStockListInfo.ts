@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
-import { StockData } from 'src/models/bank';
-import { StockListInfo } from 'src/models/internal';
+import { StockData } from 'src/types/bank';
+import { StockListInfo } from 'src/types/internal';
 import { GetStockListQuery } from 'src/queries/StockQuery';
 
 const getStockListInfo = () => {

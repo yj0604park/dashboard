@@ -1,6 +1,6 @@
 import { Card } from '@mui/material';
 import RecentOrdersTable from './RecentOrdersTable';
-import { TransactionData } from 'src/models/bank';
+import { TransactionData } from 'src/types/bank';
 import { ApolloError } from '@apollo/client';
 
 interface TransactionListProps {

@@ -1,7 +1,7 @@
 import { Card, Stack, Divider } from '@mui/material';
 import BankItem from './BankItem';
 import Util from 'src/functions/ArrayHelper';
-import { BankEdge, BankNode } from 'src/models/bank';
+import { BankEdge, BankNode } from 'src/types/bank';
 
 function GetBankItem(bank: BankNode) {
   let latestUpdated = new Date('2000-01-01');

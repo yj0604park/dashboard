@@ -19,7 +19,7 @@ import {
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import Footer from 'src/components/Footer';
 import { useQuery } from '@apollo/client';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 import { GetSalaryQuery } from 'src/queries/SalaryQuery';
 import { useNavigate } from 'react-router-dom';
 import SalaryChart from './SalaryChart';

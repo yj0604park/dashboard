@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from 'react';
 import {
   RetailerSelectionProps,
   TransactionCreationData
-} from 'src/models/internal';
+} from 'src/types/internal';
 import {
   CreateTransactionMutation,
   CreateTransactionWithoutRetailerMutation

@@ -1,7 +1,7 @@
 import Chart from 'react-apexcharts';
 
 import { Card } from '@mui/material';
-import { SalaryData } from 'src/models/bank';
+import { SalaryData } from 'src/types/bank';
 
 function getChartData(data: SalaryData): [number[], number[], Date[]] {
   if (!data || data === undefined) {

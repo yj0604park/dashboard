@@ -7,9 +7,9 @@ import Footer from 'src/components/Footer';
 import TransactionList from './TransactionList';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
-import { AccountState } from 'src/models/internal';
+import { AccountState } from 'src/types/internal';
 import { useQuery } from '@apollo/client';
-import { TransactionData } from 'src/models/bank';
+import { TransactionData } from 'src/types/bank';
 import { GetTransactionListQuery } from 'src/queries/BankQuery';
 
 function ApplicationsTransactions() {

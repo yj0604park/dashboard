@@ -27,7 +27,7 @@ import { useState } from 'react';
 import createRetailer from 'src/hooks/createRetailer';
 import createTransaction from 'src/hooks/createTransaction';
 import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
-import { TransactionData } from 'src/models/bank';
+import { TransactionData } from 'src/types/bank';
 import { GetLastTransactionDate } from 'src/queries/BankQuery';
 import TransactionInputRow from './TransactionInputRow';
 

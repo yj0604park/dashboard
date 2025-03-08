@@ -26,8 +26,8 @@ import {
   TransactionData,
   TransactionEdge,
   TransactionNode
-} from 'src/models/bank';
-import { TransactionFilter } from 'src/models/internal';
+} from 'src/types/bank';
+import { TransactionFilter } from 'src/types/internal';
 import Util from 'src/functions/NumberHelper';
 import Label from 'src/components/Label';
 

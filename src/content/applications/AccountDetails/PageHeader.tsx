@@ -10,11 +10,11 @@ import {
 } from '@mui/material';
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import { AccountState } from 'src/models/internal';
+import { AccountState } from 'src/types/internal';
 import { UserContext } from 'src/contexts/UserContext';
 import { useContext, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { AccountData } from 'src/models/bank';
+import { AccountData } from 'src/types/bank';
 import {
   GetAccountDetailQuery,
   GetSimpleAccountListQuery

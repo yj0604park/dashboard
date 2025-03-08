@@ -8,7 +8,7 @@ import {
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
 import BankListRow from './BankListRow';
 import Loading from './Loading';
-import { BankData } from 'src/models/bank';
+import { BankData } from 'src/types/bank';
 
 interface BankListProps {
   loading: boolean;

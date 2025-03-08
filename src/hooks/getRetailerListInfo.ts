@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useState } from 'react';
-import { RetailerData } from 'src/models/bank';
-import { RetailerList } from 'src/models/internal';
+import { RetailerData } from 'src/types/bank';
+import { RetailerList } from 'src/types/internal';
 import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
 
 const getRetailerListInfo = () => {
