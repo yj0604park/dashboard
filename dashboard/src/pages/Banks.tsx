@@ -1,7 +1,7 @@
 import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, CircularProgress } from '@mui/material';
 import { useGetBankSimpleListQueryQuery } from '../generated/graphql';
 
-export const Orders = () => {
+export const Banks = () => {
   const { data, loading, error } = useGetBankSimpleListQueryQuery();
 
   if (loading) {

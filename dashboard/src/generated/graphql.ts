@@ -207,6 +207,12 @@ export type AmountSnapshotOrder = {
   name?: InputMaybe<Ordering>;
 };
 
+export type BankBalance = {
+  __typename?: 'BankBalance';
+  currency: Scalars['String']['output'];
+  value: Scalars['Decimal']['output'];
+};
+
 export type BankFilter = {
   AND?: InputMaybe<BankFilter>;
   DISTINCT?: InputMaybe<Scalars['Boolean']['input']>;
@@ -219,7 +225,7 @@ export type BankFilter = {
 export type BankNode = Node & {
   __typename?: 'BankNode';
   accountSet: AccountNodeConnection;
-  balance: Scalars['JSON']['output'];
+  balance: Array<BankBalance>;
   id: Scalars['GlobalID']['output'];
   name: Scalars['String']['output'];
 };
@@ -887,12 +893,17 @@ export type TransactionOrder = {
 export type GetBankNodeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBankNodeQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', balance: any, id: any, name: string, accountSet: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: any, lastUpdate?: any | null, name: string, isActive: boolean } }> } } }> } };
+export type GetBankNodeQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: any, lastUpdate?: any | null, name: string, isActive: boolean } }> } } }> } };
 
 export type GetBankSimpleListQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetBankSimpleListQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string } }> } };
+
+export type GetBankNodeWithBalanceQueryQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBankNodeWithBalanceQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: any, lastUpdate?: any | null, name: string, isActive: boolean } }> } } }> } };
 
 
 export const GetBankNodeQueryDocument = gql`
@@ -900,7 +911,10 @@ export const GetBankNodeQueryDocument = gql`
   bankRelay {
     edges {
       node {
-        balance
+        balance {
+          currency
+          value
+        }
         id
         name
         accountSet {
@@ -998,3 +1012,65 @@ export type GetBankSimpleListQueryQueryHookResult = ReturnType<typeof useGetBank
 export type GetBankSimpleListQueryLazyQueryHookResult = ReturnType<typeof useGetBankSimpleListQueryLazyQuery>;
 export type GetBankSimpleListQuerySuspenseQueryHookResult = ReturnType<typeof useGetBankSimpleListQuerySuspenseQuery>;
 export type GetBankSimpleListQueryQueryResult = Apollo.QueryResult<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>;
+export const GetBankNodeWithBalanceQueryDocument = gql`
+    query GetBankNodeWithBalanceQuery {
+  bankRelay {
+    edges {
+      node {
+        balance {
+          currency
+          value
+        }
+        id
+        name
+        accountSet {
+          edges {
+            node {
+              type
+              id
+              currency
+              amount
+              lastUpdate
+              name
+              isActive
+            }
+          }
+          totalCount
+        }
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetBankNodeWithBalanceQueryQuery__
+ *
+ * To run a query within a React component, call `useGetBankNodeWithBalanceQueryQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBankNodeWithBalanceQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetBankNodeWithBalanceQueryQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useGetBankNodeWithBalanceQueryQuery(baseOptions?: Apollo.QueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+      }
+export function useGetBankNodeWithBalanceQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+        }
+export function useGetBankNodeWithBalanceQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+        }
+export type GetBankNodeWithBalanceQueryQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQueryQuery>;
+export type GetBankNodeWithBalanceQueryLazyQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQueryLazyQuery>;
+export type GetBankNodeWithBalanceQuerySuspenseQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQuerySuspenseQuery>;
+export type GetBankNodeWithBalanceQueryQueryResult = Apollo.QueryResult<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>;

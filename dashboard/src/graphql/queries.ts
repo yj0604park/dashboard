@@ -1,11 +1,14 @@
 import { gql } from '@apollo/client';
 
 export const GET_BANK_NODE = gql`
-  query GetBankNodeQuery {
+  query GetBankNodeWithBalanceQuery {
     bankRelay {
       edges {
         node {
-          balance
+          balance {
+            currency
+            value
+          }
           id
           name
           accountSet {

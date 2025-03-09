@@ -1,5 +1,35 @@
-import { Typography, Grid, Card, CardContent, CircularProgress, Box } from '@mui/material';
+import { Typography, Grid, Card, CardContent, CircularProgress, Box, Stack } from '@mui/material';
 import { useGetBankNodeQueryQuery, GetBankNodeQueryQuery } from '../generated/graphql';
+
+type AccountNode = GetBankNodeQueryQuery['bankRelay']['edges'][0]['node']['accountSet']['edges'][0]['node'];
+
+interface CurrencyBalance {
+  [key: string]: number;
+}
+
+type CurrencySymbols = {
+  KRW: string;
+  USD: string;
+  EUR: string;
+  JPY: string;
+  [key: string]: string;
+};
+
+const currencySymbol: CurrencySymbols = {
+  KRW: '₩',
+  USD: '$',
+  EUR: '€',
+  JPY: '¥',
+};
+
+const formatCurrency = (amount: number, currency: string) => {
+  const symbol = currencySymbol[currency] || currency;
+  if(amount > 0 ) {
+    return `${symbol} ${amount.toLocaleString()}`;
+  } else {
+    return `-${symbol} ${(-amount).toLocaleString()}`;
+  }
+};
 
 export const Dashboard = () => {
   const { data, loading, error } = useGetBankNodeQueryQuery();
@@ -22,16 +52,21 @@ export const Dashboard = () => {
 
   const bankNode = data?.bankRelay?.edges[0]?.node;
   const accounts = bankNode?.accountSet?.edges.map(edge => edge?.node) ?? [];
-  const totalBalance = accounts.reduce((sum: number, account: GetBankNodeQueryQuery['bankRelay']['edges'][0]['node']['accountSet']['edges'][0]['node']) => 
-    sum + (account?.amount ?? 0), 0);
+
+  const balanceByCurrency = accounts.reduce((acc: CurrencyBalance, account: AccountNode) => {
+    if (account?.amount && account?.currency) {
+      acc[account.currency] = (acc[account.currency] || 0) + Number(account.amount);
+    }
+    return acc;
+  }, {});
 
   return (
-    <>
+    <Box sx={{ width: '100%' }}>
       <Typography variant="h1" gutterBottom>
         대시보드
       </Typography>
-      <Grid container spacing={3}>
-        <Grid item xs={12} md={6} lg={4}>
+      <Grid container spacing={4} sx={{ width: '100%' }}>
+        <Grid item xs={12} sm={6} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
@@ -43,19 +78,32 @@ export const Dashboard = () => {
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
-          <Card>
+        <Grid item xs={12} sm={6} md={4}>
+          <Card sx={{ height: '100%' }}>
             <CardContent>
               <Typography variant="h5" gutterBottom>
                 총 잔액
               </Typography>
-              <Typography variant="h3">
-                ₩{totalBalance.toLocaleString()}
-              </Typography>
+              <Stack spacing={1}>
+                {Object.entries(balanceByCurrency).map(([currency, amount]) => (
+                  <Typography 
+                    key={currency} 
+                    variant="h4" 
+                    sx={{ 
+                      whiteSpace: 'nowrap',
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      fontSize: '1.5rem'
+                    }}
+                  >
+                    {formatCurrency(amount, currency)}
+                  </Typography>
+                ))}
+              </Stack>
             </CardContent>
           </Card>
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} sm={6} md={4}>
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
@@ -68,6 +116,6 @@ export const Dashboard = () => {
           </Card>
         </Grid>
       </Grid>
-    </>
+    </Box>
   );
 }; 

@@ -1,9 +1,9 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { Dashboard } from './pages/Dashboard';
-import { Orders } from './pages/Orders';
+import { Banks } from './pages/Banks';
 import { Navigation } from './components/Navigation';
-import { Box, Container, CssBaseline } from '@mui/material';
+import { Box, CssBaseline } from '@mui/material';
 import { client } from './lib/apollo';
 
 function App() {
@@ -11,14 +11,31 @@ function App() {
     <ApolloProvider client={client}>
       <BrowserRouter>
         <CssBaseline />
-        <Box sx={{ minHeight: '100vh', backgroundColor: 'background.default' }}>
+        <Box sx={{ 
+          minHeight: '100vh',
+          minWidth: '100vw',
+          width: '100%',
+          backgroundColor: 'background.default',
+          display: 'flex',
+          flexDirection: 'column',
+          margin: 0,
+          padding: 0,
+          boxSizing: 'border-box',
+          overflow: 'hidden'
+        }}>
           <Navigation />
-          <Container maxWidth="lg" sx={{ py: 3 }}>
+          <Box component="main" sx={{ 
+            flexGrow: 1, 
+            width: '100%',
+            px: { xs: 2, sm: 3, md: 4 },
+            py: 3,
+            boxSizing: 'border-box'
+          }}>
             <Routes>
               <Route path="/" element={<Dashboard />} />
-              <Route path="/orders" element={<Orders />} />
+              <Route path="/banks" element={<Banks />} />
             </Routes>
-          </Container>
+          </Box>
         </Box>
       </BrowserRouter>
     </ApolloProvider>
