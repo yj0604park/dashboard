@@ -1,5 +1,6 @@
-import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, CircularProgress } from '@mui/material';
+import { Typography, Box, CircularProgress } from '@mui/material';
 import { useGetBankSimpleListQueryQuery } from '../../generated/graphql';
+import { SimpleBankTable } from './components/SimpleBankTable';
 
 export const Banks = () => {
   const { data, loading, error } = useGetBankSimpleListQueryQuery();
@@ -20,39 +21,23 @@ export const Banks = () => {
     );
   }
 
-  const banks = data?.bankRelay?.edges.map(edge => edge.node) ?? [];
+  const bankLists = data?.bankRelay?.edges.map(edge => edge.node) ?? [];
 
   return (
     <>
-      <Typography variant="h1" gutterBottom>
+      <Typography 
+        variant="h2" 
+        sx={{ 
+          fontSize: '1.4rem',
+          fontWeight: 600,
+          mb: 2
+        }}
+      >
         은행 목록
       </Typography>
-      <TableContainer component={Paper}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>ID</TableCell>
-              <TableCell>은행명</TableCell>
-              <TableCell>계좌수</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {banks.map((bank) => (
-              <TableRow key={bank.id}>
-                <TableCell>{bank.id}</TableCell>
-                <TableCell>{bank.name}</TableCell>
-                <TableCell>
-                  {bank.balance.map((balance) => (
-                    <div key={balance.currency}>
-                      {balance.currency} {balance.value}
-                    </div>
-                  ))}
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <Box sx={{ mb: 4 }}>
+        <SimpleBankTable banks={bankLists} />
+      </Box>
     </>
   );
 }; 

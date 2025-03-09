@@ -2,48 +2,22 @@ import {
   Paper,
   Table,
   TableBody,
-  TableCell,
   TableContainer,
   TableHead,
   TableRow,
   Typography,
   Chip,
   Box,
-  tableCellClasses,
-  styled
 } from '@mui/material';
 import { GetBankNodeWithBalanceQueryQuery } from '../../../generated/graphql';
 import { formatCurrency } from '../../../utils/currency';
+import { StyledTableCell, StyledTableRow } from '../../../components/table/StyledTable';
 
 type AccountNode = GetBankNodeWithBalanceQueryQuery['bankRelay']['edges'][0]['node']['accountSet']['edges'][0]['node'];
 
 interface AccountTableProps {
   accounts: AccountNode[];
 }
-
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: theme.palette.primary.main,
-    color: theme.palette.common.white,
-    fontWeight: 600,
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: theme.palette.action.hover,
-  },
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-  '&:hover': {
-    backgroundColor: theme.palette.action.selected,
-    cursor: 'pointer',
-  },
-}));
 
 const getStatusColor = (isActive: boolean | null | undefined) => {
   if (isActive === null || isActive === undefined) return 'default';

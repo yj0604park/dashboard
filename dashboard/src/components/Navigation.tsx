@@ -27,7 +27,7 @@ export const Navigation = () => {
             onClick={() => navigate('/banks')}
             color={isActive('/banks') ? 'primary' : 'inherit'}
           >
-            은행리스트
+            은행
           </Button>
         </Box>
       </Toolbar>
