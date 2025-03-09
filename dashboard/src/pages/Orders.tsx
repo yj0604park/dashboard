@@ -1,10 +1,8 @@
 import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, CircularProgress } from '@mui/material';
-import { useQuery } from '@apollo/client';
-import { GET_ORDERS } from '../graphql/queries';
-import { OrdersResponse } from '../graphql/types';
+import { useGetBankSimpleListQueryQuery } from '../generated/graphql';
 
 export const Orders = () => {
-  const { data, loading, error } = useQuery<OrdersResponse>(GET_ORDERS);
+  const { data, loading, error } = useGetBankSimpleListQueryQuery();
 
   if (loading) {
     return (
@@ -22,34 +20,26 @@ export const Orders = () => {
     );
   }
 
-  const orders = data?.orders ?? [];
+  const banks = data?.bankRelay?.edges.map(edge => edge.node) ?? [];
 
   return (
     <>
       <Typography variant="h1" gutterBottom>
-        주문 관리
+        은행 목록
       </Typography>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>주문번호</TableCell>
-              <TableCell>고객명</TableCell>
-              <TableCell>상품</TableCell>
-              <TableCell align="right">가격</TableCell>
-              <TableCell>상태</TableCell>
+              <TableCell>ID</TableCell>
+              <TableCell>은행명</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.map((order) => (
-              <TableRow key={order.id}>
-                <TableCell>{order.id}</TableCell>
-                <TableCell>{order.customer}</TableCell>
-                <TableCell>{order.product}</TableCell>
-                <TableCell align="right">
-                  ₩{order.price.toLocaleString()}
-                </TableCell>
-                <TableCell>{order.status}</TableCell>
+            {banks.map((bank) => (
+              <TableRow key={bank.id}>
+                <TableCell>{bank.id}</TableCell>
+                <TableCell>{bank.name}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -28,15 +28,15 @@ export const GET_BANK_NODE = gql`
   }
 `;
 
-export const GET_ORDERS = gql`
-  query GetOrders {
-    orders {
-      id
-      customer
-      product
-      price
-      status
-      createdAt
+export const GET_BANK_SIMPLE_LIST = gql`
+  query GetBankSimpleListQuery {
+    bankRelay {
+      edges {
+        node {
+          id
+          name
+        }
+      }
     }
   }
 `; 

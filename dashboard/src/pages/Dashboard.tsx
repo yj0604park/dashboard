@@ -1,10 +1,8 @@
 import { Typography, Grid, Card, CardContent, CircularProgress, Box } from '@mui/material';
-import { useQuery } from '@apollo/client';
-import { GET_BANK_NODE } from '../graphql/queries';
-import { DashboardResponse } from '../graphql/types';
+import { useGetBankNodeQueryQuery, GetBankNodeQueryQuery } from '../generated/graphql';
 
 export const Dashboard = () => {
-  const { data, loading, error } = useQuery<DashboardResponse>(GET_BANK_NODE);
+  const { data, loading, error } = useGetBankNodeQueryQuery();
 
   if (loading) {
     return (
@@ -22,7 +20,10 @@ export const Dashboard = () => {
     );
   }
 
-  const stats = data?.stats;
+  const bankNode = data?.bankRelay?.edges[0]?.node;
+  const accounts = bankNode?.accountSet?.edges.map(edge => edge?.node) ?? [];
+  const totalBalance = accounts.reduce((sum: number, account: GetBankNodeQueryQuery['bankRelay']['edges'][0]['node']['accountSet']['edges'][0]['node']) => 
+    sum + (account?.amount ?? 0), 0);
 
   return (
     <>
@@ -34,10 +35,10 @@ export const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                주문 현황
+                계좌 수
               </Typography>
               <Typography variant="h3">
-                {stats?.totalOrders ?? 0}
+                {accounts.length}
               </Typography>
             </CardContent>
           </Card>
@@ -46,10 +47,10 @@ export const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                매출
+                총 잔액
               </Typography>
               <Typography variant="h3">
-                ₩{(stats?.totalRevenue ?? 0).toLocaleString()}
+                ₩{totalBalance.toLocaleString()}
               </Typography>
             </CardContent>
           </Card>
@@ -58,10 +59,10 @@ export const Dashboard = () => {
           <Card>
             <CardContent>
               <Typography variant="h5" gutterBottom>
-                신규 고객
+                활성 계좌
               </Typography>
               <Typography variant="h3">
-                {stats?.newCustomers ?? 0}
+                {accounts.filter(account => account?.isActive).length}
               </Typography>
             </CardContent>
           </Card>
