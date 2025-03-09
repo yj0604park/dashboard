@@ -16,15 +16,6 @@ import { gql, useQuery } from '@apollo/client';
 import { BankData } from 'src/types/bank';
 import { GetBankSimpleListQuery } from 'src/queries/BankQuery';
 
-const UPDATE_TODO = gql`
-  mutation UpdateTodo($id: String!, $type: String!) {
-    updateTodo(id: $id, type: $type) {
-      id
-      type
-    }
-  }
-`;
-
 function CreateAccountDialog(props) {
   const { loading, error, data } = useQuery<BankData>(GetBankSimpleListQuery);
   const { onModalClose, selectedValue, open } = props;

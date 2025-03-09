@@ -2,8 +2,8 @@ import { gql } from '@apollo/client';
 
 // Get all retailers
 export const GetRetailerListQuery = gql`
-  query MyQuery($After: String) {
-    retailerRelay(after: $After) {
+  query GetRetailerListQuery($after: String) {
+    retailerRelay(after: $after) {
       edges {
         node {
           id
@@ -29,7 +29,7 @@ export const GetRetailerListQuery = gql`
 
 // Get all retailer types
 export const GetRetailerTypeQuery = gql`
-  query {
+  query GetRetailerTypeQuery {
     __type(name: "RetailerType") {
       name
       enumValues {

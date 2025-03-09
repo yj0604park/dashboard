@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 // Get salary data
 export const GetSalaryQuery = gql`
-query MyQuery {
+query GetSalaryQuery {
   salaryRelay(order: {date: ASC}) {
     edges {
       node {
@@ -29,7 +29,7 @@ query MyQuery {
 `;
 
 export const GetSalaryFilterQuery = gql`
-query MyQuery($DateMin: Date, $DateMax: Date) {
+query GetSalaryFilterQuery($DateMin: Date, $DateMax: Date) {
   salaryRelay(order: {date: ASC}, filters: {date: {gte: $DateMin, lte: $DateMax}}) {
     edges {
       node {
@@ -56,7 +56,7 @@ query MyQuery($DateMin: Date, $DateMax: Date) {
 `;
 
 export const SalaryYears = gql`
-query MyQuery {
+query SalaryYears {
   salaryYears
 }
 `;

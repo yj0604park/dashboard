@@ -200,11 +200,10 @@ export const GetLastTransactionDate = gql`
 
 export const CreateTransactionMutation = gql`
   mutation CreateTransactionMutation(
-    $amount: Float!
+    $amount: Decimal!
     $date: Date!
     $accountId: ID
     $isInternal: Boolean
-    $category: TransactionCategory
     $note: String
     $retailerId: ID
   ) {
@@ -214,7 +213,6 @@ export const CreateTransactionMutation = gql`
         date: $date
         account: { set: $accountId }
         isInternal: $isInternal
-        type: $category
         note: $note
         retailer: { set: $retailerId }
       }
@@ -226,11 +224,10 @@ export const CreateTransactionMutation = gql`
 
 export const CreateTransactionWithoutRetailerMutation = gql`
   mutation CreateTransactionWithoutRetailerMutation(
-    $amount: Float!
+    $amount: Decimal!
     $date: Date!
     $accountId: ID
     $isInternal: Boolean
-    $category: TransactionCategory
     $note: String
   ) {
     createTransaction(
@@ -239,7 +236,6 @@ export const CreateTransactionWithoutRetailerMutation = gql`
         date: $date
         account: { set: $accountId }
         isInternal: $isInternal
-        type: $category
         note: $note
       }
     ) {
@@ -252,10 +248,10 @@ export const CreateStockTransactionMutation = gql`
   mutation CreateStockTransactionMutation(
     $date: Date!
     $stockId: ID!
-    $amount: Float!
+    $amount: Decimal!
     $note: String
-    $price: Float!
-    $shares: Float!
+    $price: Decimal!
+    $shares: Decimal!
     $accountId: ID!
     $transactionId: ID!
   ) {
