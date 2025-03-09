@@ -13,7 +13,7 @@ export const Navigation = () => {
     <AppBar position="static" color="default" elevation={1}>
       <Toolbar>
         <Typography variant="h6" component="div" sx={{ flexGrow: 0, mr: 4 }}>
-          관리자 대시보드
+          Financial Management
         </Typography>
         <Box sx={{ flexGrow: 1 }}>
           <Button
@@ -24,10 +24,10 @@ export const Navigation = () => {
             대시보드
           </Button>
           <Button
-            onClick={() => navigate('/orders')}
-            color={isActive('/orders') ? 'primary' : 'inherit'}
+            onClick={() => navigate('/banks')}
+            color={isActive('/banks') ? 'primary' : 'inherit'}
           >
-            주문 관리
+            은행리스트
           </Button>
         </Box>
       </Toolbar>

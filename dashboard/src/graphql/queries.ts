@@ -38,6 +38,10 @@ export const GET_BANK_SIMPLE_LIST = gql`
         node {
           id
           name
+          balance {
+            currency
+            value
+          }
         }
       }
     }

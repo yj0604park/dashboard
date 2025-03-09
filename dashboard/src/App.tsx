@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
-import { Dashboard } from './pages/Dashboard';
-import { Banks } from './pages/Banks';
+import { Dashboard } from './pages/dashboard/Dashboard';
+import { Banks } from './pages/banks/Banks';
 import { Navigation } from './components/Navigation';
 import { Box, CssBaseline } from '@mui/material';
 import { client } from './lib/apollo';

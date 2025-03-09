@@ -1,5 +1,5 @@
 import { Typography, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Box, CircularProgress } from '@mui/material';
-import { useGetBankSimpleListQueryQuery } from '../generated/graphql';
+import { useGetBankSimpleListQueryQuery } from '../../generated/graphql';
 
 export const Banks = () => {
   const { data, loading, error } = useGetBankSimpleListQueryQuery();
@@ -33,6 +33,7 @@ export const Banks = () => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>은행명</TableCell>
+              <TableCell>계좌수</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -40,6 +41,13 @@ export const Banks = () => {
               <TableRow key={bank.id}>
                 <TableCell>{bank.id}</TableCell>
                 <TableCell>{bank.name}</TableCell>
+                <TableCell>
+                  {bank.balance.map((balance) => (
+                    <div key={balance.currency}>
+                      {balance.currency} {balance.value}
+                    </div>
+                  ))}
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
