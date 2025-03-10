@@ -11,6 +11,7 @@ interface OverviewProps {
     name: string;
     isActive: boolean;
     bankName: string;
+    bankId: string;
   }>;
 }
 

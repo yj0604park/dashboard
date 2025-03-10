@@ -1,6 +1,6 @@
 import { Typography, CircularProgress, Box, Stack } from '@mui/material';
 import { useGetBankNodeWithBalanceQuery } from '../../generated/graphql';
-import { AccountTable } from './components/AccountTable';
+import { AccountTable } from '../../components/table/AccountTable';
 import { AmountChart } from './components/AmountChart';
 import { Overview } from './components/Overview';
 

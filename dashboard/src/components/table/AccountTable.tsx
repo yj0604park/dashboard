@@ -10,13 +10,14 @@ import {
   ColumnFiltersState,
   type ColumnDef,
 } from '@tanstack/react-table';
-import { formatCurrency } from '../../../utils/currency';
+import { formatCurrency } from '../../utils/currency';
 import { useState } from 'react';
 
 interface Account {
   id: string;
   name: string;
   bankName: string;
+  bankId: string;
   type: string;
   currency: string;
   amount: number;
@@ -29,7 +30,9 @@ interface AccountTableProps {
 
 export const AccountTable = ({ accounts }: AccountTableProps) => {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'bankName', desc: false }]);
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([
+    { id: 'isActive', value: true }
+  ]);
 
   // 고유한 은행명 추출
   const uniqueBanks = [...new Set(accounts.map(account => account.bankName))].sort();

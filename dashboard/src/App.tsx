@@ -3,6 +3,7 @@ import { ApolloProvider } from '@apollo/client';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Banks } from './pages/banks/Banks';
 import { BankDetail } from './pages/banks/BankDetail';
+import { AccountDetail } from './pages/accounts/AccountDetail';
 import { NotFound } from './pages/NotFound';
 import { Navigation } from './components/Navigation';
 import { Box, CssBaseline } from '@mui/material';
@@ -38,6 +39,7 @@ function App() {
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/banks" element={<Banks />} />
               <Route path="/banks/:bankId" element={<BankDetail />} />
+              <Route path="/accounts/:accountId" element={<AccountDetail />} />
               <Route path="*" element={<NotFound />} />
             </Routes>
           </Box>

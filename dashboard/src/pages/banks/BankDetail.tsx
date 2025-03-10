@@ -1,7 +1,7 @@
 import { useParams } from 'react-router-dom';
 import { Box, Typography, Stack, Button } from '@mui/material';
 import { useGetAccountNodeQuery } from '../../generated/graphql';
-// import { AccountTable } from '../dashboard/components/AccountTable';
+import { AccountTable } from '../../components/table/AccountTable';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 export const BankDetail = () => {
@@ -20,9 +20,8 @@ export const BankDetail = () => {
   if (error) {
     return <Typography color="error">에러가 발생했습니다: {error.message}</Typography>;
   }
-
-  // const accounts = data.accountRelay.edges.map(edge => edge.node);
   const bank = data.bankRelay.edges[0].node;
+  const accounts = data.accountRelay.edges.map(edge => ({...edge.node, bankName: bank.name, bankId: bank.id}));
 
   return (
     <Stack spacing={3}>
@@ -39,7 +38,7 @@ export const BankDetail = () => {
         </Typography>
       </Box>
 
-      {/* <AccountTable accounts={accounts} /> */}
+      <AccountTable accounts={accounts} />
     </Stack>
   );
 }; 

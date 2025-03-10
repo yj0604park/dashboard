@@ -896,7 +896,7 @@ export type GetAccountNodeQueryVariables = Exact<{
 }>;
 
 
-export type GetAccountNodeQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', cursor: string, node: { __typename?: 'AccountNode', amount: any, name: string, currency: CurrencyType, lastUpdate?: any | null, id: any, isActive: boolean, type: AccountType, firstTransaction?: any | null, lastTransaction?: any | null, bank: { __typename?: 'BankNode', id: any, name: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } }, bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', name: string } }> } };
+export type GetAccountNodeQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', cursor: string, node: { __typename?: 'AccountNode', amount: any, name: string, currency: CurrencyType, lastUpdate?: any | null, id: any, isActive: boolean, type: AccountType, firstTransaction?: any | null, lastTransaction?: any | null, bank: { __typename?: 'BankNode', id: any, name: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } }, bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string } }> } };
 
 export type GetBankNodeWithBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -915,12 +915,44 @@ export type GetAmountSnapshotQueryVariables = Exact<{
 
 export type GetAmountSnapshotQuery = { __typename?: 'Query', krwSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> }, usdSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> } };
 
+export type GetTransactionListQueryVariables = Exact<{
+  AccountID?: InputMaybe<Scalars['ID']['input']>;
+  After?: InputMaybe<Scalars['String']['input']>;
+  First?: InputMaybe<Scalars['Int']['input']>;
+}>;
+
+
+export type GetTransactionListQuery = { __typename?: 'Query', transactionRelay: { __typename?: 'TransactionNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'TransactionNodeEdge', cursor: string, node: { __typename?: 'TransactionNode', id: any, amount: any, balance?: any | null, date: any, isInternal: boolean, requiresDetail: boolean, reviewed: boolean, note?: string | null, type: TransactionCategory, relatedTransaction?: { __typename?: 'TransactionNode', id: any } | null, retailer?: { __typename?: 'RetailerNode', id: any, name: string } | null } }> }, accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', currency: CurrencyType, type: AccountType, name: string, isActive: boolean, amount: any, bank: { __typename?: 'BankNode', id: any, name: string } } }> } };
+
+export type CreateTransactionMutationVariables = Exact<{
+  amount: Scalars['Decimal']['input'];
+  date: Scalars['Date']['input'];
+  accountId?: InputMaybe<Scalars['ID']['input']>;
+  isInternal?: InputMaybe<Scalars['Boolean']['input']>;
+  note?: InputMaybe<Scalars['String']['input']>;
+  retailerId?: InputMaybe<Scalars['ID']['input']>;
+}>;
+
+
+export type CreateTransactionMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: any } };
+
+export type CreateTransactionWithoutRetailerMutationVariables = Exact<{
+  amount: Scalars['Decimal']['input'];
+  date: Scalars['Date']['input'];
+  accountId?: InputMaybe<Scalars['ID']['input']>;
+  isInternal?: InputMaybe<Scalars['Boolean']['input']>;
+  note?: InputMaybe<Scalars['String']['input']>;
+}>;
+
+
+export type CreateTransactionWithoutRetailerMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: any } };
+
 
 export const GetAccountNodeDocument = gql`
     query GetAccountNode($After: String!, $BankId: ID) {
   accountRelay(
     order: {name: ASC}
-    filters: {isActive: {exact: true}, bank: {id: {exact: $BankId}, name: {}}}
+    filters: {bank: {id: {exact: $BankId}, name: {}}}
     first: 100
     after: $After
   ) {
@@ -953,6 +985,7 @@ export const GetAccountNodeDocument = gql`
   bankRelay(filters: {id: {exact: $BankId}}) {
     edges {
       node {
+        id
         name
       }
     }
@@ -1170,3 +1203,165 @@ export type GetAmountSnapshotQueryHookResult = ReturnType<typeof useGetAmountSna
 export type GetAmountSnapshotLazyQueryHookResult = ReturnType<typeof useGetAmountSnapshotLazyQuery>;
 export type GetAmountSnapshotSuspenseQueryHookResult = ReturnType<typeof useGetAmountSnapshotSuspenseQuery>;
 export type GetAmountSnapshotQueryResult = Apollo.QueryResult<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>;
+export const GetTransactionListDocument = gql`
+    query GetTransactionList($AccountID: ID, $After: String, $First: Int) {
+  transactionRelay(
+    filters: {account: {bank: {}, id: {exact: $AccountID}}}
+    order: {date: DESC, amount: ASC, balance: ASC}
+    after: $After
+    first: $First
+  ) {
+    edges {
+      cursor
+      node {
+        id
+        amount
+        balance
+        date
+        isInternal
+        requiresDetail
+        reviewed
+        note
+        type
+        relatedTransaction {
+          id
+        }
+        retailer {
+          id
+          name
+        }
+      }
+    }
+    totalCount
+  }
+  accountRelay(filters: {bank: {}, id: {exact: $AccountID}}) {
+    edges {
+      node {
+        currency
+        type
+        name
+        isActive
+        bank {
+          id
+          name
+        }
+        amount
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetTransactionListQuery__
+ *
+ * To run a query within a React component, call `useGetTransactionListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetTransactionListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetTransactionListQuery({
+ *   variables: {
+ *      AccountID: // value for 'AccountID'
+ *      After: // value for 'After'
+ *      First: // value for 'First'
+ *   },
+ * });
+ */
+export function useGetTransactionListQuery(baseOptions?: Apollo.QueryHookOptions<GetTransactionListQuery, GetTransactionListQueryVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetTransactionListQuery, GetTransactionListQueryVariables>(GetTransactionListDocument, options);
+      }
+export function useGetTransactionListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetTransactionListQuery, GetTransactionListQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetTransactionListQuery, GetTransactionListQueryVariables>(GetTransactionListDocument, options);
+        }
+export function useGetTransactionListSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetTransactionListQuery, GetTransactionListQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetTransactionListQuery, GetTransactionListQueryVariables>(GetTransactionListDocument, options);
+        }
+export type GetTransactionListQueryHookResult = ReturnType<typeof useGetTransactionListQuery>;
+export type GetTransactionListLazyQueryHookResult = ReturnType<typeof useGetTransactionListLazyQuery>;
+export type GetTransactionListSuspenseQueryHookResult = ReturnType<typeof useGetTransactionListSuspenseQuery>;
+export type GetTransactionListQueryResult = Apollo.QueryResult<GetTransactionListQuery, GetTransactionListQueryVariables>;
+export const CreateTransactionDocument = gql`
+    mutation CreateTransaction($amount: Decimal!, $date: Date!, $accountId: ID, $isInternal: Boolean, $note: String, $retailerId: ID) {
+  createTransaction(
+    data: {amount: $amount, date: $date, account: {set: $accountId}, isInternal: $isInternal, note: $note, retailer: {set: $retailerId}}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateTransactionMutationFn = Apollo.MutationFunction<CreateTransactionMutation, CreateTransactionMutationVariables>;
+
+/**
+ * __useCreateTransactionMutation__
+ *
+ * To run a mutation, you first call `useCreateTransactionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTransactionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTransactionMutation, { data, loading, error }] = useCreateTransactionMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      date: // value for 'date'
+ *      accountId: // value for 'accountId'
+ *      isInternal: // value for 'isInternal'
+ *      note: // value for 'note'
+ *      retailerId: // value for 'retailerId'
+ *   },
+ * });
+ */
+export function useCreateTransactionMutation(baseOptions?: Apollo.MutationHookOptions<CreateTransactionMutation, CreateTransactionMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTransactionMutation, CreateTransactionMutationVariables>(CreateTransactionDocument, options);
+      }
+export type CreateTransactionMutationHookResult = ReturnType<typeof useCreateTransactionMutation>;
+export type CreateTransactionMutationResult = Apollo.MutationResult<CreateTransactionMutation>;
+export type CreateTransactionMutationOptions = Apollo.BaseMutationOptions<CreateTransactionMutation, CreateTransactionMutationVariables>;
+export const CreateTransactionWithoutRetailerDocument = gql`
+    mutation CreateTransactionWithoutRetailer($amount: Decimal!, $date: Date!, $accountId: ID, $isInternal: Boolean, $note: String) {
+  createTransaction(
+    data: {amount: $amount, date: $date, account: {set: $accountId}, isInternal: $isInternal, note: $note}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateTransactionWithoutRetailerMutationFn = Apollo.MutationFunction<CreateTransactionWithoutRetailerMutation, CreateTransactionWithoutRetailerMutationVariables>;
+
+/**
+ * __useCreateTransactionWithoutRetailerMutation__
+ *
+ * To run a mutation, you first call `useCreateTransactionWithoutRetailerMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateTransactionWithoutRetailerMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createTransactionWithoutRetailerMutation, { data, loading, error }] = useCreateTransactionWithoutRetailerMutation({
+ *   variables: {
+ *      amount: // value for 'amount'
+ *      date: // value for 'date'
+ *      accountId: // value for 'accountId'
+ *      isInternal: // value for 'isInternal'
+ *      note: // value for 'note'
+ *   },
+ * });
+ */
+export function useCreateTransactionWithoutRetailerMutation(baseOptions?: Apollo.MutationHookOptions<CreateTransactionWithoutRetailerMutation, CreateTransactionWithoutRetailerMutationVariables>) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useMutation<CreateTransactionWithoutRetailerMutation, CreateTransactionWithoutRetailerMutationVariables>(CreateTransactionWithoutRetailerDocument, options);
+      }
+export type CreateTransactionWithoutRetailerMutationHookResult = ReturnType<typeof useCreateTransactionWithoutRetailerMutation>;
+export type CreateTransactionWithoutRetailerMutationResult = Apollo.MutationResult<CreateTransactionWithoutRetailerMutation>;
+export type CreateTransactionWithoutRetailerMutationOptions = Apollo.BaseMutationOptions<CreateTransactionWithoutRetailerMutation, CreateTransactionWithoutRetailerMutationVariables>;

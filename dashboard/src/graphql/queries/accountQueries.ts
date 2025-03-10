@@ -4,7 +4,7 @@ export const GET_ACCOUNT_NODE = gql`
 query GetAccountNode($After: String!, $BankId: ID) {
   accountRelay(
     order: {name: ASC}
-    filters: {isActive: {exact: true}, bank: {id: {exact: $BankId}, name: {}}}
+    filters: {bank: {id: {exact: $BankId}, name: {}}}
     first: 100
     after: $After
   ) {
@@ -37,6 +37,7 @@ query GetAccountNode($After: String!, $BankId: ID) {
   bankRelay(filters: {id: {exact: $BankId}}) {
     edges {
       node {
+        id
         name
       }
     }
