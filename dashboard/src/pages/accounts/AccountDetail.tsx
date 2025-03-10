@@ -6,6 +6,7 @@ import { formatCurrency } from '../../utils/currency';
 import { Link } from '@mui/material';
 import { TransactionTable } from './components/TransactionTable';
 import { useState } from 'react';
+import { translateAccountType } from '../../utils/accountTranslations';
 
 export const AccountDetail = () => {
   const { accountId } = useParams();
@@ -92,7 +93,7 @@ export const AccountDetail = () => {
 
             <Grid item xs={12} sm={6}>
               <Typography color="text.secondary" gutterBottom>계좌 종류</Typography>
-              <Typography>{account.type}</Typography>
+              <Typography>{translateAccountType(account.type)}</Typography>
             </Grid>
 
             <Grid item xs={12} sm={6}>

@@ -14,6 +14,7 @@ import {
   TimeScale,
   Scale,
   CoreScaleOptions,
+  Filler,
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
 import { ko } from 'date-fns/locale';
@@ -26,7 +27,8 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  Filler
 );
 
 const chartOptions = {
@@ -146,18 +148,14 @@ export const AmountChart = () => {
         label: 'KRW',
         data: krwData,
         borderColor: 'rgb(75, 192, 192)',
-        backgroundColor: 'rgba(75, 192, 192, 0.1)',
         yAxisID: 'y',
-        fill: true,
         tension: 0.2
       },
       {
         label: 'USD',
         data: usdData,
         borderColor: 'rgb(255, 99, 132)',
-        backgroundColor: 'rgba(255, 99, 132, 0.1)',
         yAxisID: 'y1',
-        fill: true,
         tension: 0.2
       }
     ]

@@ -42,6 +42,9 @@ export const GET_BANK_SIMPLE_LIST = gql`
             currency
             value
           }
+          accountSet {
+            totalCount
+          }
         }
       }
     }

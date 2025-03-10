@@ -12,6 +12,8 @@ import {
 } from '@tanstack/react-table';
 import { formatCurrency } from '../../utils/currency';
 import { useState } from 'react';
+import React from 'react';
+import { translateAccountType } from '../../utils/accountTranslations';
 
 interface Account {
   id: string;
@@ -90,7 +92,7 @@ export const AccountTable = ({ accounts }: AccountTableProps) => {
       header: '종류',
       cell: ({ getValue }) => (
         <Typography variant="body2">
-          {getValue() as string}
+          {translateAccountType(getValue() as string)}
         </Typography>
       ),
       enableColumnFilter: true,
@@ -159,8 +161,8 @@ export const AccountTable = ({ accounts }: AccountTableProps) => {
         <Table>
           <TableHead>
             {table.getHeaderGroups().map(headerGroup => (
-              <>
-                <TableRow key={headerGroup.id}>
+              <React.Fragment key={headerGroup.id}>
+                <TableRow>
                   {headerGroup.headers.map(header => (
                     <TableCell
                       key={header.id}
@@ -256,7 +258,7 @@ export const AccountTable = ({ accounts }: AccountTableProps) => {
                     </TableCell>
                   ))}
                 </TableRow>
-              </>
+              </React.Fragment>
             ))}
           </TableHead>
           <TableBody>

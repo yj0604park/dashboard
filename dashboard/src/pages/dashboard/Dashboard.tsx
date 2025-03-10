@@ -1,30 +1,22 @@
-import { Typography, CircularProgress, Box, Stack } from '@mui/material';
-import { useGetBankNodeWithBalanceQuery } from '../../generated/graphql';
-import { AccountTable } from '../../components/table/AccountTable';
+import { Typography, Stack, Container } from '@mui/material';
+import { BankList } from './components/BankList';
+import { LoadingScreen } from '../../components/common/LoadingScreen';
+import { ErrorScreen } from '../../components/common/ErrorScreen';
+import { useBankData } from '../../hooks/useBankData';
 import { AmountChart } from './components/AmountChart';
 import { Overview } from './components/Overview';
-
+import { AccountTable } from '../../components/table/AccountTable';
+import { useGetBankNodeWithBalanceQuery } from '../../generated/graphql';
 
 export const Dashboard = () => {
-  const { data, loading, error } = useGetBankNodeWithBalanceQuery();
+  const { banks, loading: banksLoading, error: banksError } = useBankData();
+  const { data: accountData, loading: accountsLoading, error: accountsError } = useGetBankNodeWithBalanceQuery();
 
-  if (loading) {
-    return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
-        <CircularProgress />
-      </Box>
-    );
-  }
+  if (banksLoading || accountsLoading) return <LoadingScreen />;
+  if (banksError) return <ErrorScreen message={banksError.message} />;
+  if (accountsError) return <ErrorScreen message={accountsError.message} />;
 
-  if (error) {
-    return (
-      <Typography color="error">
-        에러가 발생했습니다: {error.message}
-      </Typography>
-    );
-  }
-
-  const accounts = data?.bankRelay.edges.flatMap(bank => 
+  const accounts = accountData?.bankRelay.edges.flatMap(bank => 
     bank.node.accountSet.edges.map(account => ({
       ...account.node,
       bankName: bank.node.name,
@@ -33,34 +25,37 @@ export const Dashboard = () => {
   ) ?? [];
 
   return (
-    <Stack spacing={3}>
-      <Typography 
-        variant="h2" 
-        sx={{ 
-          fontSize: '1.4rem',
-          fontWeight: 600,
-        }}
-      >
-        대시보드
-      </Typography>
-
-      <Overview accounts={accounts} />
-
-      <AmountChart />
-
-      <Box>
+    <Container>
+      <Stack spacing={3}>
         <Typography 
-          variant="h3" 
+          variant="h2" 
           sx={{ 
-            fontSize: '1.2rem',
-            fontWeight: 500,
-            mb: 2
+            fontSize: '1.4rem',
+            fontWeight: 600,
           }}
         >
-          계좌 목록
+          대시보드
         </Typography>
-        <AccountTable accounts={accounts} />
-      </Box>
-    </Stack>
+
+        <Overview accounts={accounts} />
+
+        <AmountChart />
+
+        <BankList banks={banks} />
+
+        <Stack spacing={2}>
+          <Typography 
+            variant="h3" 
+            sx={{ 
+              fontSize: '1.2rem',
+              fontWeight: 500,
+            }}
+          >
+            계좌 목록
+          </Typography>
+          <AccountTable accounts={accounts} />
+        </Stack>
+      </Stack>
+    </Container>
   );
 }; 

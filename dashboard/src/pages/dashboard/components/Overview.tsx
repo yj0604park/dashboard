@@ -31,9 +31,9 @@ export const Overview = ({ accounts }: OverviewProps) => {
   return (
     <Grid container spacing={4} sx={{ width: '100%', mb: 4 }}>
       <Grid item xs={12} sm={6} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Typography variant="h5" color="text.secondary" gutterBottom>
               계좌 수
             </Typography>
             <Typography variant="h3">
@@ -44,8 +44,8 @@ export const Overview = ({ accounts }: OverviewProps) => {
       </Grid>
       <Grid item xs={12} sm={6} md={4}>
         <Card sx={{ height: '100%' }}>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Typography variant="h5" color="text.secondary" gutterBottom>
               총 잔액
             </Typography>
             <Stack spacing={1}>
@@ -68,9 +68,9 @@ export const Overview = ({ accounts }: OverviewProps) => {
         </Card>
       </Grid>
       <Grid item xs={12} sm={6} md={4}>
-        <Card>
-          <CardContent>
-            <Typography variant="h5" gutterBottom>
+        <Card sx={{ height: '100%' }}>
+          <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+            <Typography variant="h5" color="text.secondary" gutterBottom>
               활성 계좌
             </Typography>
             <Typography variant="h3">
@@ -79,6 +79,6 @@ export const Overview = ({ accounts }: OverviewProps) => {
           </CardContent>
         </Card>
       </Grid>
-    </Grid>)
-
+    </Grid>
+  );
 }

@@ -43,4 +43,4 @@ export const formatCurrency = (amount: number | null | undefined, currency: stri
       </Box>
     );
   }
-}; 
+};
