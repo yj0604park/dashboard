@@ -1,7 +1,7 @@
 import { gql } from '@apollo/client';
 
 export const GET_BANK_NODE = gql`
-  query GetBankNodeWithBalanceQuery {
+  query GetBankNodeWithBalance {
     bankRelay {
       edges {
         node {
@@ -32,7 +32,7 @@ export const GET_BANK_NODE = gql`
 `;
 
 export const GET_BANK_SIMPLE_LIST = gql`
-  query GetBankSimpleListQuery {
+  query GetBankSimpleList {
     bankRelay {
       edges {
         node {

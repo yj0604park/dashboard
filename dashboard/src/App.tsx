@@ -1,7 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { ApolloProvider } from '@apollo/client';
 import { Dashboard } from './pages/dashboard/Dashboard';
 import { Banks } from './pages/banks/Banks';
+import { BankDetail } from './pages/banks/BankDetail';
+import { NotFound } from './pages/NotFound';
 import { Navigation } from './components/Navigation';
 import { Box, CssBaseline } from '@mui/material';
 import { client } from './lib/apollo';
@@ -32,8 +34,11 @@ function App() {
             boxSizing: 'border-box'
           }}>
             <Routes>
-              <Route path="/" element={<Dashboard />} />
+              <Route path="/" element={<Navigate to="/dashboard" replace />} />
+              <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/banks" element={<Banks />} />
+              <Route path="/banks/:bankId" element={<BankDetail />} />
+              <Route path="*" element={<NotFound />} />
             </Routes>
           </Box>
         </Box>

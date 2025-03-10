@@ -890,26 +890,111 @@ export type TransactionOrder = {
   id?: InputMaybe<Ordering>;
 };
 
-export type GetBankNodeWithBalanceQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetAccountNodeQueryVariables = Exact<{
+  After: Scalars['String']['input'];
+  BankId?: InputMaybe<Scalars['ID']['input']>;
+}>;
 
 
-export type GetBankNodeWithBalanceQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: any, lastUpdate?: any | null, name: string, isActive: boolean } }> } } }> } };
+export type GetAccountNodeQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', cursor: string, node: { __typename?: 'AccountNode', amount: any, name: string, currency: CurrencyType, lastUpdate?: any | null, id: any, isActive: boolean, type: AccountType, firstTransaction?: any | null, lastTransaction?: any | null, bank: { __typename?: 'BankNode', id: any, name: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor?: string | null, endCursor?: string | null } }, bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', name: string } }> } };
 
-export type GetBankSimpleListQueryQueryVariables = Exact<{ [key: string]: never; }>;
+export type GetBankNodeWithBalanceQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBankSimpleListQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }> } }> } };
+export type GetBankNodeWithBalanceQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount?: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: any, lastUpdate?: any | null, name: string, isActive: boolean } }> } } }> } };
 
-export type GetAmountSnapshotQueryQueryVariables = Exact<{
+export type GetBankSimpleListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type GetBankSimpleListQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: any }> } }> } };
+
+export type GetAmountSnapshotQueryVariables = Exact<{
   startDate?: InputMaybe<Scalars['Date']['input']>;
 }>;
 
 
-export type GetAmountSnapshotQueryQuery = { __typename?: 'Query', krwSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> }, usdSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> } };
+export type GetAmountSnapshotQuery = { __typename?: 'Query', krwSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> }, usdSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: any, currency: CurrencyType, date: any, summary?: any | null } }> } };
 
 
-export const GetBankNodeWithBalanceQueryDocument = gql`
-    query GetBankNodeWithBalanceQuery {
+export const GetAccountNodeDocument = gql`
+    query GetAccountNode($After: String!, $BankId: ID) {
+  accountRelay(
+    order: {name: ASC}
+    filters: {isActive: {exact: true}, bank: {id: {exact: $BankId}, name: {}}}
+    first: 100
+    after: $After
+  ) {
+    totalCount
+    edges {
+      node {
+        amount
+        name
+        currency
+        bank {
+          id
+          name
+        }
+        lastUpdate
+        id
+        isActive
+        type
+        firstTransaction
+        lastTransaction
+      }
+      cursor
+    }
+    pageInfo {
+      hasNextPage
+      hasPreviousPage
+      startCursor
+      endCursor
+    }
+  }
+  bankRelay(filters: {id: {exact: $BankId}}) {
+    edges {
+      node {
+        name
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetAccountNodeQuery__
+ *
+ * To run a query within a React component, call `useGetAccountNodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAccountNodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetAccountNodeQuery({
+ *   variables: {
+ *      After: // value for 'After'
+ *      BankId: // value for 'BankId'
+ *   },
+ * });
+ */
+export function useGetAccountNodeQuery(baseOptions: Apollo.QueryHookOptions<GetAccountNodeQuery, GetAccountNodeQueryVariables> & ({ variables: GetAccountNodeQueryVariables; skip?: boolean; } | { skip: boolean; }) ) {
+        const options = {...defaultOptions, ...baseOptions}
+        return Apollo.useQuery<GetAccountNodeQuery, GetAccountNodeQueryVariables>(GetAccountNodeDocument, options);
+      }
+export function useGetAccountNodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAccountNodeQuery, GetAccountNodeQueryVariables>) {
+          const options = {...defaultOptions, ...baseOptions}
+          return Apollo.useLazyQuery<GetAccountNodeQuery, GetAccountNodeQueryVariables>(GetAccountNodeDocument, options);
+        }
+export function useGetAccountNodeSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAccountNodeQuery, GetAccountNodeQueryVariables>) {
+          const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
+          return Apollo.useSuspenseQuery<GetAccountNodeQuery, GetAccountNodeQueryVariables>(GetAccountNodeDocument, options);
+        }
+export type GetAccountNodeQueryHookResult = ReturnType<typeof useGetAccountNodeQuery>;
+export type GetAccountNodeLazyQueryHookResult = ReturnType<typeof useGetAccountNodeLazyQuery>;
+export type GetAccountNodeSuspenseQueryHookResult = ReturnType<typeof useGetAccountNodeSuspenseQuery>;
+export type GetAccountNodeQueryResult = Apollo.QueryResult<GetAccountNodeQuery, GetAccountNodeQueryVariables>;
+export const GetBankNodeWithBalanceDocument = gql`
+    query GetBankNodeWithBalance {
   bankRelay {
     edges {
       node {
@@ -940,38 +1025,38 @@ export const GetBankNodeWithBalanceQueryDocument = gql`
     `;
 
 /**
- * __useGetBankNodeWithBalanceQueryQuery__
+ * __useGetBankNodeWithBalanceQuery__
  *
- * To run a query within a React component, call `useGetBankNodeWithBalanceQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBankNodeWithBalanceQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBankNodeWithBalanceQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBankNodeWithBalanceQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetBankNodeWithBalanceQueryQuery({
+ * const { data, loading, error } = useGetBankNodeWithBalanceQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetBankNodeWithBalanceQueryQuery(baseOptions?: Apollo.QueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+export function useGetBankNodeWithBalanceQuery(baseOptions?: Apollo.QueryHookOptions<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+        return Apollo.useQuery<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>(GetBankNodeWithBalanceDocument, options);
       }
-export function useGetBankNodeWithBalanceQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+export function useGetBankNodeWithBalanceLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+          return Apollo.useLazyQuery<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>(GetBankNodeWithBalanceDocument, options);
         }
-export function useGetBankNodeWithBalanceQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>) {
+export function useGetBankNodeWithBalanceSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>(GetBankNodeWithBalanceQueryDocument, options);
+          return Apollo.useSuspenseQuery<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>(GetBankNodeWithBalanceDocument, options);
         }
-export type GetBankNodeWithBalanceQueryQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQueryQuery>;
-export type GetBankNodeWithBalanceQueryLazyQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQueryLazyQuery>;
-export type GetBankNodeWithBalanceQuerySuspenseQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQuerySuspenseQuery>;
-export type GetBankNodeWithBalanceQueryQueryResult = Apollo.QueryResult<GetBankNodeWithBalanceQueryQuery, GetBankNodeWithBalanceQueryQueryVariables>;
-export const GetBankSimpleListQueryDocument = gql`
-    query GetBankSimpleListQuery {
+export type GetBankNodeWithBalanceQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceQuery>;
+export type GetBankNodeWithBalanceLazyQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceLazyQuery>;
+export type GetBankNodeWithBalanceSuspenseQueryHookResult = ReturnType<typeof useGetBankNodeWithBalanceSuspenseQuery>;
+export type GetBankNodeWithBalanceQueryResult = Apollo.QueryResult<GetBankNodeWithBalanceQuery, GetBankNodeWithBalanceQueryVariables>;
+export const GetBankSimpleListDocument = gql`
+    query GetBankSimpleList {
   bankRelay {
     edges {
       node {
@@ -988,38 +1073,38 @@ export const GetBankSimpleListQueryDocument = gql`
     `;
 
 /**
- * __useGetBankSimpleListQueryQuery__
+ * __useGetBankSimpleListQuery__
  *
- * To run a query within a React component, call `useGetBankSimpleListQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetBankSimpleListQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetBankSimpleListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetBankSimpleListQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetBankSimpleListQueryQuery({
+ * const { data, loading, error } = useGetBankSimpleListQuery({
  *   variables: {
  *   },
  * });
  */
-export function useGetBankSimpleListQueryQuery(baseOptions?: Apollo.QueryHookOptions<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>) {
+export function useGetBankSimpleListQuery(baseOptions?: Apollo.QueryHookOptions<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>(GetBankSimpleListQueryDocument, options);
+        return Apollo.useQuery<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>(GetBankSimpleListDocument, options);
       }
-export function useGetBankSimpleListQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>) {
+export function useGetBankSimpleListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>(GetBankSimpleListQueryDocument, options);
+          return Apollo.useLazyQuery<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>(GetBankSimpleListDocument, options);
         }
-export function useGetBankSimpleListQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>) {
+export function useGetBankSimpleListSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>(GetBankSimpleListQueryDocument, options);
+          return Apollo.useSuspenseQuery<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>(GetBankSimpleListDocument, options);
         }
-export type GetBankSimpleListQueryQueryHookResult = ReturnType<typeof useGetBankSimpleListQueryQuery>;
-export type GetBankSimpleListQueryLazyQueryHookResult = ReturnType<typeof useGetBankSimpleListQueryLazyQuery>;
-export type GetBankSimpleListQuerySuspenseQueryHookResult = ReturnType<typeof useGetBankSimpleListQuerySuspenseQuery>;
-export type GetBankSimpleListQueryQueryResult = Apollo.QueryResult<GetBankSimpleListQueryQuery, GetBankSimpleListQueryQueryVariables>;
-export const GetAmountSnapshotQueryDocument = gql`
-    query GetAmountSnapshotQuery($startDate: Date) {
+export type GetBankSimpleListQueryHookResult = ReturnType<typeof useGetBankSimpleListQuery>;
+export type GetBankSimpleListLazyQueryHookResult = ReturnType<typeof useGetBankSimpleListLazyQuery>;
+export type GetBankSimpleListSuspenseQueryHookResult = ReturnType<typeof useGetBankSimpleListSuspenseQuery>;
+export type GetBankSimpleListQueryResult = Apollo.QueryResult<GetBankSimpleListQuery, GetBankSimpleListQueryVariables>;
+export const GetAmountSnapshotDocument = gql`
+    query GetAmountSnapshot($startDate: Date) {
   krwSnapshot: amountSnapshotRelay(
     order: {date: ASC}
     filters: {currency: {exact: KRW}, date: {gte: $startDate}}
@@ -1054,34 +1139,34 @@ export const GetAmountSnapshotQueryDocument = gql`
     `;
 
 /**
- * __useGetAmountSnapshotQueryQuery__
+ * __useGetAmountSnapshotQuery__
  *
- * To run a query within a React component, call `useGetAmountSnapshotQueryQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetAmountSnapshotQueryQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useGetAmountSnapshotQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetAmountSnapshotQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useGetAmountSnapshotQueryQuery({
+ * const { data, loading, error } = useGetAmountSnapshotQuery({
  *   variables: {
  *      startDate: // value for 'startDate'
  *   },
  * });
  */
-export function useGetAmountSnapshotQueryQuery(baseOptions?: Apollo.QueryHookOptions<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>) {
+export function useGetAmountSnapshotQuery(baseOptions?: Apollo.QueryHookOptions<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>) {
         const options = {...defaultOptions, ...baseOptions}
-        return Apollo.useQuery<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>(GetAmountSnapshotQueryDocument, options);
+        return Apollo.useQuery<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>(GetAmountSnapshotDocument, options);
       }
-export function useGetAmountSnapshotQueryLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>) {
+export function useGetAmountSnapshotLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>) {
           const options = {...defaultOptions, ...baseOptions}
-          return Apollo.useLazyQuery<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>(GetAmountSnapshotQueryDocument, options);
+          return Apollo.useLazyQuery<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>(GetAmountSnapshotDocument, options);
         }
-export function useGetAmountSnapshotQuerySuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>) {
+export function useGetAmountSnapshotSuspenseQuery(baseOptions?: Apollo.SkipToken | Apollo.SuspenseQueryHookOptions<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>) {
           const options = baseOptions === Apollo.skipToken ? baseOptions : {...defaultOptions, ...baseOptions}
-          return Apollo.useSuspenseQuery<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>(GetAmountSnapshotQueryDocument, options);
+          return Apollo.useSuspenseQuery<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>(GetAmountSnapshotDocument, options);
         }
-export type GetAmountSnapshotQueryQueryHookResult = ReturnType<typeof useGetAmountSnapshotQueryQuery>;
-export type GetAmountSnapshotQueryLazyQueryHookResult = ReturnType<typeof useGetAmountSnapshotQueryLazyQuery>;
-export type GetAmountSnapshotQuerySuspenseQueryHookResult = ReturnType<typeof useGetAmountSnapshotQuerySuspenseQuery>;
-export type GetAmountSnapshotQueryQueryResult = Apollo.QueryResult<GetAmountSnapshotQueryQuery, GetAmountSnapshotQueryQueryVariables>;
+export type GetAmountSnapshotQueryHookResult = ReturnType<typeof useGetAmountSnapshotQuery>;
+export type GetAmountSnapshotLazyQueryHookResult = ReturnType<typeof useGetAmountSnapshotLazyQuery>;
+export type GetAmountSnapshotSuspenseQueryHookResult = ReturnType<typeof useGetAmountSnapshotSuspenseQuery>;
+export type GetAmountSnapshotQueryResult = Apollo.QueryResult<GetAmountSnapshotQuery, GetAmountSnapshotQueryVariables>;

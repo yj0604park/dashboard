@@ -5,13 +5,12 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    Typography,
-    Box,
+    Typography
 } from '@mui/material';
-import { GetBankSimpleListQueryQuery } from '../../../generated/graphql';
+import { GetBankSimpleListQuery } from '../../../generated/graphql';
 import { StyledTableCell, StyledTableRow } from '../../../components/table/StyledTable';
 import { formatCurrency } from '../../../utils/currency';
-type BankNode = GetBankSimpleListQueryQuery['bankRelay']['edges'][0]['node'];
+type BankNode = GetBankSimpleListQuery['bankRelay']['edges'][0]['node'];
 
 interface BankTableProps {
     banks: BankNode[];

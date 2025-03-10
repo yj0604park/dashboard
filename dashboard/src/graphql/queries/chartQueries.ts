@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 // Get last 100 amount snapshots
 export const GET_AMOUNT_SNAPSHOT = gql`
-  query GetAmountSnapshotQuery($startDate: Date) {
+  query GetAmountSnapshot($startDate: Date) {
     krwSnapshot: amountSnapshotRelay(
       order: { date: ASC }
       filters: { currency: { exact: KRW }, date: { gte: $startDate } }

@@ -1,4 +1,4 @@
-import { useGetAmountSnapshotQueryQuery } from '../../../generated/graphql';
+import { useGetAmountSnapshotQuery } from '../../../generated/graphql';
 import { Card, CardContent, Typography, Box, CircularProgress } from '@mui/material';
 import { Line } from 'react-chartjs-2';
 import { subMonths } from 'date-fns';
@@ -11,9 +11,12 @@ import {
   Title,
   Tooltip,
   Legend,
-  TimeScale
+  TimeScale,
+  Scale,
+  CoreScaleOptions,
 } from 'chart.js';
 import 'chartjs-adapter-date-fns';
+import { ko } from 'date-fns/locale';
 
 ChartJS.register(
   CategoryScale,
@@ -26,9 +29,86 @@ ChartJS.register(
   TimeScale
 );
 
+const chartOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  interaction: {
+    mode: 'index' as const,
+    intersect: false,
+  },
+  stacked: false,
+  plugins: {
+    title: {
+      display: true,
+      text: '자산 변동 추이',
+      font: {
+        size: 14,
+        weight: 'bold' as const
+      }
+    },
+    tooltip: {
+      callbacks: {
+        label: (context: any) => {
+          const value = context.raw.y;
+          if (context.dataset.yAxisID === 'y') {
+            return `KRW: ${(value / 10000).toLocaleString()}만원`;
+          }
+          return `USD: $${value.toLocaleString()}`;
+        }
+      }
+    }
+  },
+  scales: {
+    x: {
+      type: 'time' as const,
+      time: {
+        unit: 'month' as const
+      },
+      adapters: {
+        date: {
+          locale: ko
+        }
+      }
+    },
+    y: {
+      type: 'linear' as const,
+      display: true,
+      position: 'left' as const,
+      title: {
+        display: true,
+        text: 'KRW (만원)',
+      },
+      ticks: {
+        callback(this: Scale<CoreScaleOptions>, tickValue: number | string) {
+          const value = Number(tickValue);
+          return `${(value / 10000).toLocaleString()}만`;
+        }
+      }
+    },
+    y1: {
+      type: 'linear' as const,
+      display: true,
+      position: 'right' as const,
+      title: {
+        display: true,
+        text: 'USD',
+      },
+      ticks: {
+        callback(this: Scale<CoreScaleOptions>, tickValue: number | string) {
+          const value = Number(tickValue);
+          return `$${value.toLocaleString()}`;
+        }
+      },
+      grid: {
+        drawOnChartArea: false,
+      },
+    },
+  },
+};
+
 export const AmountChart = () => {
   const startDate = subMonths(new Date(), 12);
-  const { data, loading, error } = useGetAmountSnapshotQueryQuery({
+  const { data, loading, error } = useGetAmountSnapshotQuery({
     variables: {
       startDate: startDate.toISOString().split('T')[0],
     },
@@ -66,38 +146,28 @@ export const AmountChart = () => {
         label: 'KRW',
         data: krwData,
         borderColor: 'rgb(75, 192, 192)',
-        tension: 0.1
+        backgroundColor: 'rgba(75, 192, 192, 0.1)',
+        yAxisID: 'y',
+        fill: true,
+        tension: 0.2
       },
       {
         label: 'USD',
         data: usdData,
         borderColor: 'rgb(255, 99, 132)',
-        tension: 0.1
+        backgroundColor: 'rgba(255, 99, 132, 0.1)',
+        yAxisID: 'y1',
+        fill: true,
+        tension: 0.2
       }
     ]
-  };
-
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    scales: {
-      x: {
-        type: 'time' as const,
-        time: {
-          unit: 'month' as const
-        }
-      }
-    }
   };
 
   return (
     <Card>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          자산 변동 추이
-        </Typography>
-        <Box sx={{ width: '100%', height: 300 }}>
-          <Line data={chartData} options={options} />
+        <Box sx={{ width: '100%', height: 400 }}>
+          <Line data={chartData} options={chartOptions} />
         </Box>
       </CardContent>
     </Card>

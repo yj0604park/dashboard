@@ -1,9 +1,9 @@
 import { Typography, Box, CircularProgress } from '@mui/material';
-import { useGetBankSimpleListQueryQuery } from '../../generated/graphql';
+import { useGetBankSimpleListQuery } from '../../generated/graphql';
 import { SimpleBankTable } from './components/SimpleBankTable';
 
 export const Banks = () => {
-  const { data, loading, error } = useGetBankSimpleListQueryQuery();
+  const { data, loading, error } = useGetBankSimpleListQuery();
 
   if (loading) {
     return (

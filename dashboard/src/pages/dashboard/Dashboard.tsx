@@ -1,12 +1,12 @@
 import { Typography, CircularProgress, Box, Stack } from '@mui/material';
-import { useGetBankNodeWithBalanceQueryQuery } from '../../generated/graphql';
+import { useGetBankNodeWithBalanceQuery } from '../../generated/graphql';
 import { AccountTable } from './components/AccountTable';
 import { AmountChart } from './components/AmountChart';
 import { Overview } from './components/Overview';
 
 
 export const Dashboard = () => {
-  const { data, loading, error } = useGetBankNodeWithBalanceQueryQuery();
+  const { data, loading, error } = useGetBankNodeWithBalanceQuery();
 
   if (loading) {
     return (
@@ -27,7 +27,8 @@ export const Dashboard = () => {
   const accounts = data?.bankRelay.edges.flatMap(bank => 
     bank.node.accountSet.edges.map(account => ({
       ...account.node,
-      bankName: bank.node.name
+      bankName: bank.node.name,
+      bankId: bank.node.id
     }))
   ) ?? [];
 
