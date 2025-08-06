@@ -1,7 +1,8 @@
 import { BankNode } from "src/types/bank";
+import { Decimal } from "decimal.js";
 
 export default class Util {
-  static FormatString(amount: number, currency: string) {
+  static FormatString(amount: string | number, currency: string) {
     let sign = '₩';
     let digit = 0;
     if (currency == "KRW") {
@@ -12,14 +13,22 @@ export default class Util {
       sign = '$';
       digit = 2;
     }
-    
-    amount = amount ?? 0;
-    if (amount < 0) {
+
+    // Handle null/undefined values
+    if (amount == null || amount === undefined || amount === '') {
+      return sign + ' 0' + (digit > 0 ? '.' + '0'.repeat(digit) : '');
+    }
+
+    // Use Decimal for precision-safe calculations
+    const decimal = new Decimal(amount);
+    const numAmount = decimal.toNumber();
+
+    if (decimal.isNegative()) {
       return (
         '-' +
         sign +
         ' ' +
-        (-amount).toLocaleString('ko-KR', {
+        decimal.abs().toNumber().toLocaleString('ko-KR', {
           minimumFractionDigits: digit
         })
       );
@@ -27,21 +36,24 @@ export default class Util {
       return (
         sign +
         ' ' +
-        amount.toLocaleString('ko-KR', {
+        numAmount.toLocaleString('ko-KR', {
           minimumFractionDigits: digit
         })
       );
     }
   }
-  
-  static GetTotalNumber(bankList: BankNode[], currency: string) {
-    let sum = 0.0;
+
+  static GetTotalNumber(bankList: BankNode[], currency: string): string {
+    let sum = new Decimal(0);
     bankList.forEach((element) => {
-      if (currency in element.node.balance) {
-        sum += element.node.balance[currency];
-      }
+      element.node.balance.forEach((balance_per_currency) => {
+        if (balance_per_currency.currency === currency) {
+          // Use Decimal for precision-safe addition
+          sum = sum.plus(new Decimal(balance_per_currency.value));
+        }
+      });
     });
-    return sum;
+    return sum.toString(); // Return as string to maintain precision
   }
 
 }

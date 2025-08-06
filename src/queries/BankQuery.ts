@@ -6,7 +6,10 @@ export const GetBankNodeQuery = gql`
     bankRelay {
       edges {
         node {
-          balance
+          balance {
+            currency
+            value
+          }
           id
           name
           accountSet {

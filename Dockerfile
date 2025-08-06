@@ -10,4 +10,6 @@ COPY .eslintrc.json .
 COPY .eslintignore .
 COPY .prettierrc .
 
-CMD [ "yarn", "start" ]
+# Environment variables will be provided at runtime via docker-compose env_file
+
+CMD [ "npm", "start" ]

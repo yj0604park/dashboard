@@ -40,12 +40,49 @@ We’ve included a few page examples for most used user flows that will give you
 ---
 
 <h2>
+    Environment Configuration
+</h2>
+<p>
+    The application uses environment variables to configure the backend API endpoints.
+</p>
+
+<h3>For Local Development (npm)</h3>
+<p>
+    React automatically loads environment variables from <code>.env</code> files. You can use:
+</p>
+<ul>
+    <li><code>.env</code> - Already exists, shared with Docker</li>
+    <li><code>.env.local</code> - Local overrides (not committed to git)</li>
+    <li><code>.env.development</code> - Development-specific settings</li>
+</ul>
+<pre><code># Just run npm start - it will load .env automatically
+npm start
+</code></pre>
+
+<h3>For Docker Development</h3>
+<p>
+    Docker Compose uses the <code>.env</code> file:
+</p>
+<pre><code>docker-compose up
+</code></pre>
+
+<p>
+    <strong>Environment variables format:</strong>
+</p>
+<pre><code># Backend API Configuration
+REACT_APP_BACKEND_URL=http://localhost:58000
+REACT_APP_GRAPHQL_ENDPOINT=/money/graphql
+REACT_APP_REST_ENDPOINT=/money/
+</code></pre>
+
+<h2>
     Quick Start
 </h2>
 <ol>
     <li>Make sure you have the latest stable versions for Node.js and NPM installed</li>
     <li>Clone repository: <code>git clone https://github.com/bloomui/tokyo-free-white-react-admin-dashboard.git</code></li>
     <li>Install dependencies: Run <code>npm install</code> inside the project folder</li>
+    <li>Configure environment: Copy <code>.env.example</code> to <code>.env.local</code> and update the backend URL if needed</li>
     <li>Start dev server: After the install finishes, run <code>npm run start</code>. A browser window will open on http://localhost:3000 where you''ll see the live preview</li>
 </ol>
 

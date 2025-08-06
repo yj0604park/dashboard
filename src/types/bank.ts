@@ -4,10 +4,15 @@ export interface PageInfo {
   endCursor?: string;
 }
 
+export interface Balance {
+  currency: string;
+  value: string; // Decimal string for precision
+}
+
 export interface Bank {
   id: number;
   name: string;
-  balance: JSON;
+  balance: Balance[];
   accountSet?: AccountEdge;
 }
 
@@ -27,7 +32,7 @@ export interface Account {
   id: number;
   name: string;
   currency: string;
-  amount: number;
+  amount: Balance[];
   lastUpdate: Date;
   firstTransaction?: Date;
   lastTransaction?: Date;

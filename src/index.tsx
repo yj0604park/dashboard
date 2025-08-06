@@ -1,22 +1,21 @@
+import {
+  ApolloClient,
+  ApolloProvider,
+  InMemoryCache
+} from '@apollo/client';
 import ReactDOM from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { BrowserRouter } from 'react-router-dom';
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  gql
-} from '@apollo/client';
 
 import 'nprogress/nprogress.css';
 import App from 'src/App';
 import { SidebarProvider } from 'src/contexts/SidebarContext';
 import * as serviceWorker from 'src/serviceWorker';
-import { UserProvider } from './contexts/UserContext';
 import { ServerUrlProvider } from './contexts/ServerContext';
+import { UserProvider } from './contexts/UserContext';
 
 const client = new ApolloClient({
-  uri: 'http://192.168.50.13:58000/money/graphql',
+  uri: `${process.env.REACT_APP_BACKEND_URL || 'http://localhost:58000'}${process.env.REACT_APP_GRAPHQL_ENDPOINT || '/money/graphql'}`,
   cache: new InMemoryCache({
     typePolicies: {
       Query: {

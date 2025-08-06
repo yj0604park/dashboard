@@ -34,11 +34,10 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
   margin-right: ${theme.spacing(1)};
   padding: ${theme.spacing(0.5)};
   border-radius: 60px;
-  background: ${
-    theme.palette.mode === 'dark'
+  background: ${theme.palette.mode === 'dark'
       ? theme.colors.alpha.trueWhite[30]
       : alpha(theme.colors.alpha.black[100], 0.07)
-  };
+    };
 
   img {
     background: ${theme.colors.alpha.trueWhite[100]};
@@ -51,7 +50,7 @@ const ListItemAvatarWrapper = styled(ListItemAvatar)(
 `
 );
 
-function TotalBalance({ loading, usdTotal, krwTotal }) {
+function TotalBalance({ loading, usdTotal, krwTotal }: { loading: boolean, usdTotal: string, krwTotal: string }) {
   const theme = useTheme();
 
   const chartOptions: ApexOptions = {
@@ -133,7 +132,7 @@ function TotalBalance({ loading, usdTotal, krwTotal }) {
                 sx={{
                   pb: 3
                 }}
-                variant="h4"
+                variant="h2"
               >
                 Total Balance
               </Typography>

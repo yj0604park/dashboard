@@ -1,6 +1,6 @@
-import { FC, ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
 import { format } from 'date-fns';
-import numeral from 'numeral';
+import NumberHelper from 'src/functions/NumberHelper';
 import {
   Tooltip,
   Divider,
@@ -85,9 +85,9 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
     }));
   };
 
-  const handlePageChange = (event: any, newPage: number): void => {};
+  const handlePageChange = (event: any, newPage: number): void => { };
 
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {};
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => { };
 
   const theme = useTheme();
 
@@ -255,12 +255,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                       gutterBottom
                       noWrap
                     >
-                      {account.currency == 'KRW'
-                        ? account.amount.toLocaleString('ko-KR', {
-                            style: 'currency',
-                            currency: 'KRW'
-                          })
-                        : numeral(account.amount).format(`${'$'}0,0.00`)}
+                      {NumberHelper.FormatString(account.amount[0].value, account.amount[0].currency)}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">
