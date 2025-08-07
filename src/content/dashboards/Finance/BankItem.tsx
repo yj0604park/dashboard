@@ -2,11 +2,12 @@ import { Box, Typography } from '@mui/material';
 import Label from 'src/components/Label';
 import NumberHelper from 'src/functions/NumberHelper';
 import { Link } from 'react-router-dom';
+import { Balance } from 'src/models/bank';
 
 interface BankItemProps {
   bankName: string;
   bankId: number;
-  balance: any;
+  balance: Balance[];
   latestUpdated: Date;
   accountCount: number;
 }
@@ -60,26 +61,21 @@ function BankItem({
         >
           계좌수: {accountCount}
         </Typography>
-        <Typography
-          variant="h4"
-          sx={{
-            pr: 1
-          }}
-          align="right"
-          noWrap
-        >
-          {NumberHelper.FormatString(balance.USD, 'USD')}
-        </Typography>
-        <Typography
-          variant="h4"
-          sx={{
-            pr: 1
-          }}
-          align="right"
-          noWrap
-        >
-          {NumberHelper.FormatString(balance.KRW, 'KRW')}
-        </Typography>
+        {balance.map((balance_per_currency) => (
+          balance_per_currency.value !== '0.00' && (
+            <Typography
+              variant="h4"
+              sx={{
+                pr: 1
+              }}
+              align="right"
+              noWrap
+              key={balance_per_currency.currency}
+            >
+              {NumberHelper.FormatString(balance_per_currency.value, balance_per_currency.currency)}
+            </Typography>
+          )
+        ))}
       </Box>
     </Box>
   );

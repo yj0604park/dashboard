@@ -94,6 +94,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
   const [filters, setFilters] = useState<Filters>({
     status: null
   });
+  const theme = useTheme();
 
   const statusOptions = [
     {
@@ -172,7 +173,6 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     selectedCryptoOrders.length < cryptoOrders.length;
   const selectedAllCryptoOrders =
     selectedCryptoOrders.length === cryptoOrders.length;
-  const theme = useTheme();
 
   return (
     <Card>
