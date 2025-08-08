@@ -45,6 +45,9 @@ function Income() {
       <SalaryChart data={chart_data} />
     );
 
+  const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
+  const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
+
   const calculateNetIncomePerYear = (data: SalaryData) => {
     const netIncomePerYear: {
       [year: string]: {
@@ -136,55 +139,55 @@ function Income() {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(item.grossPay) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(item.grossPay, 'USD')}
+                        {formatAccountingUSD(item.grossPay)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(item.totalAdjustment) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(item.totalAdjustment, 'USD')}
+                        {formatAccountingUSD(item.totalAdjustment)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(item.totalWithheld) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(item.totalWithheld, 'USD')}
+                        {formatAccountingUSD(item.totalWithheld)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(item.totalDeduction) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(item.totalDeduction, 'USD')}
+                        {formatAccountingUSD(item.totalDeduction)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(item.netPay) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(item.netPay, 'USD')}
+                        {formatAccountingUSD(item.netPay)}
                       </Typography>
                     </TableCell>
                     <TableCell>

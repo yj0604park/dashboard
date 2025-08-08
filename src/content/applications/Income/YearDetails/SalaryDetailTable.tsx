@@ -14,6 +14,8 @@ import NumberHelper from 'src/functions/NumberHelper';
 import { SalaryData } from 'src/types/bank';
 
 function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
+  const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
+  const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
   return (
     <>
       <Card>
@@ -51,64 +53,55 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(account.grossPay) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(account.grossPay, 'USD')}
+                        {formatAccountingUSD(account.grossPay)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(account.totalAdjustment) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(
-                          account.totalAdjustment,
-                          'USD'
-                        )}
+                        {formatAccountingUSD(account.totalAdjustment)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(account.totalWithheld) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(
-                          account.totalWithheld,
-                          'USD'
-                        )}
+                        {formatAccountingUSD(account.totalWithheld)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(account.totalDeduction) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(
-                          account.totalDeduction,
-                          'USD'
-                        )}
+                        {formatAccountingUSD(account.totalDeduction)}
                       </Typography>
                     </TableCell>
                     <TableCell>
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        color="text.primary"
+                        sx={{ color: getDisplayColor(account.netPay) }}
                         gutterBottom
                         noWrap
                       >
-                        {NumberHelper.FormatString(account.netPay, 'USD')}
+                        {formatAccountingUSD(account.netPay)}
                       </Typography>
                     </TableCell>
                   </TableRow>

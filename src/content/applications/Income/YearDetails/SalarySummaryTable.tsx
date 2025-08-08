@@ -21,13 +21,13 @@ interface SalarySummaryTableProps {
 const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
   const summary = data.salaryRelay.edges.reduce(
     (acc, { node }) =>
-      (acc = {
-        grossPay: acc['grossPay'] + node.grossPay,
-        totalAdjustment: acc['totalAdjustment'] + node.totalAdjustment,
-        totalWithheld: acc['totalWithheld'] + node.totalWithheld,
-        totalDeduction: acc['totalDeduction'] + node.totalDeduction,
-        netPay: acc['netPay'] + node.netPay
-      }),
+    (acc = {
+      grossPay: acc['grossPay'] + node.grossPay,
+      totalAdjustment: acc['totalAdjustment'] + node.totalAdjustment,
+      totalWithheld: acc['totalWithheld'] + node.totalWithheld,
+      totalDeduction: acc['totalDeduction'] + node.totalDeduction,
+      netPay: acc['netPay'] + node.netPay
+    }),
     {
       grossPay: 0,
       totalAdjustment: 0,
@@ -44,6 +44,9 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
     totalDeduction: Math.round(summary.totalDeduction * 100) / 100,
     netPay: Math.round(summary.netPay * 100) / 100
   };
+
+  const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
+  const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
 
   return (
     <Card>
@@ -66,58 +69,55 @@ const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                  color="text.primary"
+                  sx={{ color: getDisplayColor(new_summary.grossPay) }}
                   gutterBottom
                   noWrap
                 >
-                  {NumberHelper.FormatString(new_summary.grossPay, 'USD')}
+                  {formatAccountingUSD(new_summary.grossPay)}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                  color="text.primary"
+                  sx={{ color: getDisplayColor(new_summary.totalAdjustment) }}
                   gutterBottom
                   noWrap
                 >
-                  {NumberHelper.FormatString(
-                    new_summary.totalAdjustment,
-                    'USD'
-                  )}
+                  {formatAccountingUSD(new_summary.totalAdjustment)}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                  color="text.primary"
+                  sx={{ color: getDisplayColor(new_summary.totalWithheld) }}
                   gutterBottom
                   noWrap
                 >
-                  {NumberHelper.FormatString(new_summary.totalWithheld, 'USD')}
+                  {formatAccountingUSD(new_summary.totalWithheld)}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                  color="text.primary"
+                  sx={{ color: getDisplayColor(new_summary.totalDeduction) }}
                   gutterBottom
                   noWrap
                 >
-                  {NumberHelper.FormatString(new_summary.totalDeduction, 'USD')}
+                  {formatAccountingUSD(new_summary.totalDeduction)}
                 </Typography>
               </TableCell>
               <TableCell>
                 <Typography
                   variant="body1"
                   fontWeight="bold"
-                  color="text.primary"
+                  sx={{ color: getDisplayColor(new_summary.netPay) }}
                   gutterBottom
                   noWrap
                 >
-                  {NumberHelper.FormatString(new_summary.netPay, 'USD')}
+                  {formatAccountingUSD(new_summary.netPay)}
                 </Typography>
               </TableCell>
             </TableRow>

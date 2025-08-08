@@ -44,16 +44,16 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
       },
       { node }
     ) =>
-      (acc = {
-        grossPay: updateSummary(acc.grossPay, node.payDetail),
-        totalAdjustment: updateSummary(
-          acc.totalAdjustment,
-          node.adjustmentDetail
-        ),
-        totalWithheld: updateSummary(acc.totalWithheld, node.taxDetail),
-        totalDeduction: updateSummary(acc.totalDeduction, node.deductionDetail),
-        netPay: acc['netPay'] + node.netPay
-      }),
+    (acc = {
+      grossPay: updateSummary(acc.grossPay, node.payDetail),
+      totalAdjustment: updateSummary(
+        acc.totalAdjustment,
+        node.adjustmentDetail
+      ),
+      totalWithheld: updateSummary(acc.totalWithheld, node.taxDetail),
+      totalDeduction: updateSummary(acc.totalDeduction, node.deductionDetail),
+      netPay: acc['netPay'] + node.netPay
+    }),
     {
       grossPay: {},
       totalAdjustment: {},
@@ -70,6 +70,9 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
     totalDeduction: {},
     netPay: Math.round(summary.netPay * 100) / 100
   };
+
+  const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
+  const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
 
   return (
     <Card>
@@ -91,11 +94,11 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
                     key={key}
                     variant="body1"
                     fontWeight="bold"
-                    color="text.primary"
+                    sx={{ color: getDisplayColor(value as number) }}
                     gutterBottom
                     noWrap
                   >
-                    {NumberHelper.FormatString(value, 'USD')}
+                    {formatAccountingUSD(value as number)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -115,11 +118,11 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
                     key={key}
                     variant="body1"
                     fontWeight="bold"
-                    color="text.primary"
+                    sx={{ color: getDisplayColor(value as number) }}
                     gutterBottom
                     noWrap
                   >
-                    {NumberHelper.FormatString(value, 'USD')}
+                    {formatAccountingUSD(value as number)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -139,11 +142,11 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
                     key={key}
                     variant="body1"
                     fontWeight="bold"
-                    color="text.primary"
+                    sx={{ color: getDisplayColor(value as number) }}
                     gutterBottom
                     noWrap
                   >
-                    {NumberHelper.FormatString(value, 'USD')}
+                    {formatAccountingUSD(value as number)}
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -163,11 +166,11 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
                     key={key}
                     variant="body1"
                     fontWeight="bold"
-                    color="text.primary"
+                    sx={{ color: getDisplayColor(value as number) }}
                     gutterBottom
                     noWrap
                   >
-                    {NumberHelper.FormatString(value, 'USD')}
+                    {formatAccountingUSD(value as number)}
                   </Typography>
                 </TableCell>
               </TableRow>

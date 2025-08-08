@@ -43,6 +43,26 @@ export default class Util {
     }
   }
 
+  static FormatAccounting(amount: string | number, currency: string) {
+    const decimal = new Decimal(amount || 0);
+    if (decimal.isZero()) {
+      return '—';
+    }
+    const absoluteFormatted = Util.FormatString(decimal.abs().toString(), currency);
+    return decimal.isNegative() ? `(${absoluteFormatted})` : absoluteFormatted;
+  }
+
+  static FormatAccountingUSD(amount: string | number) {
+    return Util.FormatAccounting(amount, 'USD');
+  }
+
+  static GetDisplayColor(value: string | number) {
+    const decimal = new Decimal(value || 0);
+    if (decimal.isNegative()) return 'error.main';
+    if (decimal.isZero()) return 'text.secondary';
+    return 'text.primary';
+  }
+
   static GetTotalNumber(bankList: BankNode[], currency: string): string {
     let sum = new Decimal(0);
     bankList.forEach((element) => {
