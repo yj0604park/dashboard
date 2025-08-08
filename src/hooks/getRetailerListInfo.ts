@@ -1,8 +1,6 @@
-import { useQuery } from '@apollo/client';
 import { useState } from 'react';
-import { RetailerData } from 'src/types/bank';
 import { RetailerList } from 'src/types/internal';
-import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
+import { useGetRetailerListQueryQuery } from 'src/__generated__/graphql';
 
 const getRetailerListInfo = () => {
   const [retailerInfo, setRetailerInfo] = useState<RetailerList>({
@@ -18,7 +16,7 @@ const getRetailerListInfo = () => {
     error: retailerError,
     data,
     fetchMore
-  } = useQuery<RetailerData>(GetRetailerListQuery);
+  } = useGetRetailerListQueryQuery();
 
   if (!retailerLoading && !retailerError) {
     if (!retailerInfo.firstAdded) {
@@ -39,7 +37,7 @@ const getRetailerListInfo = () => {
     if (retailerInfo.loadMore) {
       fetchMore({
         variables: {
-          After: retailerInfo.nextPage
+          after: retailerInfo.nextPage
         }
       }).then((result) => {
         setRetailerInfo({

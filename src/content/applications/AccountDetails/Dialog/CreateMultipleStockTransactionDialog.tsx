@@ -28,7 +28,8 @@ import createStockTransaction from 'src/hooks/createStockTransaction';
 import getStockListInfo from 'src/hooks/getStockListInfo';
 import { Stock } from 'src/types/bank';
 import { CreateMultipleStockTransactionDialogProps } from 'src/types/transaction';
-import {StockAutocompleteItem} from 'src/types/internal';
+import { StockAutocompleteItem } from 'src/types/internal';
+import { CurrencyType } from 'src/__generated__/graphql';
 import StockTransactionInputRow from './StockTransactionInputRow';
 
 const CreateMultipleStockTransactionDialog = ({
@@ -209,9 +210,18 @@ const CreateMultipleStockTransactionDialog = ({
                     size="medium"
                     onClick={() => {
                       // create stock and add it to the list
+                      const currencyEnum =
+                        CreateStockInput.currency === 'USD'
+                          ? CurrencyType.Usd
+                          : CurrencyType.Krw;
+
                       createStockMutation({
                         variables: {
-                          input: CreateStockInput
+                          input: {
+                            name: CreateStockInput.name || '',
+                            ticker: CreateStockInput.ticker || '',
+                            currency: currencyEnum
+                          }
                         }
                       }).then((response) => {
                         let newStock: StockAutocompleteItem = {

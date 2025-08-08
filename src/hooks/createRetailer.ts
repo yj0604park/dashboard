@@ -1,9 +1,8 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { GetTransactionCategoryQuery } from 'src/queries/BankQuery';
 import {
-  CreateRetailerMutation,
-  GetRetailerTypeQuery
-} from 'src/queries/RetailerQuery';
+  useCreateRetailerMutationMutation,
+  useGetRetailerTypeQueryQuery,
+  useGetTransactionCategoryQueryQuery
+} from 'src/__generated__/graphql';
 
 interface EnumInputType {
   __type: {
@@ -18,9 +17,9 @@ interface EnumList {
 
 const createRetailer = () => {
   const { data: transactionCategoryData, loading: transactionCategoryLoading } =
-    useQuery(GetTransactionCategoryQuery);
+    useGetTransactionCategoryQueryQuery();
   const { data: retailerTypeData, loading: retailerTypeLoading } =
-    useQuery(GetRetailerTypeQuery);
+    useGetRetailerTypeQueryQuery();
 
   const [
     createRetailerMutation,
@@ -29,7 +28,7 @@ const createRetailer = () => {
       error: retailerMutationError,
       data: retailerData
     }
-  ] = useMutation(CreateRetailerMutation);
+  ] = useCreateRetailerMutationMutation();
 
   const convertEnumToArray = (enumData: EnumInputType) => {
     let result: EnumList[] = [];

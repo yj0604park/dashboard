@@ -1,13 +1,9 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { StockData } from 'src/types/bank';
-import { CreateStockMutation, GetStockListQuery } from 'src/queries/StockQuery';
+import { useCreateStockMutationMutation, useGetStockListQueryQuery } from 'src/__generated__/graphql';
 
 const createStock = () => {
-  const { data: stockData, loading: getStockLoading } =
-    useQuery<StockData>(GetStockListQuery);
+  const { data: stockData, loading: getStockLoading } = useGetStockListQueryQuery();
 
-  const [createStockMutation, { data, loading, error }] =
-    useMutation(CreateStockMutation);
+  const [createStockMutation, { data, loading, error }] = useCreateStockMutationMutation();
 
   return { createStockMutation, stockData, getStockLoading };
 };

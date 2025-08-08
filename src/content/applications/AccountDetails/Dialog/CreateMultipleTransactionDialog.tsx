@@ -30,6 +30,7 @@ import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
 import { TransactionData } from 'src/types/bank';
 import { GetLastTransactionDate } from 'src/queries/BankQuery';
 import TransactionInputRow from './TransactionInputRow';
+import { RetailerType, TransactionCategory } from 'src/__generated__/graphql';
 
 import { CreateAccountDialogProps, CreateRetailerInfo } from 'src/types/transaction';
 
@@ -249,8 +250,22 @@ function CreateAccountDialog({
                     variant="text"
                     size="medium"
                     onClick={() => {
+                      const typeEnum =
+                        (createRetailerInfo.type &&
+                          (RetailerType as any)[createRetailerInfo.type]) ||
+                        RetailerType.Etc;
+                      const categoryEnum =
+                        (createRetailerInfo.category &&
+                          (TransactionCategory as any)[
+                          createRetailerInfo.category
+                          ]) || TransactionCategory.Etc;
+
                       createRetailerMutation({
-                        variables: createRetailerInfo
+                        variables: {
+                          name: createRetailerInfo.name,
+                          type: typeEnum,
+                          category: categoryEnum
+                        }
                       }).then((response) => {
                         let newRetailer = {
                           id: response.data?.createRetailer.id,
