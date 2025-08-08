@@ -58,19 +58,25 @@ function Income() {
 
     data?.salaryRelay.edges.forEach((salary) => {
       const year = new Date(salary.node.date).getFullYear().toString();
+      const grossPay = Number(salary.node.grossPay) || 0;
+      const totalAdjustment = Number(salary.node.totalAdjustment) || 0;
+      const totalWithheld = Number(salary.node.totalWithheld) || 0;
+      const totalDeduction = Number(salary.node.totalDeduction) || 0;
+      const netPay = Number(salary.node.netPay) || 0;
+
       if (netIncomePerYear[year]) {
-        netIncomePerYear[year].grossPay += salary.node.grossPay;
-        netIncomePerYear[year].totalAdjustment += salary.node.totalAdjustment;
-        netIncomePerYear[year].totalWithheld += salary.node.totalWithheld;
-        netIncomePerYear[year].totalDeduction += salary.node.totalDeduction;
-        netIncomePerYear[year].netPay += salary.node.netPay;
+        netIncomePerYear[year].grossPay += grossPay;
+        netIncomePerYear[year].totalAdjustment += totalAdjustment;
+        netIncomePerYear[year].totalWithheld += totalWithheld;
+        netIncomePerYear[year].totalDeduction += totalDeduction;
+        netIncomePerYear[year].netPay += netPay;
       } else {
         netIncomePerYear[year] = {
-          grossPay: salary.node.grossPay,
-          totalAdjustment: salary.node.totalAdjustment,
-          totalWithheld: salary.node.totalWithheld,
-          totalDeduction: salary.node.totalDeduction,
-          netPay: salary.node.netPay
+          grossPay,
+          totalAdjustment,
+          totalWithheld,
+          totalDeduction,
+          netPay
         };
       }
     });

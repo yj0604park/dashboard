@@ -5,20 +5,20 @@ import { AccountData } from 'src/types/bank';
 import AccountTable from './AccountTable';
 
 function AccountList({ bankFilterId }) {
+  const variables: any = { After: '' };
+  if (bankFilterId != null) {
+    variables.BankId = String(bankFilterId);
+  }
+
   const { loading, error, data } = useQuery<AccountData>(GetAccountNodeQuery, {
-    variables: {
-      After: '',
-      BankId: {
-        exact: bankFilterId
-      }
-    }
+    variables
   });
 
   if (loading) return <p>Loading...</p>;
   if (error)
     return (
       <>
-        <h1>Error: {error}</h1>
+        <p style={{ color: 'red' }}>Error: {error.message}</p>
       </>
     );
   return (
