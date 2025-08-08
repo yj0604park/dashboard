@@ -11,9 +11,9 @@ import {
 
 const createStockTransaction = ({ accountId }) => {
   const defaultValue = {
-    id: 1,
+    id: '1',
     date: '',
-    stock: { id: 0, name: '', ticker: '' },
+    stock: { id: '0', name: '', ticker: '' },
     shares: null,
     price: 0,
     total: 0,
@@ -30,7 +30,7 @@ const createStockTransaction = ({ accountId }) => {
     CreateTransactionWithoutRetailerMutation
   );
 
-  const setStockTransactionData = (id: number) => {
+  const setStockTransactionData = (id: string) => {
     return (data: StockTransactionData) => {
       setStockTransactionDataList(
         stockTransactionDataList.map((item) => {
@@ -52,7 +52,7 @@ const createStockTransaction = ({ accountId }) => {
       ...stockTransactionDataList,
       {
         ...defaultValue,
-        id: stockTransactionDataList.length + 1,
+        id: (stockTransactionDataList.length + 1).toString(),
         date: newDate
       }
     ];

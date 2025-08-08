@@ -1,15 +1,15 @@
 export interface Stock {
-  id?: number;
+  id?: string;
   name?: string;
   ticker?: string;
   currency?: string;
 }
 
 export interface AccountState {
-  accountId?: number;
+  accountId?: string;
   accountName?: string;
   accountType?: string;
-  bankId?: number;
+  bankId?: string;
   bankName?: string;
   accountCurrency: string;
 }
@@ -17,7 +17,7 @@ export interface AccountState {
 export type TransactionFilter = 'all' | 'internal' | 'external';
 
 export interface Retailer {
-  id: number;
+  id: string;
   label: string;
   category: string;
 }
@@ -32,21 +32,21 @@ export interface RetailerList {
 export interface TransactionCreationData {
   amount?: number;
   date: string;
-  accountId: number;
+  accountId: string;
   isInternal: boolean;
   category: string;
   note: string;
-  retailerId?: number;
-  id?: number;
+  retailerId?: string;
+  id?: string;
 }
 
 export interface RetailerSelectionProps {
-  id: number;
+  id: string;
   category: string;
 }
 
 export interface StockTransactionData {
-  id?: number;
+  id?: string;
   date: string;
   stock: Stock;
   shares?: number;
@@ -63,6 +63,6 @@ export interface StockListInfo {
 }
 
 export interface StockAutocompleteItem {
-  id: number;
+  id: string;
   label: string;
 }

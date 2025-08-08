@@ -8,7 +8,7 @@ import AccountLists from './AccountLists';
 import { useLocation } from 'react-router-dom';
 
 interface LocationState {
-  bankId?: number;
+  bankId?: string;
   bankName?: string;
 }
 

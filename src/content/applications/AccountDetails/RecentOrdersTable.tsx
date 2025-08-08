@@ -122,7 +122,7 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
 
   const handleSelectOneTransaction = (
     event: ChangeEvent<HTMLInputElement>,
-    cryptoOrderId: number
+    cryptoOrderId: string
   ): void => {
     if (!selectedTransactions.includes(cryptoOrderId)) {
       setSelectedTransactions((prevSelected) => [

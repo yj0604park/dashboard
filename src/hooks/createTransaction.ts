@@ -10,7 +10,7 @@ import {
 } from 'src/queries/BankQuery';
 
 interface CreateTransactionProps {
-  accountId: number;
+  accountId: string;
 }
 
 const createTransaction = ({ accountId }: CreateTransactionProps) => {
@@ -39,7 +39,7 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
 
   const [transactionCreationDataList, setTransactionCreationDataList] =
     useState<TransactionCreationData[]>([
-      { ...defaultTransactionCreationData, id: 1 }
+      { ...defaultTransactionCreationData, id: '1' }
     ]);
 
   const addNewRow = () => {
@@ -50,14 +50,14 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
       ...transactionCreationDataList,
       {
         ...defaultTransactionCreationData,
-        id: transactionCreationDataList.length + 1,
+        id: (transactionCreationDataList.length + 1).toString(),
         date: newDate
       }
     ];
     setTransactionCreationDataList(nextDataList);
   };
 
-  const setTransactionCreationData = (id: number) => {
+  const setTransactionCreationData = (id: string) => {
     return (data: TransactionCreationData) => {
       setTransactionCreationDataList(
         transactionCreationDataList.map((item) => {
@@ -70,7 +70,7 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
     };
   };
 
-  const onRetailerChange = (id: number) => {
+  const onRetailerChange = (id: string) => {
     return (
       e: ChangeEvent<HTMLInputElement>,
       value: RetailerSelectionProps
@@ -98,7 +98,7 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
     };
   };
 
-  const onIsInternalChange = (id: number) => {
+  const onIsInternalChange = (id: string) => {
     return (e: ChangeEvent<HTMLInputElement>) => {
       setTransactionCreationDataList(
         transactionCreationDataList.map((item) => {
@@ -159,11 +159,11 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
 
   const resetTransactionCreationDataList = () => {
     setTransactionCreationDataList([
-      { ...defaultTransactionCreationData, id: 1 }
+      { ...defaultTransactionCreationData, id: '1' }
     ]);
   };
 
-  const updateDefaultTransaction = (accountId: number, date: string) => {
+  const updateDefaultTransaction = (accountId: string, date: string) => {
     if (
       accountId === defaultTransactionCreationData.accountId &&
       date === defaultTransactionCreationData.date
@@ -182,7 +182,7 @@ const createTransaction = ({ accountId }: CreateTransactionProps) => {
     setTransactionCreationDataList([
       {
         ...defaultTransactionCreationData,
-        id: 1,
+        id: '1',
         accountId: accountId,
         date: date
       }

@@ -13,7 +13,7 @@ import {
 } from 'src/types/internal';
 
 interface TransactionRowProps {
-  id: number;
+  id: string;
   transactionCreationData: TransactionCreationData;
   setTransactionCreationData: (value: TransactionCreationData) => void;
   loading: boolean;

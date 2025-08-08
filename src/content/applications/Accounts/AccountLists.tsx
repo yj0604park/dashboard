@@ -4,7 +4,7 @@ import { GetAccountNodeQuery } from 'src/queries/BankQuery';
 import { GetAccountNodeQueryQuery } from 'src/__generated__/graphql';
 import AccountTable from './AccountTable';
 
-function AccountList({ bankFilterId }) {
+function AccountList({ bankFilterId }: { bankFilterId: string }) {
   const variables: any = { After: '' };
   if (bankFilterId != null) {
     variables.BankId = String(bankFilterId);
@@ -12,7 +12,7 @@ function AccountList({ bankFilterId }) {
 
   const { loading, error, data } = useQuery<GetAccountNodeQueryQuery>(
     GetAccountNodeQuery,
-    { variables }
+    { variables: { ...variables, IsActive: { exact: true } } }
   );
 
   if (loading) return <p>Loading...</p>;

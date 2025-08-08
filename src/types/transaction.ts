@@ -2,9 +2,9 @@ export interface CreateAccountDialogProps {
     open: boolean;
     onModalClose: () => void;
     bankName: string;
-    bankId: number;
+    bankId: string;
     accountName: string;
-    accountId: number;
+    accountId: string;
     refresh: (event: any) => void;
 }
 
@@ -19,10 +19,9 @@ export interface CreateMultipleStockTransactionDialogProps {
     open: boolean;
     onModalClose: () => void;
     bankName: string;
-    bankId: number;
+    bankId: string;
     accountName: string;
-    accountId: number;
+    accountId: string;
     accountCurrency: string;
     refresh: (event: any) => void;
-  }
-  
+}

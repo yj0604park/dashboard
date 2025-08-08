@@ -76,7 +76,7 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
 
   if (loading) return <p>Loading...</p>;
 
-  function updateAccountInfo(accountId: number) {
+  function updateAccountInfo(accountId: string) {
     return () => {
       let endpoint = serverUrl + 'update_balance/' + accountId;
       fetch(endpoint, {

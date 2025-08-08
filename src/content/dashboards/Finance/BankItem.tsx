@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 interface BankItemProps {
   bankName: string;
-  bankId: number;
+  bankId: string;
   balance: any[];
   latestUpdated: Date;
   accountCount: number;

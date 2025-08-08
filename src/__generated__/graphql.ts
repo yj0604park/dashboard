@@ -21,22 +21,21 @@ export type Scalars = {
   DateTime: { input: string; output: string; }
   /** Decimal (fixed-point) */
   Decimal: { input: string; output: string; }
-  /** The `ID` scalar type represents a unique identifier, often used to refetch an object or as key for a cache. The ID type appears in a JSON response as a String; however, it is not intended to be human-readable. When expected as an input type, any string (such as `"4"`) or integer (such as `4`) input value will be accepted as an ID. */
-  GlobalID: { input: any; output: any; }
-  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf). */
+  /** The `JSON` scalar type represents JSON values as specified by [ECMA-404](https://ecma-international.org/wp-content/uploads/ECMA-404_2nd_edition_december_2017.pdf). */
   JSON: { input: any; output: any; }
 };
 
 export type AccountFilter = {
   AND: InputMaybe<AccountFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<AccountFilter>;
   OR: InputMaybe<AccountFilter>;
-  amount: InputMaybe<DecimalFilterLookup>;
+  amount: InputMaybe<DecimalComparisonFilterLookup>;
   bank: BankFilter;
   currency: InputMaybe<CurrencyTypeFilterLookup>;
-  id: InputMaybe<IdFilterLookup>;
-  isActive: InputMaybe<Scalars['Boolean']['input']>;
-  lastUpdate: InputMaybe<DatetimeFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
+  isActive: InputMaybe<BoolBaseFilterLookup>;
+  lastUpdate: InputMaybe<DatetimeDatetimeFilterLookup>;
   name: InputMaybe<StrFilterLookup>;
   type: InputMaybe<AccountTypeFilterLookup>;
 };
@@ -54,7 +53,7 @@ export type AccountNode = Node & {
   bank: BankNode;
   currency: CurrencyType;
   firstTransaction: Maybe<Scalars['Date']['output']>;
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   isActive: Scalars['Boolean']['output'];
   lastTransaction: Maybe<Scalars['Date']['output']>;
   lastUpdate: Maybe<Scalars['DateTime']['output']>;
@@ -99,107 +98,29 @@ export enum AccountType {
 }
 
 export type AccountTypeFilterLookup = {
+  /** Case-sensitive containment test. Filter will be skipped on `null` value */
   contains: InputMaybe<AccountType>;
+  /** Case-sensitive ends-with. Filter will be skipped on `null` value */
   endsWith: InputMaybe<AccountType>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<AccountType>;
-  gt: InputMaybe<AccountType>;
-  gte: InputMaybe<AccountType>;
+  /** Case-insensitive containment test. Filter will be skipped on `null` value */
   iContains: InputMaybe<AccountType>;
+  /** Case-insensitive ends-with. Filter will be skipped on `null` value */
   iEndsWith: InputMaybe<AccountType>;
+  /** Case-insensitive exact match. Filter will be skipped on `null` value */
   iExact: InputMaybe<AccountType>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive regular expression match. Filter will be skipped on `null` value */
+  iRegex: InputMaybe<AccountType>;
+  /** Case-insensitive starts-with. Filter will be skipped on `null` value */
   iStartsWith: InputMaybe<AccountType>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<AccountType>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
-  lt: InputMaybe<AccountType>;
-  lte: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<AccountType>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<AccountType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<AccountType>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<AccountType>;
-  range: InputMaybe<Array<AccountType>>;
-  regex: InputMaybe<Scalars['String']['input']>;
+  /** Case-sensitive regular expression match. Filter will be skipped on `null` value */
+  regex: InputMaybe<AccountType>;
+  /** Case-sensitive starts-with. Filter will be skipped on `null` value */
   startsWith: InputMaybe<AccountType>;
 };
 
@@ -214,7 +135,7 @@ export type AmazonOrderInput = {
 export type AmazonOrderNode = Node & {
   __typename?: 'AmazonOrderNode';
   date: Scalars['Date']['output'];
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   isReturned: Scalars['Boolean']['output'];
   item: Scalars['String']['output'];
   returnTransaction: Maybe<TransactionNode>;
@@ -247,11 +168,12 @@ export type AmazonOrderOrder = {
 
 export type AmountSnapshotFilter = {
   AND: InputMaybe<AmountSnapshotFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<AmountSnapshotFilter>;
   OR: InputMaybe<AmountSnapshotFilter>;
   currency: InputMaybe<CurrencyTypeFilterLookup>;
-  date: InputMaybe<DateFilterLookup>;
-  id: InputMaybe<IdFilterLookup>;
+  date: InputMaybe<DateDateFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
 };
 
 export type AmountSnapshotNode = Node & {
@@ -259,7 +181,7 @@ export type AmountSnapshotNode = Node & {
   amount: Scalars['Decimal']['output'];
   currency: CurrencyType;
   date: Scalars['Date']['output'];
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   summary: Maybe<Scalars['JSON']['output']>;
 };
 
@@ -296,9 +218,10 @@ export type BankBalance = {
 
 export type BankFilter = {
   AND: InputMaybe<BankFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<BankFilter>;
   OR: InputMaybe<BankFilter>;
-  id: InputMaybe<IdFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
   name: InputMaybe<StrFilterLookup>;
 };
 
@@ -306,7 +229,7 @@ export type BankNode = Node & {
   __typename?: 'BankNode';
   accountSet: AccountNodeConnection;
   balance: Array<BankBalance>;
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -344,534 +267,171 @@ export type BankOrder = {
   name: InputMaybe<Ordering>;
 };
 
+export type BoolBaseFilterLookup = {
+  /** Exact match. Filter will be skipped on `null` value */
+  exact: InputMaybe<Scalars['Boolean']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
+  inList: InputMaybe<Array<Scalars['Boolean']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
+  isNull: InputMaybe<Scalars['Boolean']['input']>;
+};
+
 export enum CurrencyType {
   Krw = 'KRW',
   Usd = 'USD'
 }
 
 export type CurrencyTypeFilterLookup = {
+  /** Case-sensitive containment test. Filter will be skipped on `null` value */
   contains: InputMaybe<CurrencyType>;
+  /** Case-sensitive ends-with. Filter will be skipped on `null` value */
   endsWith: InputMaybe<CurrencyType>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<CurrencyType>;
-  gt: InputMaybe<CurrencyType>;
-  gte: InputMaybe<CurrencyType>;
+  /** Case-insensitive containment test. Filter will be skipped on `null` value */
   iContains: InputMaybe<CurrencyType>;
+  /** Case-insensitive ends-with. Filter will be skipped on `null` value */
   iEndsWith: InputMaybe<CurrencyType>;
+  /** Case-insensitive exact match. Filter will be skipped on `null` value */
   iExact: InputMaybe<CurrencyType>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive regular expression match. Filter will be skipped on `null` value */
+  iRegex: InputMaybe<CurrencyType>;
+  /** Case-insensitive starts-with. Filter will be skipped on `null` value */
   iStartsWith: InputMaybe<CurrencyType>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<CurrencyType>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
-  lt: InputMaybe<CurrencyType>;
-  lte: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<CurrencyType>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<CurrencyType>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<CurrencyType>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<CurrencyType>;
-  range: InputMaybe<Array<CurrencyType>>;
-  regex: InputMaybe<Scalars['String']['input']>;
+  /** Case-sensitive regular expression match. Filter will be skipped on `null` value */
+  regex: InputMaybe<CurrencyType>;
+  /** Case-sensitive starts-with. Filter will be skipped on `null` value */
   startsWith: InputMaybe<CurrencyType>;
 };
 
-export type DateFilterLookup = {
-  contains: InputMaybe<Scalars['Date']['input']>;
-  endsWith: InputMaybe<Scalars['Date']['input']>;
+export type DateDateFilterLookup = {
+  day: InputMaybe<IntComparisonFilterLookup>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<Scalars['Date']['input']>;
+  /** Greater than. Filter will be skipped on `null` value */
   gt: InputMaybe<Scalars['Date']['input']>;
+  /** Greater than or equal to. Filter will be skipped on `null` value */
   gte: InputMaybe<Scalars['Date']['input']>;
-  iContains: InputMaybe<Scalars['Date']['input']>;
-  iEndsWith: InputMaybe<Scalars['Date']['input']>;
-  iExact: InputMaybe<Scalars['Date']['input']>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
-  iStartsWith: InputMaybe<Scalars['Date']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<Scalars['Date']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
+  isoWeekDay: InputMaybe<IntComparisonFilterLookup>;
+  isoYear: InputMaybe<IntComparisonFilterLookup>;
+  /** Less than. Filter will be skipped on `null` value */
   lt: InputMaybe<Scalars['Date']['input']>;
+  /** Less than or equal to. Filter will be skipped on `null` value */
   lte: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<Scalars['Date']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<Scalars['Date']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<Scalars['Date']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<Scalars['Date']['input']>;
-  range: InputMaybe<Array<Scalars['Date']['input']>>;
-  regex: InputMaybe<Scalars['String']['input']>;
-  startsWith: InputMaybe<Scalars['Date']['input']>;
+  month: InputMaybe<IntComparisonFilterLookup>;
+  quarter: InputMaybe<IntComparisonFilterLookup>;
+  /** Inclusive range test (between) */
+  range: InputMaybe<DateRangeLookup>;
+  week: InputMaybe<IntComparisonFilterLookup>;
+  weekDay: InputMaybe<IntComparisonFilterLookup>;
+  year: InputMaybe<IntComparisonFilterLookup>;
 };
 
-export type DatetimeFilterLookup = {
-  contains: InputMaybe<Scalars['DateTime']['input']>;
-  endsWith: InputMaybe<Scalars['DateTime']['input']>;
+export type DateRangeLookup = {
+  end: InputMaybe<Scalars['Date']['input']>;
+  start: InputMaybe<Scalars['Date']['input']>;
+};
+
+export type DatetimeDatetimeFilterLookup = {
+  date: InputMaybe<IntComparisonFilterLookup>;
+  day: InputMaybe<IntComparisonFilterLookup>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<Scalars['DateTime']['input']>;
+  /** Greater than. Filter will be skipped on `null` value */
   gt: InputMaybe<Scalars['DateTime']['input']>;
+  /** Greater than or equal to. Filter will be skipped on `null` value */
   gte: InputMaybe<Scalars['DateTime']['input']>;
-  iContains: InputMaybe<Scalars['DateTime']['input']>;
-  iEndsWith: InputMaybe<Scalars['DateTime']['input']>;
-  iExact: InputMaybe<Scalars['DateTime']['input']>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
-  iStartsWith: InputMaybe<Scalars['DateTime']['input']>;
+  hour: InputMaybe<IntComparisonFilterLookup>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<Scalars['DateTime']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
+  isoWeekDay: InputMaybe<IntComparisonFilterLookup>;
+  isoYear: InputMaybe<IntComparisonFilterLookup>;
+  /** Less than. Filter will be skipped on `null` value */
   lt: InputMaybe<Scalars['DateTime']['input']>;
+  /** Less than or equal to. Filter will be skipped on `null` value */
   lte: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<Scalars['DateTime']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<Scalars['DateTime']['input']>;
-  range: InputMaybe<Array<Scalars['DateTime']['input']>>;
-  regex: InputMaybe<Scalars['String']['input']>;
-  startsWith: InputMaybe<Scalars['DateTime']['input']>;
+  minute: InputMaybe<IntComparisonFilterLookup>;
+  month: InputMaybe<IntComparisonFilterLookup>;
+  quarter: InputMaybe<IntComparisonFilterLookup>;
+  /** Inclusive range test (between) */
+  range: InputMaybe<DatetimeRangeLookup>;
+  second: InputMaybe<IntComparisonFilterLookup>;
+  time: InputMaybe<IntComparisonFilterLookup>;
+  week: InputMaybe<IntComparisonFilterLookup>;
+  weekDay: InputMaybe<IntComparisonFilterLookup>;
+  year: InputMaybe<IntComparisonFilterLookup>;
 };
 
-export type DecimalFilterLookup = {
-  contains: InputMaybe<Scalars['Decimal']['input']>;
-  endsWith: InputMaybe<Scalars['Decimal']['input']>;
+export type DatetimeRangeLookup = {
+  end: InputMaybe<Scalars['DateTime']['input']>;
+  start: InputMaybe<Scalars['DateTime']['input']>;
+};
+
+export type DecimalComparisonFilterLookup = {
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<Scalars['Decimal']['input']>;
+  /** Greater than. Filter will be skipped on `null` value */
   gt: InputMaybe<Scalars['Decimal']['input']>;
+  /** Greater than or equal to. Filter will be skipped on `null` value */
   gte: InputMaybe<Scalars['Decimal']['input']>;
-  iContains: InputMaybe<Scalars['Decimal']['input']>;
-  iEndsWith: InputMaybe<Scalars['Decimal']['input']>;
-  iExact: InputMaybe<Scalars['Decimal']['input']>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
-  iStartsWith: InputMaybe<Scalars['Decimal']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<Scalars['Decimal']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than. Filter will be skipped on `null` value */
   lt: InputMaybe<Scalars['Decimal']['input']>;
+  /** Less than or equal to. Filter will be skipped on `null` value */
   lte: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<Scalars['Decimal']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<Scalars['Decimal']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<Scalars['Decimal']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<Scalars['Decimal']['input']>;
-  range: InputMaybe<Array<Scalars['Decimal']['input']>>;
-  regex: InputMaybe<Scalars['String']['input']>;
-  startsWith: InputMaybe<Scalars['Decimal']['input']>;
+  /** Inclusive range test (between) */
+  range: InputMaybe<DecimalRangeLookup>;
 };
 
-export type IdFilterLookup = {
-  contains: InputMaybe<Scalars['ID']['input']>;
-  endsWith: InputMaybe<Scalars['ID']['input']>;
+export type DecimalRangeLookup = {
+  end: InputMaybe<Scalars['Decimal']['input']>;
+  start: InputMaybe<Scalars['Decimal']['input']>;
+};
+
+export type IdBaseFilterLookup = {
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<Scalars['ID']['input']>;
-  gt: InputMaybe<Scalars['ID']['input']>;
-  gte: InputMaybe<Scalars['ID']['input']>;
-  iContains: InputMaybe<Scalars['ID']['input']>;
-  iEndsWith: InputMaybe<Scalars['ID']['input']>;
-  iExact: InputMaybe<Scalars['ID']['input']>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
-  iStartsWith: InputMaybe<Scalars['ID']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<Scalars['ID']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
-  lt: InputMaybe<Scalars['ID']['input']>;
-  lte: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<Scalars['ID']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<Scalars['ID']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<Scalars['ID']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<Scalars['ID']['input']>;
-  range: InputMaybe<Array<Scalars['ID']['input']>>;
-  regex: InputMaybe<Scalars['String']['input']>;
-  startsWith: InputMaybe<Scalars['ID']['input']>;
+};
+
+export type IntComparisonFilterLookup = {
+  /** Exact match. Filter will be skipped on `null` value */
+  exact: InputMaybe<Scalars['Int']['input']>;
+  /** Greater than. Filter will be skipped on `null` value */
+  gt: InputMaybe<Scalars['Int']['input']>;
+  /** Greater than or equal to. Filter will be skipped on `null` value */
+  gte: InputMaybe<Scalars['Int']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
+  inList: InputMaybe<Array<Scalars['Int']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
+  isNull: InputMaybe<Scalars['Boolean']['input']>;
+  /** Less than. Filter will be skipped on `null` value */
+  lt: InputMaybe<Scalars['Int']['input']>;
+  /** Less than or equal to. Filter will be skipped on `null` value */
+  lte: InputMaybe<Scalars['Int']['input']>;
+  /** Inclusive range test (between) */
+  range: InputMaybe<IntRangeLookup>;
+};
+
+export type IntRangeLookup = {
+  end: InputMaybe<Scalars['Int']['input']>;
+  start: InputMaybe<Scalars['Int']['input']>;
 };
 
 export type Mutation = {
@@ -917,7 +477,7 @@ export type MutationCreateTransactionArgs = {
 /** An object with a Globally Unique ID */
 export type Node = {
   /** The Globally Unique ID of this object */
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
 };
 
 export type OneToManyInput = {
@@ -926,7 +486,11 @@ export type OneToManyInput = {
 
 export enum Ordering {
   Asc = 'ASC',
-  Desc = 'DESC'
+  AscNullsFirst = 'ASC_NULLS_FIRST',
+  AscNullsLast = 'ASC_NULLS_LAST',
+  Desc = 'DESC',
+  DescNullsFirst = 'DESC_NULLS_FIRST',
+  DescNullsLast = 'DESC_NULLS_LAST'
 }
 
 /** Information to aid in pagination. */
@@ -1033,10 +597,11 @@ export type QueryTransactionRelayArgs = {
 
 export type RetailerFilter = {
   AND: InputMaybe<RetailerFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<RetailerFilter>;
   OR: InputMaybe<RetailerFilter>;
   category: InputMaybe<TransactionCategoryFilterLookup>;
-  id: InputMaybe<IdFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
   name: InputMaybe<StrFilterLookup>;
 };
 
@@ -1049,7 +614,7 @@ export type RetailerInput = {
 export type RetailerNode = Node & {
   __typename?: 'RetailerNode';
   category: TransactionCategory;
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
 };
 
@@ -1085,10 +650,11 @@ export enum RetailerType {
 
 export type SalaryFilter = {
   AND: InputMaybe<SalaryFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<SalaryFilter>;
   OR: InputMaybe<SalaryFilter>;
-  date: InputMaybe<DateFilterLookup>;
-  id: InputMaybe<IdFilterLookup>;
+  date: InputMaybe<DateDateFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
 };
 
 export type SalaryNode = Node & {
@@ -1097,7 +663,7 @@ export type SalaryNode = Node & {
   date: Scalars['Date']['output'];
   deductionDetail: Scalars['JSON']['output'];
   grossPay: Scalars['Decimal']['output'];
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   netPay: Scalars['Decimal']['output'];
   payDetail: Scalars['JSON']['output'];
   taxDetail: Scalars['JSON']['output'];
@@ -1146,7 +712,7 @@ export type StockInput = {
 export type StockNode = Node & {
   __typename?: 'StockNode';
   currency: CurrencyType;
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   name: Scalars['String']['output'];
   ticker: Maybe<Scalars['String']['output']>;
 };
@@ -1186,7 +752,7 @@ export type StockTransactionNode = Node & {
   __typename?: 'StockTransactionNode';
   account: AccountNode;
   amount: Scalars['Decimal']['output'];
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   note: Maybe<Scalars['String']['output']>;
   price: Scalars['Decimal']['output'];
   relatedTransaction: TransactionNode;
@@ -1195,107 +761,29 @@ export type StockTransactionNode = Node & {
 };
 
 export type StrFilterLookup = {
+  /** Case-sensitive containment test. Filter will be skipped on `null` value */
   contains: InputMaybe<Scalars['String']['input']>;
+  /** Case-sensitive ends-with. Filter will be skipped on `null` value */
   endsWith: InputMaybe<Scalars['String']['input']>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<Scalars['String']['input']>;
-  gt: InputMaybe<Scalars['String']['input']>;
-  gte: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive containment test. Filter will be skipped on `null` value */
   iContains: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive ends-with. Filter will be skipped on `null` value */
   iEndsWith: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive exact match. Filter will be skipped on `null` value */
   iExact: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive regular expression match. Filter will be skipped on `null` value */
   iRegex: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive starts-with. Filter will be skipped on `null` value */
   iStartsWith: InputMaybe<Scalars['String']['input']>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
-  lt: InputMaybe<Scalars['String']['input']>;
-  lte: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<Scalars['String']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<Scalars['String']['input']>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<Scalars['String']['input']>;
-  range: InputMaybe<Array<Scalars['String']['input']>>;
+  /** Case-sensitive regular expression match. Filter will be skipped on `null` value */
   regex: InputMaybe<Scalars['String']['input']>;
+  /** Case-sensitive starts-with. Filter will be skipped on `null` value */
   startsWith: InputMaybe<Scalars['String']['input']>;
 };
 
@@ -1321,117 +809,40 @@ export enum TransactionCategory {
 }
 
 export type TransactionCategoryFilterLookup = {
+  /** Case-sensitive containment test. Filter will be skipped on `null` value */
   contains: InputMaybe<TransactionCategory>;
+  /** Case-sensitive ends-with. Filter will be skipped on `null` value */
   endsWith: InputMaybe<TransactionCategory>;
+  /** Exact match. Filter will be skipped on `null` value */
   exact: InputMaybe<TransactionCategory>;
-  gt: InputMaybe<TransactionCategory>;
-  gte: InputMaybe<TransactionCategory>;
+  /** Case-insensitive containment test. Filter will be skipped on `null` value */
   iContains: InputMaybe<TransactionCategory>;
+  /** Case-insensitive ends-with. Filter will be skipped on `null` value */
   iEndsWith: InputMaybe<TransactionCategory>;
+  /** Case-insensitive exact match. Filter will be skipped on `null` value */
   iExact: InputMaybe<TransactionCategory>;
-  iRegex: InputMaybe<Scalars['String']['input']>;
+  /** Case-insensitive regular expression match. Filter will be skipped on `null` value */
+  iRegex: InputMaybe<TransactionCategory>;
+  /** Case-insensitive starts-with. Filter will be skipped on `null` value */
   iStartsWith: InputMaybe<TransactionCategory>;
+  /** Exact match of items in a given list. Filter will be skipped on `null` value */
   inList: InputMaybe<Array<TransactionCategory>>;
+  /** Assignment test. Filter will be skipped on `null` value */
   isNull: InputMaybe<Scalars['Boolean']['input']>;
-  lt: InputMaybe<TransactionCategory>;
-  lte: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nContains: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nEndsWith: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nExact: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGt: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nGte: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIContains: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIEndsWith: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIExact: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIStartsWith: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nInList: InputMaybe<Array<TransactionCategory>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nIsNull: InputMaybe<Scalars['Boolean']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLt: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nLte: InputMaybe<TransactionCategory>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRange: InputMaybe<Array<TransactionCategory>>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nRegex: InputMaybe<Scalars['String']['input']>;
-  /**
-   * @deprecated The "n" prefix is deprecated and will be removed in the future, use `NOT` instead.
-   *
-   */
-  nStartsWith: InputMaybe<TransactionCategory>;
-  range: InputMaybe<Array<TransactionCategory>>;
-  regex: InputMaybe<Scalars['String']['input']>;
+  /** Case-sensitive regular expression match. Filter will be skipped on `null` value */
+  regex: InputMaybe<TransactionCategory>;
+  /** Case-sensitive starts-with. Filter will be skipped on `null` value */
   startsWith: InputMaybe<TransactionCategory>;
 };
 
 export type TransactionFilter = {
   AND: InputMaybe<TransactionFilter>;
+  DISTINCT: InputMaybe<Scalars['Boolean']['input']>;
   NOT: InputMaybe<TransactionFilter>;
   OR: InputMaybe<TransactionFilter>;
   account: AccountFilter;
-  date: InputMaybe<DateFilterLookup>;
-  id: InputMaybe<IdFilterLookup>;
+  date: InputMaybe<DateDateFilterLookup>;
+  id: InputMaybe<IdBaseFilterLookup>;
 };
 
 export type TransactionInput = {
@@ -1451,7 +862,7 @@ export type TransactionNode = Node & {
   balance: Maybe<Scalars['Decimal']['output']>;
   date: Scalars['Date']['output'];
   getSortingAmount: Scalars['Float']['output'];
-  id: Scalars['GlobalID']['output'];
+  id: Scalars['ID']['output'];
   isInternal: Scalars['Boolean']['output'];
   note: Maybe<Scalars['String']['output']>;
   relatedTransaction: Maybe<TransactionNode>;
@@ -1599,24 +1010,24 @@ export enum __TypeKind {
 export type GetAmazonOrderQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetAmazonOrderQueryQuery = { __typename?: 'Query', amazonOrderRelay: { __typename?: 'AmazonOrderNodeConnection', edges: Array<{ __typename?: 'AmazonOrderNodeEdge', node: { __typename?: 'AmazonOrderNode', date: string, id: any, isReturned: boolean, item: string, transaction: { __typename?: 'TransactionNode', id: any, amount: string } | null, returnTransaction: { __typename?: 'TransactionNode', id: any, amount: string } | null } }> } };
+export type GetAmazonOrderQueryQuery = { __typename?: 'Query', amazonOrderRelay: { __typename?: 'AmazonOrderNodeConnection', edges: Array<{ __typename?: 'AmazonOrderNodeEdge', node: { __typename?: 'AmazonOrderNode', date: string, id: string, isReturned: boolean, item: string, transaction: { __typename?: 'TransactionNode', id: string, amount: string } | null, returnTransaction: { __typename?: 'TransactionNode', id: string, amount: string } | null } }> } };
 
 export type GetAmountSnapshotQueryQueryVariables = Exact<{
   startDate: InputMaybe<Scalars['Date']['input']>;
 }>;
 
 
-export type GetAmountSnapshotQueryQuery = { __typename?: 'Query', krwSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: string, currency: CurrencyType, date: string, summary: any | null } }> }, usdSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: any, amount: string, currency: CurrencyType, date: string, summary: any | null } }> } };
+export type GetAmountSnapshotQueryQuery = { __typename?: 'Query', krwSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: string, amount: string, currency: CurrencyType, date: string, summary: any | null } }> }, usdSnapshot: { __typename?: 'AmountSnapshotNodeConnection', edges: Array<{ __typename?: 'AmountSnapshotNodeEdge', node: { __typename?: 'AmountSnapshotNode', id: string, amount: string, currency: CurrencyType, date: string, summary: any | null } }> } };
 
 export type GetBankNodeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBankNodeQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: string }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: any, currency: CurrencyType, amount: string, lastUpdate: string | null, name: string, isActive: boolean } }> } } }> } };
+export type GetBankNodeQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: string, name: string, balance: Array<{ __typename?: 'BankBalance', currency: string, value: string }>, accountSet: { __typename?: 'AccountNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', type: AccountType, id: string, currency: CurrencyType, amount: string, lastUpdate: string | null, name: string, isActive: boolean } }> } } }> } };
 
 export type GetBankSimpleListQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetBankSimpleListQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: any, name: string } }> } };
+export type GetBankSimpleListQueryQuery = { __typename?: 'Query', bankRelay: { __typename?: 'BankNodeConnection', edges: Array<{ __typename?: 'BankNodeEdge', node: { __typename?: 'BankNode', id: string, name: string } }> } };
 
 export type GetAccountTypeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1626,31 +1037,32 @@ export type GetAccountTypeQueryQuery = { __typename?: 'Query', __type: { __typen
 export type GetAccountNodeQueryQueryVariables = Exact<{
   After: Scalars['String']['input'];
   BankId: InputMaybe<Scalars['ID']['input']>;
+  IsActive: InputMaybe<BoolBaseFilterLookup>;
 }>;
 
 
-export type GetAccountNodeQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', cursor: string, node: { __typename?: 'AccountNode', amount: string, name: string, currency: CurrencyType, lastUpdate: string | null, id: any, isActive: boolean, type: AccountType, firstTransaction: string | null, lastTransaction: string | null, bank: { __typename?: 'BankNode', id: any, name: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null, endCursor: string | null } } };
+export type GetAccountNodeQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'AccountNodeEdge', cursor: string, node: { __typename?: 'AccountNode', amount: string, name: string, currency: CurrencyType, lastUpdate: string | null, id: string, isActive: boolean, type: AccountType, firstTransaction: string | null, lastTransaction: string | null, bank: { __typename?: 'BankNode', id: string, name: string } } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, hasPreviousPage: boolean, startCursor: string | null, endCursor: string | null } } };
 
 export type GetSimpleAccountListQueryQueryVariables = Exact<{
   BankId: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type GetSimpleAccountListQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', id: any, name: string } }> } };
+export type GetSimpleAccountListQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', id: string, name: string } }> } };
 
 export type GetTransactionListQueryQueryVariables = Exact<{
   AccountID: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type GetTransactionListQueryQuery = { __typename?: 'Query', transactionRelay: { __typename?: 'TransactionNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'TransactionNodeEdge', cursor: string, node: { __typename?: 'TransactionNode', id: any, amount: string, balance: string | null, date: string, isInternal: boolean, requiresDetail: boolean, reviewed: boolean, note: string | null, type: TransactionCategory, relatedTransaction: { __typename?: 'TransactionNode', id: any } | null, retailer: { __typename?: 'RetailerNode', id: any, name: string } | null } }> }, accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', currency: CurrencyType } }> } };
+export type GetTransactionListQueryQuery = { __typename?: 'Query', transactionRelay: { __typename?: 'TransactionNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'TransactionNodeEdge', cursor: string, node: { __typename?: 'TransactionNode', id: string, amount: string, balance: string | null, date: string, isInternal: boolean, requiresDetail: boolean, reviewed: boolean, note: string | null, type: TransactionCategory, relatedTransaction: { __typename?: 'TransactionNode', id: string } | null, retailer: { __typename?: 'RetailerNode', id: string, name: string } | null } }> }, accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', currency: CurrencyType } }> } };
 
 export type GetAccountDetailQueryQueryVariables = Exact<{
   AccountID: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
-export type GetAccountDetailQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', amount: string, name: string, currency: CurrencyType, lastUpdate: string | null, id: any, isActive: boolean, type: AccountType, firstTransaction: string | null, lastTransaction: string | null, bank: { __typename?: 'BankNode', id: any, name: string } } }> } };
+export type GetAccountDetailQueryQuery = { __typename?: 'Query', accountRelay: { __typename?: 'AccountNodeConnection', edges: Array<{ __typename?: 'AccountNodeEdge', node: { __typename?: 'AccountNode', amount: string, name: string, currency: CurrencyType, lastUpdate: string | null, id: string, isActive: boolean, type: AccountType, firstTransaction: string | null, lastTransaction: string | null, bank: { __typename?: 'BankNode', id: string, name: string } } }> } };
 
 export type GetTransactionCategoryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1672,7 +1084,7 @@ export type CreateTransactionMutationMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionMutationMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: any } };
+export type CreateTransactionMutationMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: string } };
 
 export type CreateTransactionWithoutRetailerMutationMutationVariables = Exact<{
   amount: Scalars['Decimal']['input'];
@@ -1683,7 +1095,7 @@ export type CreateTransactionWithoutRetailerMutationMutationVariables = Exact<{
 }>;
 
 
-export type CreateTransactionWithoutRetailerMutationMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: any } };
+export type CreateTransactionWithoutRetailerMutationMutation = { __typename?: 'Mutation', createTransaction: { __typename?: 'TransactionNode', id: string } };
 
 export type CreateStockTransactionMutationMutationVariables = Exact<{
   date: Scalars['Date']['input'];
@@ -1697,14 +1109,14 @@ export type CreateStockTransactionMutationMutationVariables = Exact<{
 }>;
 
 
-export type CreateStockTransactionMutationMutation = { __typename?: 'Mutation', createStockTransaction: { __typename?: 'StockTransactionNode', stock: { __typename?: 'StockNode', id: any, name: string, ticker: string | null } } };
+export type CreateStockTransactionMutationMutation = { __typename?: 'Mutation', createStockTransaction: { __typename?: 'StockTransactionNode', stock: { __typename?: 'StockNode', id: string, name: string, ticker: string | null } } };
 
 export type GetRetailerListQueryQueryVariables = Exact<{
   after: InputMaybe<Scalars['String']['input']>;
 }>;
 
 
-export type GetRetailerListQueryQuery = { __typename?: 'Query', retailerRelay: { __typename?: 'RetailerNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'RetailerNodeEdge', node: { __typename?: 'RetailerNode', id: any, name: string, category: TransactionCategory } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor: string | null } }, transactionRelay: { __typename?: 'TransactionNodeConnection', edges: Array<{ __typename?: 'TransactionNodeEdge', node: { __typename?: 'TransactionNode', date: string } }> } };
+export type GetRetailerListQueryQuery = { __typename?: 'Query', retailerRelay: { __typename?: 'RetailerNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'RetailerNodeEdge', node: { __typename?: 'RetailerNode', id: string, name: string, category: TransactionCategory } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor: string | null } }, transactionRelay: { __typename?: 'TransactionNodeConnection', edges: Array<{ __typename?: 'TransactionNodeEdge', node: { __typename?: 'TransactionNode', date: string } }> } };
 
 export type GetRetailerTypeQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1718,12 +1130,12 @@ export type CreateRetailerMutationMutationVariables = Exact<{
 }>;
 
 
-export type CreateRetailerMutationMutation = { __typename?: 'Mutation', createRetailer: { __typename?: 'RetailerNode', id: any, name: string, category: TransactionCategory } };
+export type CreateRetailerMutationMutation = { __typename?: 'Mutation', createRetailer: { __typename?: 'RetailerNode', id: string, name: string, category: TransactionCategory } };
 
 export type GetSalaryQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetSalaryQueryQuery = { __typename?: 'Query', salaryRelay: { __typename?: 'SalaryNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'SalaryNodeEdge', node: { __typename?: 'SalaryNode', date: string, grossPay: string, id: any, netPay: string, totalDeduction: string, totalAdjustment: string, totalWithheld: string, payDetail: any, taxDetail: any, deductionDetail: any, adjustmentDetail: any, transaction: { __typename?: 'TransactionNode', id: any, note: string | null } } }> } };
+export type GetSalaryQueryQuery = { __typename?: 'Query', salaryRelay: { __typename?: 'SalaryNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'SalaryNodeEdge', node: { __typename?: 'SalaryNode', date: string, grossPay: string, id: string, netPay: string, totalDeduction: string, totalAdjustment: string, totalWithheld: string, payDetail: any, taxDetail: any, deductionDetail: any, adjustmentDetail: any, transaction: { __typename?: 'TransactionNode', id: string, note: string | null } } }> } };
 
 export type GetSalaryFilterQueryQueryVariables = Exact<{
   DateMin: InputMaybe<Scalars['Date']['input']>;
@@ -1731,7 +1143,7 @@ export type GetSalaryFilterQueryQueryVariables = Exact<{
 }>;
 
 
-export type GetSalaryFilterQueryQuery = { __typename?: 'Query', salaryRelay: { __typename?: 'SalaryNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'SalaryNodeEdge', node: { __typename?: 'SalaryNode', date: string, grossPay: string, id: any, netPay: string, totalDeduction: string, totalAdjustment: string, totalWithheld: string, payDetail: any, taxDetail: any, deductionDetail: any, adjustmentDetail: any, transaction: { __typename?: 'TransactionNode', id: any, note: string | null } } }> } };
+export type GetSalaryFilterQueryQuery = { __typename?: 'Query', salaryRelay: { __typename?: 'SalaryNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'SalaryNodeEdge', node: { __typename?: 'SalaryNode', date: string, grossPay: string, id: string, netPay: string, totalDeduction: string, totalAdjustment: string, totalWithheld: string, payDetail: any, taxDetail: any, deductionDetail: any, adjustmentDetail: any, transaction: { __typename?: 'TransactionNode', id: string, note: string | null } } }> } };
 
 export type SalaryYearsQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -1743,12 +1155,12 @@ export type CreateStockMutationMutationVariables = Exact<{
 }>;
 
 
-export type CreateStockMutationMutation = { __typename?: 'Mutation', createStock: { __typename?: 'StockNode', id: any, name: string, ticker: string | null, currency: CurrencyType } };
+export type CreateStockMutationMutation = { __typename?: 'Mutation', createStock: { __typename?: 'StockNode', id: string, name: string, ticker: string | null, currency: CurrencyType } };
 
 export type GetStockListQueryQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type GetStockListQueryQuery = { __typename?: 'Query', stockRelay: { __typename?: 'StockNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'StockNodeEdge', node: { __typename?: 'StockNode', id: any, name: string, ticker: string | null, currency: CurrencyType } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor: string | null } } };
+export type GetStockListQueryQuery = { __typename?: 'Query', stockRelay: { __typename?: 'StockNodeConnection', totalCount: number | null, edges: Array<{ __typename?: 'StockNodeEdge', node: { __typename?: 'StockNode', id: string, name: string, ticker: string | null, currency: CurrencyType } }>, pageInfo: { __typename?: 'PageInfo', hasNextPage: boolean, endCursor: string | null } } };
 
 
 export const GetAmazonOrderQueryDocument = gql`
@@ -2020,10 +1432,10 @@ export type GetAccountTypeQueryLazyQueryHookResult = ReturnType<typeof useGetAcc
 export type GetAccountTypeQuerySuspenseQueryHookResult = ReturnType<typeof useGetAccountTypeQuerySuspenseQuery>;
 export type GetAccountTypeQueryQueryResult = Apollo.QueryResult<GetAccountTypeQueryQuery, GetAccountTypeQueryQueryVariables>;
 export const GetAccountNodeQueryDocument = gql`
-    query GetAccountNodeQuery($After: String!, $BankId: ID) {
+    query GetAccountNodeQuery($After: String!, $BankId: ID, $IsActive: BoolBaseFilterLookup) {
   accountRelay(
     order: {name: ASC}
-    filters: {bank: {id: {exact: $BankId}}}
+    filters: {isActive: $IsActive, bank: {id: {exact: $BankId}}}
     first: 100
     after: $After
   ) {
@@ -2070,6 +1482,7 @@ export const GetAccountNodeQueryDocument = gql`
  *   variables: {
  *      After: // value for 'After'
  *      BankId: // value for 'BankId'
+ *      IsActive: // value for 'IsActive'
  *   },
  * });
  */
