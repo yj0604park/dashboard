@@ -2,12 +2,11 @@ import { Box, Typography } from '@mui/material';
 import Label from 'src/components/Label';
 import NumberHelper from 'src/functions/NumberHelper';
 import { Link } from 'react-router-dom';
-import { Balance } from 'src/models/bank';
 
 interface BankItemProps {
   bankName: string;
   bankId: number;
-  balance: Balance[];
+  balance: any[];
   latestUpdated: Date;
   accountCount: number;
 }

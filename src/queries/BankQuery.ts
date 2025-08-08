@@ -59,10 +59,10 @@ export const GetAccountTypeQuery = gql`
 
 // Get all account of given bank
 export const GetAccountNodeQuery = gql`
-  query GetAccountNodeQuery($After: String!, $BankId: IDBaseFilterLookup) {
+  query GetAccountNodeQuery($After: String!, $BankId: ID) {
     accountRelay(
       order: { name: ASC }
-      filters: { isActive: {exact: true}, bank: { id: $BankId, name: {} } }
+      filters: { isActive: true, bank: { id: { exact: $BankId } } }
       first: 100
       after: $After
     ) {

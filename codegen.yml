@@ -1,13 +1,18 @@
 overwrite: true
-schema: "http://localhost:58000/money/graphql"
-documents: "src/queries/**/*.{ts,tsx}"
+schema: ../backend/schema.graphql
+# Only source real operation documents, exclude any generated files
+documents: "src/queries/**/*.{ts,tsx,graphql}"
 generates:
-  src/generated/graphql.tsx:
+  src/__generated__/graphql.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
     config:
       withHooks: true
-      withComponent: false
-      withHOC: false 
+      avoidOptionals: true
+      scalars:
+        Date: string
+        DateTime: string
+        Decimal: string
+        UUID: string
