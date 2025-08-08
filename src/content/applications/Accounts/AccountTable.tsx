@@ -29,13 +29,11 @@ import { Link } from 'react-router-dom';
 import Label from 'src/components/Label';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { AccountEdge, AccountNode } from 'src/types/bank';
-import { useQuery } from '@apollo/client';
-import { GetAccountTypeQuery } from 'src/queries/BankQuery';
+import { GetAccountNodeQueryQuery, useGetAccountTypeQueryQuery } from 'src/__generated__/graphql';
 
 interface RecentOrdersTableProps {
   className?: string;
-  accountList: AccountEdge;
+  accountList: GetAccountNodeQueryQuery['accountRelay'];
 }
 
 const getStatusLabel = (accountStatus: boolean): JSX.Element => {
@@ -56,10 +54,10 @@ const getStatusLabel = (accountStatus: boolean): JSX.Element => {
 };
 
 const applyPagination = (
-  accounts: AccountEdge,
+  accounts: GetAccountNodeQueryQuery['accountRelay'],
   page: number,
   limit: number
-): AccountNode[] => {
+) => {
   return accounts.edges.slice(page * limit, page * limit + limit);
 };
 
@@ -70,7 +68,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
     status: null
   });
 
-  const { loading, error, data } = useQuery(GetAccountTypeQuery);
+  const { loading, error, data } = useGetAccountTypeQueryQuery();
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
     let value = null;
@@ -255,7 +253,7 @@ const AccountTable = ({ accountList: accountList }: RecentOrdersTableProps) => {
                       gutterBottom
                       noWrap
                     >
-                      {NumberHelper.FormatString(account.amount[0].value, account.amount[0].currency)}
+                      {NumberHelper.FormatString(account.amount, account.currency)}
                     </Typography>
                   </TableCell>
                   <TableCell align="right">

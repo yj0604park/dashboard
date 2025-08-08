@@ -1,4 +1,3 @@
-import { BankNode } from "src/types/bank";
 import { Decimal } from "decimal.js";
 
 export default class Util {
@@ -63,7 +62,10 @@ export default class Util {
     return 'text.primary';
   }
 
-  static GetTotalNumber(bankList: BankNode[], currency: string): string {
+  static GetTotalNumber(
+    bankList: Array<{ node: { balance: Array<{ currency: string; value: string }> } }>,
+    currency: string
+  ): string {
     let sum = new Decimal(0);
     bankList.forEach((element) => {
       element.node.balance.forEach((balance_per_currency) => {
@@ -74,6 +76,15 @@ export default class Util {
       });
     });
     return sum.toString(); // Return as string to maintain precision
+  }
+
+  static ToNumber(value: string | number | null | undefined): number {
+    try {
+      const decimal = new Decimal(value ?? 0);
+      return decimal.toNumber();
+    } catch (e) {
+      return 0;
+    }
   }
 
 }

@@ -8,11 +8,11 @@ import {
 import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
 import BankListRow from './BankListRow';
 import Loading from './Loading';
-import { BankData } from 'src/types/bank';
+import { GetBankNodeQueryQuery } from 'src/__generated__/graphql';
 
 interface BankListProps {
   loading: boolean;
-  bankList: BankData;
+  bankList: GetBankNodeQueryQuery;
 }
 
 function BankList({ loading, bankList }: BankListProps) {

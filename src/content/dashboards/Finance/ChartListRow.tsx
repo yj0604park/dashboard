@@ -1,11 +1,14 @@
 import { Card, Stack, Divider } from '@mui/material';
 import ChartItem from './ChartItem';
-import { GetAmountSnapshotQuery } from '../../../queries/AmountSnapshotQuery';
-import { useQuery } from '@apollo/client';
 import Loading from './Loading';
-import { AmountSnapshotData, AmountSnapshotEdge } from 'src/types/bank';
+import {
+  useGetAmountSnapshotQueryQuery,
+  GetAmountSnapshotQueryQuery
+} from 'src/__generated__/graphql';
 
-function GetDateAndAmount(amountSnapshotList: AmountSnapshotEdge) {
+function GetDateAndAmount(
+  amountSnapshotList: GetAmountSnapshotQueryQuery['krwSnapshot']
+) {
   const date = [];
   const amount = [];
 
@@ -17,14 +20,9 @@ function GetDateAndAmount(amountSnapshotList: AmountSnapshotEdge) {
 }
 
 function ChartListRow({ usdTotal, krwTotal }) {
-  const { loading, error, data } = useQuery<AmountSnapshotData>(
-    GetAmountSnapshotQuery,
-    {
-      variables: {
-        startDate: '2023-01-01'
-      }
-    }
-  );
+  const { loading, error, data } = useGetAmountSnapshotQueryQuery({
+    variables: { startDate: '2023-01-01' }
+  });
   if (!loading && !error) {
     const [usdChartLabel, usdChartData] = GetDateAndAmount(data.usdSnapshot);
     const [krwChartLabel, krwChartData] = GetDateAndAmount(data.krwSnapshot);

@@ -1,24 +1,21 @@
 import Chart from 'react-apexcharts';
 
 import { Card } from '@mui/material';
-import { SalaryData } from 'src/types/bank';
+import { GetSalaryQueryQuery, GetSalaryFilterQueryQuery } from 'src/__generated__/graphql';
+import NumberHelper from 'src/functions/NumberHelper';
 
-function getChartData(data: SalaryData): [number[], number[], Date[]] {
+function getChartData(
+  data: GetSalaryQueryQuery | GetSalaryFilterQueryQuery
+): [number[], number[], string[]] {
   if (!data || data === undefined) {
     return [[], [], []];
   }
 
-  const grossPay = data?.salaryRelay.edges.map((item) => {
-    return item.node.grossPay;
-  });
+  const grossPay = data?.salaryRelay.edges.map((item) => NumberHelper.ToNumber(item.node.grossPay));
 
-  const netPay = data?.salaryRelay.edges.map((item) => {
-    return item.node.netPay;
-  });
+  const netPay = data?.salaryRelay.edges.map((item) => NumberHelper.ToNumber(item.node.netPay));
 
-  const chartLabel = data?.salaryRelay.edges.map((item) => {
-    return item.node.date;
-  });
+  const chartLabel = data?.salaryRelay.edges.map((item) => item.node.date);
 
   return [grossPay, netPay, chartLabel];
 }
@@ -36,9 +33,7 @@ function SalaryChart({ data }) {
         id: 'basic-bar'
       },
       xaxis: {
-        categories: chartLabel.map((item: Date) => {
-          return item.toString();
-        })
+        categories: chartLabel
       },
       dataLabels: {
         enabled: false

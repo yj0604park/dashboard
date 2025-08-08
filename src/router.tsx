@@ -194,7 +194,7 @@ const routes: RouteObject[] = [
             element: <Income />
           },
           {
-            path: 'yearDetails/:year',
+            path: 'year-details/:year',
             element: <YearDetails />
           }
         ]

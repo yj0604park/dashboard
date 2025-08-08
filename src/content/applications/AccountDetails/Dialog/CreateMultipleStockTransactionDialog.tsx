@@ -26,7 +26,7 @@ import { useState } from 'react';
 import createStock from 'src/hooks/createStock';
 import createStockTransaction from 'src/hooks/createStockTransaction';
 import getStockListInfo from 'src/hooks/getStockListInfo';
-import { Stock } from 'src/types/bank';
+import { Stock } from 'src/types/internal';
 import { CreateMultipleStockTransactionDialogProps } from 'src/types/transaction';
 import { StockAutocompleteItem } from 'src/types/internal';
 import { CurrencyType } from 'src/__generated__/graphql';

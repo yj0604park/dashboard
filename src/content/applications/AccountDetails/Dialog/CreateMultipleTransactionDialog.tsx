@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useGetLastTransactionDateQuery } from 'src/__generated__/graphql';
 import AddIcon from '@mui/icons-material/Add';
 import {
   Alert,
@@ -27,8 +27,7 @@ import { useState } from 'react';
 import createRetailer from 'src/hooks/createRetailer';
 import createTransaction from 'src/hooks/createTransaction';
 import getRetailerListInfo from 'src/hooks/getRetailerListInfo';
-import { TransactionData } from 'src/types/bank';
-import { GetLastTransactionDate } from 'src/queries/BankQuery';
+
 import TransactionInputRow from './TransactionInputRow';
 import { RetailerType, TransactionCategory } from 'src/__generated__/graphql';
 
@@ -53,7 +52,7 @@ function CreateAccountDialog({
     error: transactionError,
     data: transactionData,
     refetch: refetchTransaction
-  } = useQuery<TransactionData>(GetLastTransactionDate);
+  } = useGetLastTransactionDateQuery();
 
   const {
     updateDefaultTransaction,

@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useGetAmazonOrderQueryQuery } from 'src/__generated__/graphql';
 import {
   Box,
   Card,
@@ -15,12 +15,10 @@ import {
   TableRow,
   Typography
 } from '@mui/material';
-import { AmazonOrderData } from 'src/types/bank';
-import { GetAmazonOrderQuery } from 'src/queries/AmazonQuery';
+
 
 function AmazonOrderTable() {
-  const { loading, error, data } =
-    useQuery<AmazonOrderData>(GetAmazonOrderQuery);
+  const { loading, error, data } = useGetAmazonOrderQueryQuery();
 
   let tableBodyContent = loading ? (
     <Typography variant="h2">Loading...</Typography>
@@ -36,9 +34,7 @@ function AmazonOrderTable() {
           <TableCell>{row.node.item}</TableCell>
           <TableCell>{row.node.isReturned.toString()}</TableCell>
           <TableCell align="right">{row.node.transaction?.amount}</TableCell>
-          <TableCell align="right">
-            {row.node.transaction?.relatedTransaction}
-          </TableCell>
+          <TableCell align="right">{row.node.transaction?.id}</TableCell>
         </TableRow>
       ))}
     </TableBody>

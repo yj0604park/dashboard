@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
 import { set } from 'date-fns';
 import { useState } from 'react';
-import { Stock, StockTransaction } from 'src/types/bank';
+import { Stock } from 'src/types/internal';
 import { StockTransactionData } from 'src/types/internal';
 import {
   CreateStockTransactionMutation,

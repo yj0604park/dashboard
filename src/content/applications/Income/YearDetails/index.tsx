@@ -11,9 +11,7 @@ import { useParams } from 'react-router-dom';
 import Footer from 'src/components/Footer';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import SalaryChart from '../SalaryChart';
-import { GetSalaryFilterQuery } from 'src/queries/SalaryQuery';
-import { useQuery } from '@apollo/client';
-import { SalaryData } from 'src/types/bank';
+import { useGetSalaryFilterQueryQuery } from 'src/__generated__/graphql';
 import { useNavigate } from 'react-router-dom';
 
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
@@ -25,7 +23,7 @@ const YearDetails = () => {
   const navigate = useNavigate();
   const { year } = useParams();
 
-  const { loading, error, data } = useQuery<SalaryData>(GetSalaryFilterQuery, {
+  const { loading, error, data } = useGetSalaryFilterQueryQuery({
     variables: { DateMin: `${year}-01-01`, DateMax: `${year}-12-31` }
   });
 

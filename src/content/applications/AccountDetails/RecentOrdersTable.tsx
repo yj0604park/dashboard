@@ -22,17 +22,14 @@ import {
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
-import {
-  TransactionData,
-  TransactionEdge,
-  TransactionNode
-} from 'src/types/bank';
+import { GetTransactionListQueryQuery } from 'src/__generated__/graphql';
 import { TransactionFilter } from 'src/types/internal';
+import { TransactionCategory } from 'src/__generated__/graphql';
 import Util from 'src/functions/NumberHelper';
 import Label from 'src/components/Label';
 
 interface RecentOrdersTableProps {
-  transactionData: TransactionData;
+  transactionData: GetTransactionListQueryQuery;
 }
 
 interface Filters {
@@ -73,9 +70,9 @@ const getInternalLabel = (isInternal: boolean): JSX.Element => {
 };
 
 const applyFilters = (
-  transactions: TransactionEdge,
+  transactions: GetTransactionListQueryQuery['transactionRelay'],
   filters: Filters
-): TransactionNode[] => {
+): GetTransactionListQueryQuery['transactionRelay']['edges'] => {
   return transactions.edges.filter((transaction) => {
     let matches = true;
 
@@ -83,8 +80,11 @@ const applyFilters = (
       return true;
     }
 
-    if (filters.status && transaction.node.type !== filters.status) {
-      matches = false;
+    if (filters.status) {
+      const isInternal = transaction.node.type === TransactionCategory.Transfer;
+      const isExternal = !isInternal;
+      if (filters.status === 'internal' && !isInternal) matches = false;
+      if (filters.status === 'external' && !isExternal) matches = false;
     }
 
     return matches;
@@ -92,15 +92,15 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  transactionList: TransactionNode[],
+  transactionList: GetTransactionListQueryQuery['transactionRelay']['edges'],
   page: number,
   limit: number
-): TransactionNode[] => {
+): GetTransactionListQueryQuery['transactionRelay']['edges'] => {
   return transactionList.slice(page * limit, page * limit + limit);
 };
 
 const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
-  const [selectedTransactions, setSelectedTransactions] = useState<number[]>(
+  const [selectedTransactions, setSelectedTransactions] = useState<any[]>(
     []
   );
   const selectedBulkActions = selectedTransactions.length > 0;
@@ -115,9 +115,7 @@ const RecentOrdersTable = ({ transactionData }: RecentOrdersTableProps) => {
   ): void => {
     setSelectedTransactions(
       event.target.checked
-        ? transactionData.transactionRelay.edges.map(
-            (transaction) => transaction.node.id
-          )
+        ? transactionData.transactionRelay.edges.map((transaction) => transaction.node.id)
         : []
     );
   };

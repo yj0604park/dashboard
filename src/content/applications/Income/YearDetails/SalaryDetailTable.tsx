@@ -11,11 +11,11 @@ import {
   Typography
 } from '@mui/material';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/types/bank';
+import { GetSalaryFilterQueryQuery } from 'src/__generated__/graphql';
 
-function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
+function SalaryDetailTable({ data, year }: { data: GetSalaryFilterQueryQuery; year: string }) {
   const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
-  const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
+  const formatAccountingUSD = (value: string) => NumberHelper.FormatAccountingUSD(value);
   return (
     <>
       <Card>
@@ -53,7 +53,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        sx={{ color: getDisplayColor(account.grossPay) }}
+                        sx={{ color: getDisplayColor(NumberHelper.ToNumber(account.grossPay)) }}
                         gutterBottom
                         noWrap
                       >
@@ -64,7 +64,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        sx={{ color: getDisplayColor(account.totalAdjustment) }}
+                        sx={{ color: getDisplayColor(NumberHelper.ToNumber(account.totalAdjustment)) }}
                         gutterBottom
                         noWrap
                       >
@@ -75,7 +75,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        sx={{ color: getDisplayColor(account.totalWithheld) }}
+                        sx={{ color: getDisplayColor(NumberHelper.ToNumber(account.totalWithheld)) }}
                         gutterBottom
                         noWrap
                       >
@@ -86,7 +86,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        sx={{ color: getDisplayColor(account.totalDeduction) }}
+                        sx={{ color: getDisplayColor(NumberHelper.ToNumber(account.totalDeduction)) }}
                         gutterBottom
                         noWrap
                       >
@@ -97,7 +97,7 @@ function SalaryDetailTable({ data, year }: { data: SalaryData; year: string }) {
                       <Typography
                         variant="body1"
                         fontWeight="bold"
-                        sx={{ color: getDisplayColor(account.netPay) }}
+                        sx={{ color: getDisplayColor(NumberHelper.ToNumber(account.netPay)) }}
                         gutterBottom
                         noWrap
                       >

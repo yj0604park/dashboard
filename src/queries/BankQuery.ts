@@ -62,7 +62,7 @@ export const GetAccountNodeQuery = gql`
   query GetAccountNodeQuery($After: String!, $BankId: ID) {
     accountRelay(
       order: { name: ASC }
-      filters: { isActive: { exact: true }, bank: { id: { exact: $BankId } } }
+      filters: { bank: { id: { exact: $BankId } } }
       first: 100
       after: $After
     ) {

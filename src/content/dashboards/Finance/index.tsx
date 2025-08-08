@@ -4,10 +4,8 @@ import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import { Container, Grid } from '@mui/material';
 import Footer from 'src/components/Footer';
 
-import { useQuery } from '@apollo/client';
 import NumberUtils from 'src/functions/NumberHelper';
-import { BankData } from 'src/types/bank';
-import { GetBankNodeQuery } from 'src/queries/BankQuery';
+import { useGetBankNodeQueryQuery } from 'src/__generated__/graphql';
 import BankList from './BankList';
 import ChartList from './ChartList';
 import SalaryChart from '../../applications/Income/SalaryChart';
@@ -15,7 +13,7 @@ import TotalBalance from './TotalBalance';
 import Loading from './Loading';
 
 function FinanceDashboard() {
-  const { loading, error, data } = useQuery<BankData>(GetBankNodeQuery);
+  const { loading, error, data } = useGetBankNodeQueryQuery();
 
   let bankStatistics = <Loading />;
 

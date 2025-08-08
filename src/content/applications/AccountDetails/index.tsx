@@ -8,9 +8,7 @@ import TransactionList from './TransactionList';
 import { useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import { AccountState } from 'src/types/internal';
-import { useQuery } from '@apollo/client';
-import { TransactionData } from 'src/types/bank';
-import { GetTransactionListQuery } from 'src/queries/BankQuery';
+import { useGetTransactionListQueryQuery } from 'src/__generated__/graphql';
 
 function ApplicationsTransactions() {
   let { state } = useLocation() as { state: AccountState };
@@ -37,10 +35,9 @@ function ApplicationsTransactions() {
     );
   }
 
-  const { loading, error, data, refetch } = useQuery<TransactionData>(
-    GetTransactionListQuery,
-    { variables: { AccountID: state.accountId } }
-  );
+  const { loading, error, data, refetch } = useGetTransactionListQueryQuery({
+    variables: { AccountID: String(state.accountId) }
+  });
 
   return (
     <>

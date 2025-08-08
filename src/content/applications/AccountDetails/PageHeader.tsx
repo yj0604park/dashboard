@@ -13,12 +13,8 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 import { AccountState } from 'src/types/internal';
 import { UserContext } from 'src/contexts/UserContext';
 import { useContext, useState } from 'react';
-import { useQuery } from '@apollo/client';
-import { AccountData } from 'src/types/bank';
-import {
-  GetAccountDetailQuery,
-  GetSimpleAccountListQuery
-} from 'src/queries/BankQuery';
+import { useGetAccountDetailQueryQuery, useGetSimpleAccountListQueryQuery } from 'src/__generated__/graphql';
+
 import UpdateIcon from '@mui/icons-material/Update';
 import { ServerContext } from 'src/contexts/ServerContext';
 import CreateMultipleTransactionDialog from './Dialog/CreateMultipleTransactionDialog';
@@ -40,7 +36,7 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
     error: errorAccount,
     data: dataAccount,
     refetch: refetchAccount
-  } = useQuery<AccountData>(GetAccountDetailQuery);
+  } = useGetAccountDetailQueryQuery();
 
   function handleAccountChange(event: any) {
     let [accountId, accountName] = event.target.value.split(',');
@@ -74,14 +70,9 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
     setOpenMultiple(true);
   };
 
-  const { loading, error, data } = useQuery<AccountData>(
-    GetSimpleAccountListQuery,
-    {
-      variables: {
-        BankId: accountState?.bankId
-      }
-    }
-  );
+  const { loading, error, data } = useGetSimpleAccountListQueryQuery({
+    variables: { BankId: String(accountState?.bankId ?? '') }
+  });
 
   if (loading) return <p>Loading...</p>;
 
@@ -126,7 +117,7 @@ function PageHeader({ accountState, setAccountState, refetch }: HeaderProps) {
               accountId={accountState?.accountId}
               accountName={accountState?.accountName}
               accountCurrency={accountState?.accountCurrency}
-              refresh={(event: any) => {}}
+              refresh={(event: any) => { }}
             />
           </Grid>
         )}

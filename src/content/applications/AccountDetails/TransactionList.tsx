@@ -1,12 +1,11 @@
 import { Card } from '@mui/material';
 import RecentOrdersTable from './RecentOrdersTable';
-import { TransactionData } from 'src/types/bank';
-import { ApolloError } from '@apollo/client';
+import { GetTransactionListQueryQuery } from 'src/__generated__/graphql';
 
 interface TransactionListProps {
   loading: boolean;
-  error: ApolloError;
-  data: TransactionData;
+  error: any;
+  data: GetTransactionListQueryQuery;
 }
 
 function TransactionList({ loading, error, data }: TransactionListProps) {

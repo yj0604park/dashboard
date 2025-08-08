@@ -18,9 +18,7 @@ import {
 } from '@mui/material';
 import PageTitleWrapper from 'src/components/PageTitleWrapper';
 import Footer from 'src/components/Footer';
-import { useQuery } from '@apollo/client';
-import { SalaryData } from 'src/types/bank';
-import { GetSalaryQuery } from 'src/queries/SalaryQuery';
+import { useGetSalaryQueryQuery, GetSalaryQueryQuery } from 'src/__generated__/graphql';
 import { useNavigate } from 'react-router-dom';
 import SalaryChart from './SalaryChart';
 import NumberHelper from 'src/functions/NumberHelper';
@@ -32,10 +30,10 @@ function Income() {
     loading: chart_loading,
     error: chart_error,
     data: chart_data
-  } = useQuery<SalaryData>(GetSalaryQuery);
+  } = useGetSalaryQueryQuery();
 
   const handleClick = (year) => {
-    navigate(`yearDetails/${year}`);
+    navigate(`year-details/${year}`);
   };
 
   var chart =
@@ -48,7 +46,7 @@ function Income() {
   const getDisplayColor = (value: number) => NumberHelper.GetDisplayColor(value);
   const formatAccountingUSD = (value: number) => NumberHelper.FormatAccountingUSD(value);
 
-  const calculateNetIncomePerYear = (data: SalaryData) => {
+  const calculateNetIncomePerYear = (data: GetSalaryQueryQuery) => {
     const netIncomePerYear: {
       [year: string]: {
         grossPay: number;
@@ -61,11 +59,11 @@ function Income() {
 
     data?.salaryRelay.edges.forEach((salary) => {
       const year = new Date(salary.node.date).getFullYear().toString();
-      const grossPay = Number(salary.node.grossPay) || 0;
-      const totalAdjustment = Number(salary.node.totalAdjustment) || 0;
-      const totalWithheld = Number(salary.node.totalWithheld) || 0;
-      const totalDeduction = Number(salary.node.totalDeduction) || 0;
-      const netPay = Number(salary.node.netPay) || 0;
+      const grossPay = NumberHelper.ToNumber(salary.node.grossPay) || 0;
+      const totalAdjustment = NumberHelper.ToNumber(salary.node.totalAdjustment) || 0;
+      const totalWithheld = NumberHelper.ToNumber(salary.node.totalWithheld) || 0;
+      const totalDeduction = NumberHelper.ToNumber(salary.node.totalDeduction) || 0;
+      const netPay = NumberHelper.ToNumber(salary.node.netPay) || 0;
 
       if (netIncomePerYear[year]) {
         netIncomePerYear[year].grossPay += grossPay;

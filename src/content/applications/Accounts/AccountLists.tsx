@@ -1,7 +1,7 @@
 import { Card } from '@mui/material';
-import { GetAccountNodeQuery } from 'src/queries/BankQuery';
 import { useQuery } from '@apollo/client';
-import { AccountData } from 'src/types/bank';
+import { GetAccountNodeQuery } from 'src/queries/BankQuery';
+import { GetAccountNodeQueryQuery } from 'src/__generated__/graphql';
 import AccountTable from './AccountTable';
 
 function AccountList({ bankFilterId }) {
@@ -10,9 +10,10 @@ function AccountList({ bankFilterId }) {
     variables.BankId = String(bankFilterId);
   }
 
-  const { loading, error, data } = useQuery<AccountData>(GetAccountNodeQuery, {
-    variables
-  });
+  const { loading, error, data } = useQuery<GetAccountNodeQueryQuery>(
+    GetAccountNodeQuery,
+    { variables }
+  );
 
   if (loading) return <p>Loading...</p>;
   if (error)

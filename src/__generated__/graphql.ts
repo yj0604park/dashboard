@@ -950,6 +950,7 @@ export type Query = {
   bankRelay: BankNodeConnection;
   retailerRelay: RetailerNodeConnection;
   salaryRelay: SalaryNodeConnection;
+  salarySummary: Array<SalarySummaryNode>;
   salaryYears: Array<Scalars['Int']['output']>;
   stockRelay: StockNodeConnection;
   transactionRelay: TransactionNodeConnection;
@@ -1128,6 +1129,12 @@ export type SalaryNodeEdge = {
 
 export type SalaryOrder = {
   date: InputMaybe<Ordering>;
+};
+
+export type SalarySummaryNode = {
+  __typename?: 'SalarySummaryNode';
+  totalGrossPay: Scalars['Decimal']['output'];
+  year: Scalars['Int']['output'];
 };
 
 export type StockInput = {
@@ -2016,7 +2023,7 @@ export const GetAccountNodeQueryDocument = gql`
     query GetAccountNodeQuery($After: String!, $BankId: ID) {
   accountRelay(
     order: {name: ASC}
-    filters: {isActive: true, bank: {id: {exact: $BankId}}}
+    filters: {bank: {id: {exact: $BankId}}}
     first: 100
     after: $After
   ) {

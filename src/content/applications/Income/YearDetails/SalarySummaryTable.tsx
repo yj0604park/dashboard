@@ -12,21 +12,24 @@ import {
 } from '@mui/material';
 import React from 'react';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/types/bank';
+import { GetSalaryFilterQueryQuery } from 'src/__generated__/graphql';
 
 interface SalarySummaryTableProps {
-  data: SalaryData;
+  data: GetSalaryFilterQueryQuery;
 }
 
 const SalarySummaryTable: React.FC<SalarySummaryTableProps> = ({ data }) => {
   const summary = data.salaryRelay.edges.reduce(
     (acc, { node }) =>
     (acc = {
-      grossPay: acc['grossPay'] + node.grossPay,
-      totalAdjustment: acc['totalAdjustment'] + node.totalAdjustment,
-      totalWithheld: acc['totalWithheld'] + node.totalWithheld,
-      totalDeduction: acc['totalDeduction'] + node.totalDeduction,
-      netPay: acc['netPay'] + node.netPay
+      grossPay: acc.grossPay + NumberHelper.ToNumber(node.grossPay),
+      totalAdjustment:
+        acc.totalAdjustment + NumberHelper.ToNumber(node.totalAdjustment),
+      totalWithheld:
+        acc.totalWithheld + NumberHelper.ToNumber(node.totalWithheld),
+      totalDeduction:
+        acc.totalDeduction + NumberHelper.ToNumber(node.totalDeduction),
+      netPay: acc.netPay + NumberHelper.ToNumber(node.netPay)
     }),
     {
       grossPay: 0,

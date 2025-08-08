@@ -1,4 +1,9 @@
-import { Stock } from './bank';
+export interface Stock {
+  id?: number;
+  name?: string;
+  ticker?: string;
+  currency?: string;
+}
 
 export interface AccountState {
   accountId?: number;

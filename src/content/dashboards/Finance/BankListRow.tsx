@@ -1,9 +1,9 @@
 import { Card, Stack, Divider } from '@mui/material';
 import BankItem from './BankItem';
 import Util from 'src/functions/ArrayHelper';
-import { BankEdge, BankNode } from 'src/types/bank';
+import { GetBankNodeQueryQuery } from 'src/__generated__/graphql';
 
-function GetBankItem(bank: BankNode) {
+function GetBankItem(bank: GetBankNodeQueryQuery['bankRelay']['edges'][number]) {
   let latestUpdated = new Date('2000-01-01');
   bank.node.accountSet.edges.forEach((account) => {
     const accountDate = new Date(account.node.lastUpdate);
@@ -21,7 +21,10 @@ function GetBankItem(bank: BankNode) {
   );
 }
 
-function GetBankStack(bankList: BankNode[], idx: number) {
+function GetBankStack(
+  bankList: GetBankNodeQueryQuery['bankRelay']['edges'],
+  idx: number
+) {
   return (
     <Stack
       direction="row"
@@ -37,7 +40,7 @@ function GetBankStack(bankList: BankNode[], idx: number) {
 }
 
 interface BankListRowProps {
-  bankList: BankEdge;
+  bankList: GetBankNodeQueryQuery['bankRelay'];
 }
 
 function BankListRow({ bankList }: BankListRowProps) {

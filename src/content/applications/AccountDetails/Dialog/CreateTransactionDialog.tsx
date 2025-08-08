@@ -14,13 +14,12 @@ import {
 } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useMutation, useQuery } from '@apollo/client';
-import { RetailerData } from 'src/types/bank';
+import { useMutation } from '@apollo/client';
 import {
   CreateTransactionMutation,
   CreateTransactionWithoutRetailerMutation
 } from 'src/queries/BankQuery';
-import { GetRetailerListQuery } from 'src/queries/RetailerQuery';
+import { useGetRetailerListQueryQuery } from 'src/__generated__/graphql';
 import { useState, SyntheticEvent, ChangeEvent } from 'react';
 import { RetailerList } from 'src/types/internal';
 
@@ -108,8 +107,7 @@ function CreateAccountDialog({
   }
 
   // graphql connection
-  const { loading, error, data, fetchMore } =
-    useQuery<RetailerData>(GetRetailerListQuery);
+  const { loading, error, data, fetchMore } = useGetRetailerListQueryQuery();
   const [
     useCreateTransaction,
     { data: mutataionData, loading: mutationLoading, error: mudataionError }

@@ -13,19 +13,18 @@ import {
 import { number } from 'prop-types';
 import React from 'react';
 import NumberHelper from 'src/functions/NumberHelper';
-import { SalaryData } from 'src/types/bank';
+import { GetSalaryFilterQueryQuery } from 'src/__generated__/graphql';
 
 interface SalarySummaryDetailTableProps {
-  data: SalaryData;
+  data: GetSalaryFilterQueryQuery;
 }
 
-const updateSummary = (summary: { [key: string]: number }, node: JSON) => {
+const updateSummary = (summary: { [key: string]: number }, node: any) => {
+  if (!node) return summary;
   Object.keys(node).forEach((key) => {
-    if (summary[key]) {
-      summary[key] += node[key];
-    } else {
-      summary[key] = node[key];
-    }
+    const current = NumberHelper.ToNumber(summary[key] ?? 0);
+    const delta = NumberHelper.ToNumber(node[key]);
+    summary[key] = current + delta;
   });
   return summary;
 };
@@ -51,8 +50,11 @@ const SalarySummaryDetailTable: React.FC<SalarySummaryDetailTableProps> = ({
         node.adjustmentDetail
       ),
       totalWithheld: updateSummary(acc.totalWithheld, node.taxDetail),
-      totalDeduction: updateSummary(acc.totalDeduction, node.deductionDetail),
-      netPay: acc['netPay'] + node.netPay
+      totalDeduction: updateSummary(
+        acc.totalDeduction,
+        node.deductionDetail
+      ),
+      netPay: acc.netPay + NumberHelper.ToNumber(node.netPay)
     }),
     {
       grossPay: {},
